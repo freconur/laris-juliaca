@@ -344,12 +344,16 @@ const addTicketDataToStatistics = async () => {
 }
 export const addProductFromCartToTicket = async (ticket: Ticket) => {
   const docRef = doc(db, "/ticket", `${TICKET}`);
-
-  await updateDoc(docRef, {
+  let docSnap:any
+  const rta = await updateDoc(docRef, {
     ticket: increment(1)
+  }).then(async r => { 
+    docSnap = await getDoc(docRef)
   })
+  console.log(rta)
   // .then(async r => {
-    const docSnap = await getDoc(docRef)
+    // const  = await getDoc(docRef)
+    // console.log(docSnap.)
       if(docSnap.exists()){
         await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}`), { ticket: "ticket" })
       .then(async r => {
