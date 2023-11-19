@@ -347,7 +347,8 @@ export const addProductFromCartToTicket = async (ticket: Ticket) => {
 
   await updateDoc(docRef, {
     ticket: increment(1)
-  }).then(async r => {
+  })
+  // .then(async r => {
     const docSnap = await getDoc(docRef)
       if(docSnap.exists()){
         await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}`), { ticket: "ticket" })
@@ -386,7 +387,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket) => {
         }
       })
       }
-  })
+  // })
 }
 
 export const addProductCartToProductSales = async (cart: ProductToCart[] | undefined) => {
