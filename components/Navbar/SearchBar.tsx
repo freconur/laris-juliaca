@@ -31,14 +31,15 @@ const SearchBar = ({conditionalValue, setConditionalValue,changeValueResult}:Pro
     const results = hits.map((hit: any) => {
       const { objectID: key, _highlightResult } = hit
       const {
-        code: { value: code },
+        // code: { value: code },
         description: { value: description },
         brand: { value: brand },
         price: { value: price },
         stock: { value: stock },
       } = _highlightResult
 
-      return { key, description, code, stock, brand, price }
+      return { key, description, stock, brand, price }
+      // return { key, description, code, stock, brand, price }
     })
     changeValueResult(results)
   }

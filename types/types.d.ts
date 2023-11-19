@@ -215,7 +215,8 @@ interface ProductToCart {
   totalAmountSale?: number,
   warningAmount?: boolean,
   cancelAmount?: number,
-  dateLastModified?: Date | toDate
+  dateLastModified?: Date | toDate,
+  key?:string
 }
 interface Ticket {
   id?: string,

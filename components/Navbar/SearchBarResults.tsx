@@ -28,9 +28,9 @@ const SearchBarResults = ({conditionalValue, handleClickOutside, results, produc
               results.map((item: ProductToCart) => {
                 return (
                   productToCart &&
-                  <div key={item.id} onClick={() => addProductFromNavbar(`${item?.code}`)} className='w-full my-2 hover:bg-slate-200 border-b-2 cursor-pointer border-slate-100'>
+                  <div key={item.key} onClick={() => addProductFromNavbar(`${item?.key}`)} className='w-full my-2 hover:bg-slate-200 border-b-2 cursor-pointer border-slate-100'>
                     <div className='flex justify-between items-center'>
-                      <p className='text-slate-600 capitalize font-nunito' dangerouslySetInnerHTML={testData(`${item.code}`)} />
+                      <p className='text-slate-600 capitalize font-nunito' dangerouslySetInnerHTML={testData(`${item.key}`)} />
                       {/* <p className='text-slate-600 font-nunito' dangerouslySetInnerHTML={testData(`${item.stock}`)}/> */}
                     </div>
                     <h3 className='text-slate-600 capitalize font-nunito' dangerouslySetInnerHTML={testData(`${item.description}`)} />
