@@ -1,0 +1,22 @@
+.container {
+  text-transform: capitalize;
+  padding: 1;
+  font-family:'Comfortaa', monospace;
+  color:black;
+  height: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.lista {
+  border-radius: 10px;
+  border:none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: medium;
+  color: black;
+}
+.lista:hover {
+  /* background-color: var(--hover-sidebar); */
+}

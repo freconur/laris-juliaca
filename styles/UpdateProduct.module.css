@@ -1,0 +1,51 @@
+.containerModal {
+  position: absolute;
+  background-color:rgba(0,0,0,.23);
+  z-index: 900;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  display: grid;
+  place-content: center;
+}
+.containerDelete {
+  width: 300px;
+  background-color: #1d3e5f;
+  padding: 20px;
+  border-radius:15px
+}
+.title{
+  color:white;
+  /* text-transform: capitalize; */
+
+}
+.buttonCancel{
+  border-radius:5px;
+  padding:8px;
+  color: #368eff;
+  font-weight: 600;
+  text-transform: capitalize;
+  margin:10px
+}
+.buttonCancel:hover{
+  background-color: #ffffff1f;
+  border-radius: 5px;
+}
+.buttonDelete {
+  /* background-color: red; */
+  background: linear-gradient(90deg, rgba(255,134,0,1) 0%, rgb(255, 187, 0) 100%);
+  color: #000000bf;
+  font-weight: 600;
+  padding: 12px;
+  border-radius: 5px;
+  text-transform: capitalize;
+}
+.buttonDelete:hover{
+  opacity: .9;
+}
+.buttonContainer {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}

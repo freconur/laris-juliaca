@@ -1,0 +1,17 @@
+.containerModal {
+  position: absolute;
+  background-color:rgba(0,0,0,.23);
+  z-index: 300;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  display: grid;
+  place-content: center;
+}
+.containerDelete {
+  width: 300px;
+  background-color: #1d3e5f;
+  padding: 20px;
+  border-radius:15px
+}
