@@ -276,48 +276,48 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
   } else {
     dispatch({ type: "warningAmount", payload: "" })
     await setDoc(doc(db, `/salesPerMonth/${SALES_PER_MONTH}/mi-negocio/${currentYear()}/month-${currentYear()}/${currentMonth()}`), { month: `${currentMonth()}`, totalSales: 0 })
-    .then( r => {
-      cart?.map(async (item) => {
+      .then(r => {
+        cart?.map(async (item) => {
 
-        const refProduct = doc(db, "products", `${item?.code}`);
-        // totalAmountOfCartLibrary = totalAmountOfCartLibrary + (Number(item.amount) * Number(item.price))
-        const ref = doc(db, `/salesPerMonth/${SALES_PER_MONTH}/mi-negocio/${currentYear()}/month-${currentYear()}/${currentMonth()}`);
-        const totalSaleMonth = await getDoc(ref)
-        // await updateDoc(ref, { totalSales: totalAmountOfCartLibrary + totalSaleMonth.data()?.totalSales })
-        //estoy actualizando el stock de cada producto del cart
-        await updateDoc(refProduct, { stock: increment(-Number(item.amount)) })
+          const refProduct = doc(db, "products", `${item?.code}`);
+          // totalAmountOfCartLibrary = totalAmountOfCartLibrary + (Number(item.amount) * Number(item.price))
+          const ref = doc(db, `/salesPerMonth/${SALES_PER_MONTH}/mi-negocio/${currentYear()}/month-${currentYear()}/${currentMonth()}`);
+          const totalSaleMonth = await getDoc(ref)
+          // await updateDoc(ref, { totalSales: totalAmountOfCartLibrary + totalSaleMonth.data()?.totalSales })
+          //estoy actualizando el stock de cada producto del cart
+          await updateDoc(refProduct, { stock: increment(-Number(item.amount)) })
+        })
       })
-    })
-    .then(async r => {
-      await addProductFromCartToTicket(
-        {
-          //agregando los nuevos campos de pago cash y yape
-          timestamp: Timestamp.fromDate(new Date()),
-          product: cart,
-          paymentData
-        }
-      ).then(async (r) => {
-        dispatch({ type: "resetAmountCart" })
-        dispatch({ type: "generateSold", payload: false })
-        dispatch({ type: "showSaleModal", payload: false })
-        dispatch({ type: "tostifyNotificationSales", payload: cero + 1 })
-        dispatch({ type: "cleanCart" })
-        // await updatedailySale(totalAmountOfCartLibrary)//esto se cambia provisionalmente
-        await updatedailySale(paymentData.totalAmountToCart)//probaremos con el total que obtenemos y no lo calcularemos nuevamente.
-        // await updateDailySaleWaliky(totalAmountOfCartWaliky)
-        // await updateDailySaleWalikySublimados(totalAmountOfCartWalikySublimados)
+      .then(async r => {
+        await addProductFromCartToTicket(
+          {
+            //agregando los nuevos campos de pago cash y yape
+            timestamp: Timestamp.fromDate(new Date()),
+            product: cart,
+            paymentData
+          }
+        ).then(async (r) => {
+          dispatch({ type: "resetAmountCart" })
+          dispatch({ type: "generateSold", payload: false })
+          dispatch({ type: "showSaleModal", payload: false })
+          dispatch({ type: "tostifyNotificationSales", payload: cero + 1 })
+          dispatch({ type: "cleanCart" })
+          // await updatedailySale(totalAmountOfCartLibrary)//esto se cambia provisionalmente
+          await updatedailySale(paymentData.totalAmountToCart)//probaremos con el total que obtenemos y no lo calcularemos nuevamente.
+          // await updateDailySaleWaliky(totalAmountOfCartWaliky)
+          // await updateDailySaleWalikySublimados(totalAmountOfCartWalikySublimados)
+        })
       })
-    })
-    .then( async r=> {
-      await addTicketDataToStatistics()
-      await addProductCartToProductSales(cart)
-    } )
+      .then(async r => {
+        await addTicketDataToStatistics()
+        await addProductCartToProductSales(cart)
+      })
     // debo verificar de donde obtengo la data de estadisticas antes de agregar o quitar esta data del endpoint
     //aqui tengo que crear la funcionalidad de que sume el daily sale correspondiente para cada marca
-    
 
-    
-    
+
+
+
   }
 
 
@@ -344,82 +344,49 @@ const addTicketDataToStatistics = async () => {
 }
 export const addProductFromCartToTicket = async (ticket: Ticket) => {
   const docRef = doc(db, "/ticket", `${TICKET}`);
-  const docSnap = await getDoc(docRef)
-  if (docSnap.exists()) {
-    //AQUI DEBO DE AGREGAR LA FUNCIONA DE INCREMENT Y NO HACER LA SUMA HARDCODEADO
-    //OPTIMIZAR EL INCREMENT DE LOS TICKETS
-    const numeroTicket = docSnap.data().ticket + 1
-    console.log('numeroTicket',numeroTicket)
-    // console.log('numeroTicket', numeroTicket)
-    // await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}`, `${numeroTicket}`), ticket)
-    await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}`), { ticket: "ticket" })
-    .then(async r => {
 
-      if (ticket.paymentData.cash.cash && !ticket.paymentData.yape.yape) {
-        console.log('cash')
-        await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${numeroTicket}`), {
-          product: ticket.product,
-          timestamp: ticket.timestamp,
-          cash: {cash:ticket.paymentData.cash.cash, amount:ticket.paymentData.totalAmountToCart},
-          yape: ticket.paymentData.yape.yape
-        })
-        // .then( async r => {
-        //   await updateDoc(docRef, {
-        //     ticket: increment(1)
-        //   });
+  await updateDoc(docRef, {
+    ticket: increment(1)
+  }).then(async r => {
+    const docSnap = await getDoc(docRef)
+      if(docSnap.exists()){
+        await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}`), { ticket: "ticket" })
+      .then(async r => {
 
-        // })
+        if (ticket.paymentData.cash.cash && !ticket.paymentData.yape.yape) {
+          console.log('cash')
+          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data()}`), {
+            product: ticket.product,
+            timestamp: ticket.timestamp,
+            cash: { cash: ticket.paymentData.cash.cash, amount: ticket.paymentData.totalAmountToCart },
+            yape: ticket.paymentData.yape.yape
+          })
+          
+        }
+        if (ticket.paymentData.yape.yape && !ticket.paymentData.cash.cash) {
+          console.log('yape')
+
+          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data()}`), {
+            product: ticket.product,
+            timestamp: ticket.timestamp,
+            cash: ticket.paymentData.cash.cash,
+            yape: { yape: ticket.paymentData.yape.yape, amount: ticket.paymentData.totalAmountToCart, operationId: ticket.paymentData.yape.operationId },
+          })
+        }
+
+        if (ticket.paymentData.cash.cash && ticket.paymentData.yape.yape) {
+          console.log('batimix')
+
+          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data()}`), {
+            product: ticket.product,
+            timestamp: ticket.timestamp,
+            cash: ticket.paymentData.cash,
+            yape: ticket.paymentData.yape,
+          })
+        }
+      })
       }
-      if (ticket.paymentData.yape.yape && !ticket.paymentData.cash.cash) {
-        console.log('yape')
-  
-        await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${numeroTicket}`), {
-          product: ticket.product,
-          timestamp: ticket.timestamp,
-          cash: ticket.paymentData.cash.cash,
-          yape: {yape:ticket.paymentData.yape.yape, amount:ticket.paymentData.totalAmountToCart, operationId:ticket.paymentData.yape.operationId},
-        })
-        // .then( async r => {
-        //   await updateDoc(docRef, {
-        //     ticket: increment(1)
-        //   });
-
-        // })
-      }
-  
-      if(ticket.paymentData.cash.cash && ticket.paymentData.yape.yape) {
-        console.log('batimix')
-  
-        await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${numeroTicket}`), {
-          product: ticket.product,
-          timestamp: ticket.timestamp,
-          cash: ticket.paymentData.cash,
-          yape: ticket.paymentData.yape,
-        })
-        // .then( async r => {
-        //   await updateDoc(docRef, {
-        //     ticket: increment(1)
-        //   });
-
-        // })
-      }
-    })
-    .then( async r => {
-          await updateDoc(docRef, {
-            ticket: increment(1)
-          });
-
-        })
-
-
-    // await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${numeroTicket}`), ticket)
-    // await updateDoc(docRef, {
-    //   ticket: increment(1)
-    // });
-  }
-  // await updatedailySale(totalAmountOfCartLibrary)
-
-  //parece que aqui es donde deberia de colorcar todos los datos para las estadisticas
+  })
 }
 
 export const addProductCartToProductSales = async (cart: ProductToCart[] | undefined) => {
@@ -726,9 +693,9 @@ export const validateUserPin = async (dispatch: (action: any) => void, idUser: s
   }
 }
 
-export const paymentDataToSale = (dispatch: (action: any) => void, paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number) => {
-  const paymentData:PaymentInfo = {
-    totalAmountToCart:Number(totalAmountToCart.toFixed(2)),
+export const paymentDataToSale = (dispatch: (action: any) => void, paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape, totalAmountToCart: number) => {
+  const paymentData: PaymentInfo = {
+    totalAmountToCart: Number(totalAmountToCart.toFixed(2)),
     yape: {
       yape: paymentYape,
       amount: Number(amountPayment.yape),
