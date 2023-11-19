@@ -355,7 +355,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket) => {
 
         if (ticket.paymentData.cash.cash && !ticket.paymentData.yape.yape) {
           console.log('cash')
-          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data()}`), {
+          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data().ticket}`), {
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: { cash: ticket.paymentData.cash.cash, amount: ticket.paymentData.totalAmountToCart },
@@ -366,7 +366,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket) => {
         if (ticket.paymentData.yape.yape && !ticket.paymentData.cash.cash) {
           console.log('yape')
 
-          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data()}`), {
+          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data().ticket}`), {
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: ticket.paymentData.cash.cash,
@@ -377,7 +377,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket) => {
         if (ticket.paymentData.cash.cash && ticket.paymentData.yape.yape) {
           console.log('batimix')
 
-          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data()}`), {
+          await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${docSnap.data().ticket}`), {
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: ticket.paymentData.cash,
