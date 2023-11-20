@@ -19,7 +19,7 @@ const RegistroVentas = () => {
   const dataUser = useUser()
   const focusRef = useRef<HTMLInputElement>(null)
   const initialValue = { code: "" }
-  const { addProductRegisterToSell, LibraryData, showGenerateSale, stateLoader, resetValueToastify, getDataUser } = useGlobalContext()
+  const { addProductRegisterToSell, LibraryData, showGenerateSale, stateLoader, resetValueToastify, getDataUser, getDataUserContext } = useGlobalContext()
   const [codeBar, setCodeBar] = useState(initialValue)
   const { productToCart, totalAmountToCart, loaderToSell, showSaleModal, productNotFound, tostifyNotificationSales, generateSold } = LibraryData
   const [showTableSales, setShowTableSales] = useState(false)
@@ -48,6 +48,12 @@ const RegistroVentas = () => {
     })
   }
   useEffect(() => {
+    if(dataUser.id) {
+      getDataUserContext(`${dataUser.id}`)
+    }
+  },[dataUser])
+  console.log('data-registro',dataUser)
+  useEffect(() => {
 
     resetValueToastify()
     if (focusRef.current) {
@@ -73,7 +79,7 @@ const RegistroVentas = () => {
     })
   }
   // console.log('BOLETA_SUNAT',BOLETA_SUNAT.client.numDoc)
-  // console.log('productToCart',productToCart)
+  console.log('dataUser',dataUser)
   return (
     <LayoutDashboard>
       <Navbar dataUser={dataUser} />
@@ -81,7 +87,7 @@ const RegistroVentas = () => {
         <ToastContainer />
         {
           showSaleModal &&
-          <SaleModal generateSold={generateSold} />
+          <SaleModal generateSold={generateSold} dataUser={dataUser} />
         }
         <div className='relative  w-full px-1'>
     

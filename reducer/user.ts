@@ -20,7 +20,8 @@ export const getUser = async(dispatch: (action: any) => void, id: string) => {
       id:user.id,
       acc:user.data().acc,
       fechaNacimiento:user.data().fechaNacimiento,
-      dni:user.data().dni
+      dni:user.data().dni,
+      identifier:user.data().identifier
     }})
   }
 }

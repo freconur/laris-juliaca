@@ -4,20 +4,21 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Hit = ({ hit}) => {
+  console.log('hit',hit)
   return (
     <>
       {
-        hit.code?.length === 13
+        hit.objectID?.length === 13
         ?
         <>
         
-          <CopyToClipboard  text={hit.code}>
-            < div key={hit.code} className="cursor-pointer w-full bg-white p-1 my-2 rounded-md shadow-sm" >
+          <CopyToClipboard  text={hit.objectID}>
+            < div key={hit.objectID} className="cursor-pointer w-full bg-white p-1 my-2 rounded-md shadow-sm" >
               <div className="flex justify-between font-nunito  items-center">
                 <div className="flex gap-3 justify-between items-center w-full">
 
                   <div className="text-slate-600 font-dmMono">
-                    Cod: {hit.code}
+                    Cod: {hit.objectID}
                   </div>
                   <div className="text-green-600">
                     <span className='text-slate-600'>Precio: </span>$ {hit.price}

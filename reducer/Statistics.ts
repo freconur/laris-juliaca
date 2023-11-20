@@ -7,15 +7,16 @@ const YEAR_MONTH = `${currentMonth()}-${currentYear()}/${currentMonth()}-${curre
 const YEARMONTH = `${currentMonth()}-${currentYear()}`
 const FECHA = `${currentDate()}`
 const MES = `${currentMonth()}`
+const PAYMENT_TYPE = "XXnuJEsytqLDBQ4PvSgc"
 
-export const dataToStatistics = async (dispatch:(action:any)=>void) => {
+export const dataToStatistics = async (dispatch: (action: any) => void) => {
   const pathToCreateNewData = `/statistics/${YEAR_MONTH}`
-  const createNewDataRef = doc(db, `/statistics/${YEAR_MONTH}/`,`${FECHA}`)
+  const createNewDataRef = doc(db, `/statistics/${YEAR_MONTH}/`, `${FECHA}`)
   const docSnap = await getDoc(createNewDataRef);
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
   } else {
-    await setDoc(doc(db, pathToCreateNewData, `${FECHA}`), {dailySales: 0, tickets:0});
+    await setDoc(doc(db, pathToCreateNewData, `${FECHA}`), { dailySales: 0, tickets: 0 });
   }
   const statisticsRef = collection(db, `/statistics/${YEAR_MONTH}`)
   const queryStatistics = await getDocs(statisticsRef)
@@ -48,7 +49,7 @@ export const dataToStatistics = async (dispatch:(action:any)=>void) => {
     const rta = dataFromStatistics.map(dataPerday => {
       const tickets = Number(dataPerday.tickets)
       const sales = Number(dataPerday.dailySales)
-      if(Number(dataPerday.tickets) === 0 && Number(dataPerday.dailySales) === 0){
+      if (Number(dataPerday.tickets) === 0 && Number(dataPerday.dailySales) === 0) {
         const averageTicket = 0
         dataPerday.averageTicket = averageTicket
       } else {
@@ -76,9 +77,25 @@ export const dataToStatistics = async (dispatch:(action:any)=>void) => {
           dataPerday.growthAverageTicket = Number(growthAverageTicket)
         }
       })
-      dispatch({type:"dataStatistics", payload:dataFromStatistics})
-      dispatch({type:"loader", payload:false})
+      dispatch({ type: "dataStatistics", payload: dataFromStatistics })
+      dispatch({ type: "loader", payload: false })
     }
   }
 
+}
+
+export const getPaymentTypeDaily = async (dispatch: (action: any) => void,) => {
+  const paymentRef = doc(db, `/payment-type/${PAYMENT_TYPE}/${YEARMONTH}/`,`${FECHA}`)
+  // await setDoc(paymentRef,{yape:0, cash:0})
+  onSnapshot(paymentRef, async (doc) => {
+    dispatch({type:"paymentDataToStadistics", payload:doc.data()})
+      console.log('rta-doc',doc.data())
+
+    // if (doc.exists()) {
+    //   console.log('rta-doc',doc.data())
+    //   dispatch({type:"paymentDataToStadistics", payload:doc.data()})
+    // }else {
+    //   console.log('getPaymentTypeDaily: aun no hay datos')
+    // }
+  })
 }

@@ -10,9 +10,10 @@ interface Props {
   dataTotalSalesPerMonth: number,
   totalSalesYear: number,
   dataSales: number[],
-  dataStatistics: GeneralStatisticsPerDay[]
+  dataStatistics: GeneralStatisticsPerDay[],
+  paymentDataToStadistics:PaymentDataToStatdistics
 }
-const CardEstadisticas = ({ dataStatistics, dataSales, dailySale, dailyTicket, averageTicket, dataTotalSalesPerMonth, totalSalesYear }: Props) => {
+const CardEstadisticas = ({ paymentDataToStadistics,dataStatistics, dataSales, dailySale, dailyTicket, averageTicket, dataTotalSalesPerMonth, totalSalesYear }: Props) => {
 
   console.log("test", dataSales.length)
   // const getTest = () => {
@@ -65,7 +66,43 @@ const CardEstadisticas = ({ dataStatistics, dataSales, dailySale, dailyTicket, a
               }
             </div>
           </div>
+          <div className="w-full h-[150px] rounded-xl p-3 shadow-md bg-white">
+            {/* <div className="w-full h-[150px] rounded-sm p-3 drop-shadow-xl bg-gradient-to-r from-gr-1 from-0% via-gr-2 via-80% to-gr-3 to-100%"> */}
+            <div className="grid w-full grid-cols-gridCardStat">
+              <div className="w-full p-3">
+                <div className="text-slate-600 font-bold text-xl capitalize ">tipo de pago</div>
+                <div className="text-slate-600 gap-3  font-bold">
+                  <div className="flex items-center">
+                    <p className=' capitalize text-lg mr-3 text-green-500'>efectivo:</p>
+                    {
+                    paymentDataToStadistics 
+                    ?
+                    <p className='text-2xl xs:text-[15px] cz:text-2xl'>$ {paymentDataToStadistics?.cash.toFixed(2)}</p>
+                    :
+                    <p className='text-2xl xs:text-[15px] cz:text-2xl'>$ 0 </p>
+                    }
+                    {/* <p>$ {Number(dataStatistics[dataStatistics.length - 1]?.dailySales)}</p> */}
+                  </div>
+                  <div className="flex items-center">
+                    <p className=' capitalize text-lg mr-3 text-blue-500'>yape:</p>
+                    {
+                    paymentDataToStadistics 
+                    ?
+                    <p className='text-2xl xs:text-[15px] cz:text-2xl'>$ {paymentDataToStadistics?.yape.toFixed(2)}</p>
+                    :
+                    <p className='text-2xl xs:text-[15px] cz:text-2xl'>$ 0 </p>
+                    }
+                    {/* <p>$ {Number(dataStatistics[dataStatistics.length - 1]?.dailySales)}</p> */}
+                  </div>
+                </div>
 
+              </div>
+              <div className="m-auto h-[50px] w-[50px] text-iconColor rounded-xl bg-cardStatisticsIcon p-3">
+                <BsCashCoin className="w-full h-full" />
+              </div>
+            </div>
+            
+          </div>
           {/* ticket diarios */}
           <div className="w-full h-[150px] rounded-xl p-3 shadow-md bg-white">
             <div className="grid w-full grid-cols-gridCardStat">

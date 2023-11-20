@@ -38,8 +38,8 @@ ChartJS.register(
 
 const Estadisticas = () => {
   const dataUser = useUser()
-  const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState } = useGlobalContext()
-  const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader } = LibraryData
+  const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState,getPaymentTypeDailyContext } = useGlobalContext()
+  const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader, paymentDataToStadistics } = LibraryData
   useEffect(() => {
     if (dataUser.id) {
       // setTimeout(() => {
@@ -53,7 +53,7 @@ const Estadisticas = () => {
     totalSalesPerYearContext()
     incomePerDay()
     getDataToStatistics()
-
+    getPaymentTypeDailyContext()
     getDailySales()
   }, [dailyTicket, dataStatistics.length])
 
@@ -105,7 +105,7 @@ const Estadisticas = () => {
             <div className="w-full p-4 relative">
               {/* <Navbar /> */}
               <h1 className="text-3xl text-slate-700 font-nunito font-semibold p-2 my-5">Mis Estadísticas</h1>
-              <CardEstadisticas dataStatistics={dataStatistics} dataSales={dataSales} dailySale={dailySale} dailyTicket={dailyTicket} averageTicket={averageTicket} dataTotalSalesPerMonth={dataTotalSalesPerMonth} totalSalesYear={totalSalesYear} />
+              <CardEstadisticas dataStatistics={dataStatistics} dataSales={dataSales} dailySale={dailySale} dailyTicket={dailyTicket} averageTicket={averageTicket} dataTotalSalesPerMonth={dataTotalSalesPerMonth} totalSalesYear={totalSalesYear} paymentDataToStadistics={paymentDataToStadistics}/>
               {/* <div className="my-[50px] w-full cs:h-[300px] lg:h-[350px] xl:h-[400px]"> */}
             <TableStatidisticsPerMonth dataStatistics={dataStatistics} />
               <div className="my-[50px] w-full">

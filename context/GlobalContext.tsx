@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useState } from "react";
 import { addNewProduct, addStockToProduct, addStockToProductUpdate, dailySale, dailyTicket, deleteProductToCart, findToAddProductCart, generateSold, getBrands, getCategory, getFilterProductByStock, getIncomePerDay, getMarcaSocio, getProductsSales, getTotalSalesPerYear, paymentDataToSale, validateUserPin } from "../reducer/Product";
 import { Library, ProductsReducer } from "../reducer/Product.reducer";
 import { getProductByCodeToUpdateContext } from "../reducer/UpdateProducts";
-import { dataToStatistics } from "../reducer/Statistics";
+import { dataToStatistics, getPaymentTypeDaily } from "../reducer/Statistics";
 import { cancelTicket, getTickets } from "../reducer/ventas";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 // import { authApp } from "../firebase/firebase.config";
@@ -32,7 +32,7 @@ type GlobalContextProps = {
   brands: () => void,
   addProductRegisterToSell: (id: string, cart: ProductToCart[] | undefined) => void,
   deleteProductCart: (cart: ProductToCart[], codeFromProduct: string | undefined) => void,
-  soldProducts: (cart: ProductToCart[] | undefined, paymentData:PaymentInfo) => void,
+  soldProducts: (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, idUser:string) => void,
   stateLoader: (state: boolean) => void,
   stateGenerateSoldLoader: (state: boolean) => void,
   loaderRegisterProducts: (state: boolean) => void,
@@ -67,6 +67,7 @@ type GlobalContextProps = {
   getDataUserContext: (id: string) => void,
   loginApisPeruContext: (userApisPeru: UserApisPeru) => void,
   paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number) => void
+  getPaymentTypeDailyContext:() => void
 }
 
 
@@ -81,7 +82,9 @@ export function GlobalcontextProdiver({ children }: Props) {
   const [showModalUpdateBrands, setShowModalUpdateBrands] = useState<boolean>(false)
   const [showModalDeleteBrands, setShowModalDeleteBrands] = useState<boolean>(false)
   // const [showSidebar, setShowSidebar] = useState<boolean>(false)
-
+  const getPaymentTypeDailyContext = () => {
+    getPaymentTypeDaily(dispatch)
+  }
   const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number) => {
     console.log('totalAmountToCart',totalAmountToCart)
     paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
@@ -90,6 +93,7 @@ export function GlobalcontextProdiver({ children }: Props) {
     newCompany(userApisPeru)
   }
   const getDataUserContext = (id: string) => {
+    console.log('global user id', id)
     getUser(dispatch, id as string)
   }
   const showSidebarContext = (state: boolean) => {
@@ -183,8 +187,8 @@ export function GlobalcontextProdiver({ children }: Props) {
     deleteProductToCart(dispatch, cart, codeFromProduct)
   }
   // const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentData) => {
-    const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentInfo) => {
-    generateSold(dispatch, cart, 0, paymentData)
+    const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, identifierUser:string) => {
+    generateSold(dispatch, cart, 0, paymentData,identifierUser)
   }
   const stateLoader = (state: boolean) => {
     dispatch({ type: "loaderToSell", payload: state })
@@ -231,6 +235,7 @@ export function GlobalcontextProdiver({ children }: Props) {
 
   return (
     <GlobalContext.Provider value={{
+      getPaymentTypeDailyContext,
       paymentTypeContext,
       loginApisPeruContext,
       getDataUserContext,

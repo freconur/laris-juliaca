@@ -5,19 +5,21 @@ import { useGlobalContext } from '../../context/GlobalContext';
 import { RiLoader4Line } from "react-icons/ri";
 
 interface Props {
-  generateSold: boolean;
+  generateSold: boolean
+  dataUser:any
 }
 
-const SaleModal = ({ generateSold }: Props) => {
+const SaleModal = ({ generateSold, dataUser }: Props) => {
   const { soldProducts, LibraryData, showGenerateSale } = useGlobalContext()
-  const { productToCart, showSaleModal, warningAmount, paymentData } = LibraryData
+  const { productToCart, showSaleModal, warningAmount, paymentData, getUser } = LibraryData
   let container;
   if (typeof window !== "undefined") {
     container = document.getElementById("portal-modal");
   }
   const handleSubmit = () => {
-    soldProducts(productToCart, paymentData)
+    soldProducts(productToCart, paymentData,`${getUser.identifier}`)
   }
+  console.log('dataUser',getUser.identifier)
   return container
     ? createPortal(
       <div className={styles.containerModal}>

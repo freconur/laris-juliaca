@@ -1,3 +1,7 @@
+interface PaymentDataToStatdistics {
+  yape:number,
+  cash:number
+}
 interface Yape {
     yape: boolean,
     amount: number
@@ -113,7 +117,8 @@ interface User {
   lastname?: string,
   pin?: number,
   rol?: string,
-  picture?: string
+  picture?: string,
+  identifier?:number
 }
 interface GeneralStatisticsPerDay {
   date?: number,
@@ -181,7 +186,8 @@ interface LibraryAllData {
   showSidebar: boolean,
   getUser: User,
   warningAmount: string,
-  paymentData: PaymentInfo
+  paymentData: PaymentInfo,
+  paymentDataToStadistics: PaymentDataToStatdistics
 }
 interface DateData {
   date: number,
