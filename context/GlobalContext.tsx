@@ -94,7 +94,7 @@ export function GlobalcontextProdiver({ children }: Props) {
   }
   const getDataUserContext = (id: string) => {
     console.log('global user id', id)
-    getUser(dispatch, id as string)
+    getUser(dispatch, id as string) 
   }
   const showSidebarContext = (state: boolean) => {
     dispatch({ type: "showSidebar", payload: state })
