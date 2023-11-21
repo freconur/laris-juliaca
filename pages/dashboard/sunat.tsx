@@ -38,8 +38,12 @@ const Sunat = () => {
     .Iniciar()
     .Feed(1)
   
-    const respuesta = await newTicket.imprimirEn()
-
+    const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
+    if(respuesta === true) {
+      console.log('impresioin correcta')
+    }else {
+      console.log('Error:', respuesta)
+    }
   }
   console.log('printers',printers)
   return (
@@ -55,6 +59,8 @@ const Sunat = () => {
       })
     }
     </select>
+
+    <button onClick={sendNewTicket}>imprimir</button>
       {/* <form onSubmit={loginApisPeru}>
         <div>
           <label>usuario</label>
