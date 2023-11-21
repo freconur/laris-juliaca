@@ -86,7 +86,6 @@ export function GlobalcontextProdiver({ children }: Props) {
     getPaymentTypeDaily(dispatch)
   }
   const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number) => {
-    console.log('totalAmountToCart',totalAmountToCart)
     paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
   }
   const loginApisPeruContext = (userApisPeru: UserApisPeru) => {

@@ -10,68 +10,91 @@ interface Props {
 }
 const initialValueComprobante = { typeProofPayment: "", }
 const initialValueOperationId = { operationid: "" }
-const initialValueAmountsPayment = { yape: "", cash:"" }
+const initialValueAmountsPayment = { yape: "0", cash: "0" }
+const initialWarningPayment = { yape: "", opartionId: "" }
 const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, closeSidebarSale }: Props) => {
   const { LibraryData, showGenerateSale, paymentTypeContext } = useGlobalContext()
   const { showSaleModal } = LibraryData
   //boleta para sunat
   const [typeProofPayment, setTypeProofPayment] = useState(initialValueComprobante)
   const [operationIdYape, setOperationIdYape] = useState(initialValueOperationId)
+  const [warningPayment, setWarningPayment] = useState(initialWarningPayment)
   const [paymentYape, setPaymentYape] = useState(false)
   const [paymentCash, setPaymentCash] = useState(true)
   const [amountPayment, setAmountPayment] = useState(initialValueAmountsPayment)
+
   const handleChangeProofPayment = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setTypeProofPayment({
       ...typeProofPayment,
       [e.target.name]: e.target.value
     })
-    //tendria que mandar esta info por el GlobalContext
   }
   useEffect(() => {
-    // paymentTypeContext()//esta fguncion ira agregando a la data de library en el context cada vezx que se agrege los datos de la operacion y tambien la montos de yape y cash
     setAmountPayment(initialValueAmountsPayment)
     setOperationIdYape(initialValueOperationId)
-  },[ paymentYape, paymentCash])
+  }, [paymentYape, paymentCash])
 
-  const handleChangeAmountPayment = (e:React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    if (paymentYape && paymentCash) {
+      setAmountPayment({ ...amountPayment, cash: `${totalAmountToCart.toFixed()}`, yape: "0" })
+    }
+    if (paymentYape && paymentCash === false) {
+      setAmountPayment({ ...amountPayment, yape: `${totalAmountToCart.toFixed()}`, cash: "0" })
+    }
+    if (paymentYape === false && paymentCash) {
+      setAmountPayment({ ...amountPayment, cash: `${totalAmountToCart.toFixed()}`, yape: "0" })
+    }
+  }, [totalAmountToCart, paymentYape, paymentCash])
+
+  useEffect(() => {
+    setAmountPayment({ ...amountPayment, yape: amountPayment.yape, cash: `${(totalAmountToCart - Number(amountPayment.yape)).toFixed(2)}` })
+  }, [amountPayment.yape,amountPayment.cash])
+
+  const handleChangeAmountPayment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmountPayment({
       ...amountPayment,
-      [e.target.name]:e.target.value
+      [e.target.name]: e.target.value
     })
   }
-  console.log('amountPayment',amountPayment)
-  const handleChangePaymentType = (value:string) => {
-    if(value === "yape") {
-      // if(paymentYape === false) {
-      // }
-      setPaymentYape(!paymentYape)
-    }
-    if(value === "cash") {
-      setPaymentCash(!paymentCash)
-    }
+  const handleChangePaymentType = (value: string) => {
+    if (value === "yape") setPaymentYape(!paymentYape)
+    if (value === "cash") setPaymentCash(!paymentCash)
   }
   const handleChangeOperationId = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if(operationIdYape.operationid.length <= 7) {
       setOperationIdYape({
         ...operationIdYape,
-        [e.target.name]: e.target.value
+        [e.target.name]: e.target.value.slice(0,8)
       })
-    }else{
+  }
+  const validateDataToActiveModalSold = () => {
+    if (paymentYape && amountPayment.yape === "0" && operationIdYape.operationid.length < 7) {
+      setWarningPayment({
+        ...warningPayment,
+        yape: "monto yape es requerido",
+        opartionId: "numero de operacion es requerido",
+      })
+    } else if (paymentYape && amountPayment.yape === "0") {
+      setWarningPayment({
+        ...warningPayment,
+        yape: "monto yape es requerido",
+        opartionId: "",
 
-      setOperationIdYape({
-        ...operationIdYape,
-        operationid: operationIdYape.operationid.slice(0,8)
       })
+    } else if (operationIdYape.operationid.length < 7) {
+      setWarningPayment({
+        ...warningPayment,
+        opartionId: "numero de operacion es requerido",
+        yape: "",
+      })
+    } else {
+      showGenerateSale(showSaleModal)
+      paymentTypeContext(paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
+      setOperationIdYape(initialValueOperationId)
+      setWarningPayment(initialWarningPayment)
     }
   }
-
-  const sendInfoPayment = () => {
-    paymentTypeContext(paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
-  }
-  console.log('totalAmountToCart',totalAmountToCart)
   return (
     <div className={` grid grid-rows-gridRowsSalesPay rounded-md w-[350px] md:w-full shadow-md ml-2 p-3 z-[500] top-[60px] bottom-0 md:top-0 fixed md:relative md:right-0 duration-300 -right-[900px] bg-white  ${showTableSales && "right-[0px] duration-300"}`}>
-      {/* <div className={`z-[900] fixed duration-300 drop-shadow-xl -left-[300px] h-full w-[250px] bg-white  ${showSidebar && "left-0 duration-300"}`}> */}
       <div className='text-lg'>
         <div className='flex justify-end px-1 text-slate-200 '>
           <p onClick={closeSidebarSale} className='flex md:hidden justify-center items-center cursor-pointer hover:rounded-full hover:bg-slate-100 h-[30px] w-[30px] duration-300'>X</p>
@@ -99,31 +122,31 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
           <p className='mr-3 text-base'>Tipo de pago: </p>
           <div className='flex flex-wrap'>
 
-          <div className='flex  items-center mr-2'>
-            <input onChange={() => handleChangePaymentType("cash")} checked={paymentCash && true} name="paymentType" type="checkbox" className='w-[20px] h-[20px] rounded-full mr-2' />
-            <div className=''>
-              <p className='text-base'>efectivo</p>
+            <div className='flex  items-center mr-2'>
+              <input onChange={() => handleChangePaymentType("cash")} checked={paymentCash && true} name="paymentType" type="checkbox" className='w-[20px] h-[20px] rounded-full mr-2' />
+              <div className=''>
+                <p className='text-base'>efectivo</p>
+              </div>
+            </div>
+            <div className='flex  items-center'>
+              <input onChange={() => handleChangePaymentType("yape")} name="paymentType" type="checkbox" className='w-[20px] h-[20px] rounded-full mr-2' />
+              <div className=''>
+                <p className='text-base'>yape</p>
+              </div>
             </div>
           </div>
-          <div className='flex  items-center'>
-            <input onChange={() => handleChangePaymentType("yape")} name="paymentType" type="checkbox" className='w-[20px] h-[20px] rounded-full mr-2' />
-            <div className=''>
-              <p className='text-base'>yape</p>
-            </div>
-          </div>
-          </div>
-          
+
         </div>
         {
           paymentCash && paymentYape &&
           <div className='w-full'>
             <div>
               <label className='text-slate-400 text-base capitalize'>efectivo</label>
-              <input onChange={handleChangeAmountPayment} name="cash" className='w-full rounded-md outline-none border-[1px] pl-3 border-green-400' type="number" placeholder='monto efectivo'/>
+              <input onChange={handleChangeAmountPayment} value={amountPayment.cash} name="cash" className='w-full rounded-md outline-none border-[1px] pl-3 border-green-400' type="number" placeholder='monto efectivo' />
             </div>
             <div>
               <label className='text-slate-400 text-base capitalize'>yape</label>
-              <input onChange={handleChangeAmountPayment} name="yape" className='w-full rounded-md outline-none border-[1px] pl-3 border-blue-400' type="number" placeholder='monto yape'/>
+              <input onChange={handleChangeAmountPayment} value={amountPayment.yape} name="yape" className='w-full rounded-md outline-none border-[1px] pl-3 border-blue-400' type="number" placeholder='monto yape' />
             </div>
           </div>
         }
@@ -139,8 +162,16 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
             :
             null
         }
+        <div className='text-sm font-montserrat mt-5 text-red-600'>
+          {
+            warningPayment.yape && <p>*{warningPayment.yape}.</p>
+          }
+          {
+            warningPayment.opartionId && <p>*{warningPayment.opartionId}.</p>
+          }
+        </div>
       </div>
-      <button disabled={productToCart && productToCart?.length > 0 ? false : true} onClick={() => {showGenerateSale(showSaleModal),sendInfoPayment()}} className={`${productToCart && productToCart.length === 0 ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
+      <button disabled={productToCart && productToCart?.length > 0 ? false : true} onClick={validateDataToActiveModalSold} className={`${productToCart && productToCart.length === 0 ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
         generar venta
       </button>
     </div>

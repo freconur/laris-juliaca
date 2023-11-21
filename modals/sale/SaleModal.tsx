@@ -19,7 +19,6 @@ const SaleModal = ({ generateSold, dataUser }: Props) => {
   const handleSubmit = () => {
     soldProducts(productToCart, paymentData,`${getUser.identifier}`)
   }
-  console.log('dataUser',getUser.identifier)
   return container
     ? createPortal(
       <div className={styles.containerModal}>

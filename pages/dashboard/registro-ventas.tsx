@@ -52,7 +52,7 @@ const RegistroVentas = () => {
       getDataUserContext(`${dataUser.id}`)
     }
   },[dataUser])
-  console.log('data-registro',dataUser)
+  // console.log('data-registro',dataUser)
   useEffect(() => {
 
     resetValueToastify()
@@ -79,7 +79,7 @@ const RegistroVentas = () => {
     })
   }
   // console.log('BOLETA_SUNAT',BOLETA_SUNAT.client.numDoc)
-  console.log('dataUser',dataUser)
+  // console.log('dataUser',dataUser)
   return (
     <LayoutDashboard>
       <Navbar dataUser={dataUser} />
