@@ -46,7 +46,15 @@ const Sunat = () => {
     <div>
 
     <h2 className='p-2 bg-blue-400 '>show printer</h2>
-    
+    <select>
+    {
+      printers?.map((printer:string[]) => {
+        return (
+          <option>{printer}</option>
+        )
+      })
+    }
+    </select>
       {/* <form onSubmit={loginApisPeru}>
         <div>
           <label>usuario</label>
