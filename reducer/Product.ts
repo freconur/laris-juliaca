@@ -297,7 +297,7 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
             //agregando los nuevos campos de pago cash y yape
             timestamp: Timestamp.fromDate(new Date()),
             product: cart,
-            paymentData
+            paymentData,
           },
           identifierUser
         ).then(async (r) => {
@@ -355,7 +355,8 @@ export const addProductFromCartToTicket = async (ticket: Ticket, identifierUser:
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: { cash: ticket.paymentData.cash.cash, amount: ticket.paymentData.totalAmountToCart },
-            yape: ticket.paymentData.yape.yape
+            yape: ticket.paymentData.yape.yape,
+            totalAmountCart:ticket.paymentData.totalAmountToCart
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
@@ -376,6 +377,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket, identifierUser:
             timestamp: ticket.timestamp,
             cash: ticket.paymentData.cash.cash,
             yape: { yape: ticket.paymentData.yape.yape, amount: ticket.paymentData.totalAmountToCart, operationId: ticket.paymentData.yape.operationId },
+            totalAmountCart:ticket.paymentData.totalAmountToCart
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
@@ -397,6 +399,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket, identifierUser:
             timestamp: ticket.timestamp,
             cash: ticket.paymentData.cash,
             yape: ticket.paymentData.yape,
+            totalAmountCart:ticket.paymentData.totalAmountToCart
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
