@@ -28,18 +28,18 @@ const Sunat = () => {
       setPrinters(printerList)
     }
   }
-  const URLPlugin = "http://laris-juliaca.vercel.app"
-  // const URLPlugin = "http://localhost:8000"
+  // const URLPlugin = "http://laris-juliaca.vercel.app"
+  const URLPlugin = "http://localhost:8000"
   const sendNewTicket = async () => {
     
-    const newTicket = new ConectorPluginV3()
+    const newTicket = new ConectorPluginV3(URLPlugin)
     console.log('formUser', formUser)
     newTicket
     newTicket.Iniciar()
     newTicket.EstablecerAlineacion(ConectorPluginV3.ALINEACION_CENTRO)
-    productosDeVenta.map(pro => {
-        newTicket.EscribirTexto(`${pro.name}       ${pro.price}`)
-        newTicket.Feed(1)})
+    // productosDeVenta.map(pro => {
+    //     newTicket.EscribirTexto(`${pro.name}       ${pro.price}`)
+    //     newTicket.Feed(1)})
     newTicket.EscribirTexto("test de prueba impresion boleta")
     newTicket.Feed(1)
     newTicket.EscribirTexto("2do mensaje de prueba")
@@ -48,7 +48,7 @@ const Sunat = () => {
     newTicket.Feed(1)
   
     // const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
-    const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5/imprimir")
+    const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
     if(respuesta === true) {
       console.log('impresioin correcta')
     }else {
@@ -59,7 +59,7 @@ const Sunat = () => {
   console.log(`${productosDeVenta[0].name.slice(0,5)}             ${productosDeVenta[0].price}`)
   return (
     <div>
-        <p>4</p>
+        <p>5</p>
     <h2 className='p-2 bg-blue-400 '>show printer</h2>
     <select>
     {
