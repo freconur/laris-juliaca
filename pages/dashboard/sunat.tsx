@@ -59,7 +59,7 @@ const Sunat = () => {
   console.log(`${productosDeVenta[0].name.slice(0,5)}             ${productosDeVenta[0].price}`)
   return (
     <div>
-
+        <p>2</p>
     <h2 className='p-2 bg-blue-400 '>show printer</h2>
     <select>
     {
