@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '../../context/GlobalContext'
 import {ConectorPluginV3} from '../../plugin-printer'
 const initialValueFormUser = { username: "", password: "" }
+const productosDeVenta = [
+  {name:"producto1", price:"30"},{name:"producto2", price:"50"}
+]
 const Sunat = () => {
   const [formUser, setFormUser] = useState<UserApisPeru>(initialValueFormUser)
   const [printers, setPrinters] = useState<any>()
@@ -17,7 +20,7 @@ const Sunat = () => {
     loginApisPeruContext(formUser)
   }
   useEffect(() => {
-    getPrinterDevice()
+    // getPrinterDevice()
   },[])
   const getPrinterDevice = async() => {
     const printerList = await ConectorPluginV3.obtenerImpresoras()
@@ -25,20 +28,27 @@ const Sunat = () => {
       setPrinters(printerList)
     }
   }
+  // const URLPlugin = "http://laris-juliaca.vercel.app"
+  const URLPlugin = "http://localhost:8000"
   const sendNewTicket = async () => {
-    const newTicket = new ConectorPluginV3()
+    
+    const newTicket = new ConectorPluginV3(URLPlugin)
     console.log('formUser', formUser)
     newTicket
-    .Iniciar()
-    .EstablecerAlineacion(ConectorPluginV3.ALINEACION_CENTRO)
-    .EscribirTexto("test de prueba impresion boleta")
-    .Feed(1)
-    .EscribirTexto("2do mensaje de prueba")
-    .Feed(1)
-    .Iniciar()
-    .Feed(1)
+    newTicket.Iniciar()
+    newTicket.EstablecerAlineacion(ConectorPluginV3.ALINEACION_CENTRO)
+    productosDeVenta.map(pro => {
+        newTicket.EscribirTexto(`${pro.name}       ${pro.price}`)
+        newTicket.Feed(1)})
+    newTicket.EscribirTexto("test de prueba impresion boleta")
+    newTicket.Feed(1)
+    newTicket.EscribirTexto("2do mensaje de prueba")
+    newTicket.Feed(1)
+    newTicket.Iniciar()
+    newTicket.Feed(1)
   
-    const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
+    // const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
+    const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.1.55/imprimir")
     if(respuesta === true) {
       console.log('impresioin correcta')
     }else {
@@ -46,6 +56,7 @@ const Sunat = () => {
     }
   }
   console.log('printers',printers)
+  console.log(`${productosDeVenta[0].name.slice(0,5)}             ${productosDeVenta[0].price}`)
   return (
     <div>
 
