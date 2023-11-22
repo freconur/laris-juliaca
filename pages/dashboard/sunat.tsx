@@ -28,8 +28,8 @@ const Sunat = () => {
       setPrinters(printerList)
     }
   }
-  const URLPlugin = "http://laris-juliaca.vercel.app"
-  // const URLPlugin = "http://localhost:8000"
+  // const URLPlugin = "http://laris-juliaca.vercel.app"
+  const URLPlugin = "http://localhost:8000"
   const sendNewTicket = async () => {
     
     const newTicket = new ConectorPluginV3(URLPlugin)
