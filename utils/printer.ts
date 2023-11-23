@@ -7,7 +7,7 @@ const productosDeVenta = [
 // const URLPlugin = "http://localhost:8000"
 
 export const sendNewTicket = async (paymentData:PaymentInfo, products:ProductToCart[] | ProductsFromTicket[] | undefined, timestamp:Date, correlativoTicket:string,userData:User) => {
-
+console.log('paymentData:',paymentData,'products:',products,'timestamp:',timestamp,'correlativoTicket',correlativoTicket,'userData',userData)
   // const newTicket = new ConectorPluginV3(URLPlugin)
   const newTicket = new ConectorPluginV3()
   // console.log('formUser', formUser)
