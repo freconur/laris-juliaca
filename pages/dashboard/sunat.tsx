@@ -32,14 +32,15 @@ const Sunat = () => {
   const URLPlugin = "http://localhost:8000"
   const sendNewTicket = async () => {
     
-    const newTicket = new ConectorPluginV3(URLPlugin)
+    // const newTicket = new ConectorPluginV3(URLPlugin)
+    const newTicket = new ConectorPluginV3()
     console.log('formUser', formUser)
     newTicket
     newTicket.Iniciar()
     newTicket.EstablecerAlineacion(ConectorPluginV3.ALINEACION_CENTRO)
-    // productosDeVenta.map(pro => {
-    //     newTicket.EscribirTexto(`${pro.name}       ${pro.price}`)
-    //     newTicket.Feed(1)})
+    productosDeVenta.map(pro => {
+        newTicket.EscribirTexto(`${pro.name}       ${pro.price}`)
+        newTicket.Feed(1)})
     newTicket.EscribirTexto("test de prueba impresion boleta")
     newTicket.Feed(1)
     newTicket.EscribirTexto("2do mensaje de prueba")
@@ -47,8 +48,8 @@ const Sunat = () => {
     newTicket.Iniciar()
     newTicket.Feed(1)
   
-    // const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
-    const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
+    const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
+    // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
     if(respuesta === true) {
       console.log('impresioin correcta')
     }else {
