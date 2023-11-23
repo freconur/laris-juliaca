@@ -32,7 +32,7 @@ type GlobalContextProps = {
   brands: () => void,
   addProductRegisterToSell: (id: string, cart: ProductToCart[] | undefined) => void,
   deleteProductCart: (cart: ProductToCart[], codeFromProduct: string | undefined) => void,
-  soldProducts: (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, idUser:string) => void,
+  soldProducts: (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, userData:User) => void,
   stateLoader: (state: boolean) => void,
   stateGenerateSoldLoader: (state: boolean) => void,
   loaderRegisterProducts: (state: boolean) => void,
@@ -186,8 +186,8 @@ export function GlobalcontextProdiver({ children }: Props) {
     deleteProductToCart(dispatch, cart, codeFromProduct)
   }
   // const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentData) => {
-    const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, identifierUser:string) => {
-    generateSold(dispatch, cart, 0, paymentData,identifierUser)
+    const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, userData:User) => {
+    generateSold(dispatch, cart, 0, paymentData,userData)
   }
   const stateLoader = (state: boolean) => {
     dispatch({ type: "loaderToSell", payload: state })

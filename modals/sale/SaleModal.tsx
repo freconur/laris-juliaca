@@ -17,7 +17,8 @@ const SaleModal = ({ generateSold, dataUser }: Props) => {
     container = document.getElementById("portal-modal");
   }
   const handleSubmit = () => {
-    soldProducts(productToCart, paymentData,`${getUser.identifier}`)
+    // soldProducts(productToCart, paymentData,`${getUser.identifier}`)
+    soldProducts(productToCart, paymentData, getUser)
   }
   return container
     ? createPortal(
