@@ -35,11 +35,10 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
       newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}`)
       newTicket.Feed(0)
       newTicket.EscribirTexto(
-        `${pro.amount?.toString.length === 1 && ESP_COD_13}${pro.amount?.toString.length === 2 && ESP_COD_12}${pro.amount?.toString.length === 3 && ESP_COD_11}${pro.amount?.toString.length === 4 && ESP_COD_10}
-        ${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 && ESP_COD_8}${Number(pro.price).toFixed(2).toString().length === 5 && ESP_COD_7}${Number(pro.price).toFixed(2).toString().length === 6 && ESP_COD_6}${Number(pro.price).toFixed(2).toString().length === 7 && ESP_COD_5}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 && ESP_COD_15}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 && ESP_COD_14}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 && ESP_COD_13}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 && ESP_COD_12}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+        `${pro.amount?.toString.length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toFixed(2).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toFixed(2).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toFixed(2).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_15 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_14 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
       newTicket.Feed(0)
     } else {
-      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${pro.price?.toString()?.length === 4 ? ESP_COD_16 : ""}${pro.price?.toString()?.length === 5 ? ESP_COD_15 : ""}${pro.price?.toString()?.length === 6 ? ESP_COD_14 : ""}${pro.price?.toString()?.length === 7 ? ESP_COD_13 : ""}${Number(pro.price).toFixed(2)}`)
+      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_16 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_15 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_14 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_13 : ""}${Number(pro.price).toFixed(2)}`)
       newTicket.Feed(0)
     }
   })
@@ -61,18 +60,36 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
   newTicket.EscribirTexto(`TIPO DE PAGO: ${paymentData.cash.amount > 0 ? "EFECTIVO" : ""}  ${paymentData.yape.amount > 0 ? "YAPE" : ""}`)
   newTicket.Feed(0)
   newTicket.EscribirTexto(`EFECTIVO: ${paymentData.cash.amount > 0 ? paymentData.cash.amount : 0}  YAPE: ${paymentData.yape.amount > 0 ? paymentData.yape.amount : 0} | N. OP.:${paymentData.yape.operationId}`)
-  newTicket.Feed(0)
+  newTicket.Feed(1)
   newTicket.Corte(1)
   newTicket.Iniciar()
-  // newTicket.Feed(1)
+  newTicket.Corte(1)
+  newTicket.Feed(1)
 
-  const respuesta = await newTicket.imprimirEn('POS-80-Series')
-  // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
-  if (respuesta === true) {
-    console.log('impresioin correcta')
-  } else {
-    console.log('Error:', respuesta)
-  }
+
+  products?.map(pro => {
+    if (Number(pro.amount) > 1) {
+      // console.log('pro.amount',pro.amount?.toString())
+      // console.log(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}`)
+      // newTicket.Feed(0)
+      console.log(
+        `${pro.amount?.toString.length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toFixed(2).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toFixed(2).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toFixed(2).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_15 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_14 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+      // newTicket.Feed(0)
+    } else {
+      // console.log('pro.price',pro.price?.toString())
+      // console.log('pro.price',pro.price?.toString().length)
+      // console.log('pro.price.fixed',Number(pro.price).toFixed(2).toString().length)
+
+      console.log(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_16 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_15 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_14 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_13 : ""}${Number(pro.price).toFixed(2)}`)
+      // newTicket.Feed(0)
+    }
+  })
+  // const respuesta = await newTicket.imprimirEn('POS-80-Series')
+  // // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
+  // if (respuesta === true) {
+  //   console.log('impresioin correcta')
+  // } else {
+  //   console.log('Error:', respuesta)
+  // }
 }
 // console.log('printers',printers)
-console.log(`${productosDeVenta[0].name.slice(0, 5)}             ${productosDeVenta[0].price}`)
