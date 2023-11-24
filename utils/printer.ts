@@ -17,17 +17,17 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
   newTicket.EscribirTexto("RUC: 2010020030142")
   newTicket.Feed(0)
   newTicket.EscribirTexto(`NRO.:${correlativoTicket}`)
-  newTicket.Feed(0)
+  newTicket.Feed(1)
   newTicket.Iniciar()
   products?.map(pro => {
     if (Number(pro.amount) > 1) {
       newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}`)
-      newTicket.Feed(1)
-      newTicket.EscribirTexto(`             ${pro.amount} X        ${Number(pro.price).toFixed(2)}              ${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
-      newTicket.Feed(1)
+      newTicket.Feed(0)
+      newTicket.EscribirTexto(`             ${pro.amount} X        ${Number(pro.price).toFixed(2)}            ${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+      newTicket.Feed(0)
     } else {
       newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}                ${pro.price}`)
-      newTicket.Feed(1)
+      newTicket.Feed(0)
     }
   })
   newTicket.EscribirTexto(`OP. GRAVADA:    S/                         ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//22
