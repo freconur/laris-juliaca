@@ -20,7 +20,7 @@ const Sunat = () => {
     loginApisPeruContext(formUser)
   }
   useEffect(() => {
-    // getPrinterDevice()
+    getPrinterDevice()
   },[])
   const getPrinterDevice = async() => {
     const printerList = await ConectorPluginV3.obtenerImpresoras()
@@ -48,7 +48,7 @@ const Sunat = () => {
     newTicket.Iniciar()
     newTicket.Feed(1)
   
-    const respuesta = await newTicket.imprimirEn('KONICA MINOLTA C652SeriesPCL')
+    const respuesta = await newTicket.imprimirEn('POS-80-series')
     // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
     if(respuesta === true) {
       console.log('impresioin correcta')
