@@ -6,6 +6,13 @@ const productosDeVenta = [
 ]
 // const URLPlugin = "http://localhost:8000"
 
+const ESP_COD_27 = "                           "
+const ESP_COD_26 = "                          "
+const ESP_COD_25 = "                         "
+const ESP_COD_24 = "                        "
+const ESP_COD_19 = "                   "
+const ESP_COD_18 = "                  "
+const ESP_COD_17 = "                 "
 const ESP_COD_16 = "                "
 const ESP_COD_15 = "               "
 const ESP_COD_14 = "              "
@@ -23,6 +30,7 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
   const newTicket = new ConectorPluginV3()
   // console.log('formUser', formUser)
   newTicket.EstablecerAlineacion(ConectorPluginV3.ALINEACION_CENTRO)
+  newTicket.Corte(1)
   newTicket.EscribirTexto("LARYS IMPORTACIONES S.A.C.")
   newTicket.Feed(0)
   newTicket.EscribirTexto("RUC: 2010020030142")
@@ -42,11 +50,11 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
       newTicket.Feed(0)
     }
   })
-  newTicket.EscribirTexto(`OP. GRAVADA:                             ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//22
+  newTicket.EscribirTexto(`OP. GRAVADA:${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 4 ? ESP_COD_27 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 5 ? ESP_COD_26 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 6 ? ESP_COD_25 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 7 ? ESP_COD_24 : ""}                         ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//25 de espacio
   newTicket.Feed(0)
-  newTicket.EscribirTexto(`I.G.V.:         S/                       ${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//
+  newTicket.EscribirTexto(`I.G.V.:         S/${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 4 ? ESP_COD_19 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 5 ? ESP_COD_18 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 6 ? ESP_COD_17 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 7 ? ESP_COD_16 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//19 de espacio
   newTicket.Feed(0)
-  newTicket.EscribirTexto(`TOTAL A PAGAR:  S/                       ${Number(paymentData.totalAmountToCart).toFixed(2)}`) //14
+  newTicket.EscribirTexto(`TOTAL A PAGAR:  S/${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 4 ? ESP_COD_19 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 5 ? ESP_COD_18 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 6 ? ESP_COD_17 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 7 ? ESP_COD_16 : ""}${Number(paymentData.totalAmountToCart).toFixed(2)}`) //1
   newTicket.Feed(0)
   // newTicket.EscribirTexto(`${timestamp.getDate()} ${timestamp.getHours()}`)
   newTicket.Feed(1)
