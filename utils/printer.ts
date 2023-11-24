@@ -84,12 +84,12 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
       // newTicket.Feed(0)
     }
   })
-  // const respuesta = await newTicket.imprimirEn('POS-80-Series')
-  // // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
-  // if (respuesta === true) {
-  //   console.log('impresioin correcta')
-  // } else {
-  //   console.log('Error:', respuesta)
-  // }
+  const respuesta = await newTicket.imprimirEn('POS-80-Series')
+  // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
+  if (respuesta === true) {
+    console.log('impresioin correcta')
+  } else {
+    console.log('Error:', respuesta)
+  }
 }
 // console.log('printers',printers)
