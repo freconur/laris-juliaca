@@ -6,6 +6,17 @@ const productosDeVenta = [
 ]
 // const URLPlugin = "http://localhost:8000"
 
+const ESP_COD_16 = "                "
+const ESP_COD_15 = "               "
+const ESP_COD_14 = "              "
+const ESP_COD_13 = "             "
+const ESP_COD_12 = "            "
+const ESP_COD_11 = "           "
+const ESP_COD_10 = "          "
+const ESP_COD_8 = "        "
+const ESP_COD_7 = "       "
+const ESP_COD_6 = "      "
+const ESP_COD_5 = "     "
 export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductToCart[] | ProductsFromTicket[] | undefined, timestamp: Date, correlativoTicket: string, userData: User) => {
   console.log('paymentData:', paymentData, 'products:', products, 'timestamp:', timestamp, 'correlativoTicket', correlativoTicket, 'userData', userData)
   // const newTicket = new ConectorPluginV3(URLPlugin)
@@ -23,10 +34,12 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
     if (Number(pro.amount) > 1) {
       newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}`)
       newTicket.Feed(0)
-      newTicket.EscribirTexto(`             ${pro.amount} X        ${Number(pro.price).toFixed(2)}            ${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+      newTicket.EscribirTexto(
+        `${pro.amount?.toString.length === 1 && ESP_COD_13}${pro.amount?.toString.length === 2 && ESP_COD_12}${pro.amount?.toString.length === 3 && ESP_COD_11}${pro.amount?.toString.length === 4 && ESP_COD_10}
+        ${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 && ESP_COD_8}${Number(pro.price).toFixed(2).toString().length === 5 && ESP_COD_7}${Number(pro.price).toFixed(2).toString().length === 6 && ESP_COD_6}${Number(pro.price).toFixed(2).toString().length === 7 && ESP_COD_5}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 && ESP_COD_15}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 && ESP_COD_14}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 && ESP_COD_13}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 && ESP_COD_12}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
       newTicket.Feed(0)
     } else {
-      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}              ${pro.price}`)
+      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${pro.price?.toString().length === 4 && ESP_COD_16}${pro.price?.toString().length === 5 && ESP_COD_15}${pro.price?.toString().length === 6 && ESP_COD_14}${pro.price?.toString().length === 7 && ESP_COD_13}${pro.price}`)
       newTicket.Feed(0)
     }
   })
@@ -49,7 +62,7 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
   newTicket.Feed(0)
   newTicket.EscribirTexto(`EFECTIVO: ${paymentData.cash.amount > 0 ? paymentData.cash.amount : 0}  YAPE: ${paymentData.yape.amount > 0 ? paymentData.yape.amount : 0} | N. OP.:${paymentData.yape.operationId}`)
   newTicket.Feed(0)
-  newTicket.Corte()
+  newTicket.Corte(1)
   newTicket.Iniciar()
   // newTicket.Feed(1)
 
