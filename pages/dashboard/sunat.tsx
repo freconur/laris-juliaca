@@ -19,6 +19,7 @@ const Sunat = () => {
   const ESP_COD_12 = "            "
   const ESP_COD_11 = "           "
   const ESP_COD_10 = "          "
+  const ESP_COD_9 = "chespirito"
   const loginApisPeru = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     loginApisPeruContext(formUser)
@@ -64,10 +65,11 @@ const Sunat = () => {
   const numerico = 25.12212
   console.log('printers', printers)
   console.log(`${productosDeVenta[0].name.slice(0, 5)}             ${productosDeVenta[0].price}`)
-  console.log('ESP_COD_13',ESP_COD_13)
+  console.log('ESP_COD_13',ESP_COD_13,ESP_COD_12,ESP_COD_11, "12")
   console.log('ESP_COD_12',ESP_COD_12)
   console.log('ESP_COD_11',ESP_COD_11)
   console.log('ESP_COD_10',ESP_COD_10)
+  console.log('ESP_COD_9',ESP_COD_9.length)
   console.log('1',numerico.toFixed(2).toString)
   console.log('2',numerico.toFixed(2).toString())
   return (

@@ -39,7 +39,7 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
         ${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 && ESP_COD_8}${Number(pro.price).toFixed(2).toString().length === 5 && ESP_COD_7}${Number(pro.price).toFixed(2).toString().length === 6 && ESP_COD_6}${Number(pro.price).toFixed(2).toString().length === 7 && ESP_COD_5}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 && ESP_COD_15}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 && ESP_COD_14}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 && ESP_COD_13}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 && ESP_COD_12}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
       newTicket.Feed(0)
     } else {
-      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${pro.price?.toString().length === 4 && ESP_COD_16}${pro.price?.toString().length === 5 && ESP_COD_15}${pro.price?.toString().length === 6 && ESP_COD_14}${pro.price?.toString().length === 7 && ESP_COD_13}${pro.price}`)
+      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${pro.price?.toString()?.length === 4 ? ESP_COD_16 : ""}${pro.price?.toString()?.length === 5 ? ESP_COD_15 : ""}${pro.price?.toString()?.length === 6 ? ESP_COD_14 : ""}${pro.price?.toString()?.length === 7 ? ESP_COD_13 : ""}${Number(pro.price).toFixed(2)}`)
       newTicket.Feed(0)
     }
   })
