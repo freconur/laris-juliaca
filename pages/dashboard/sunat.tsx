@@ -48,7 +48,7 @@ const Sunat = () => {
     newTicket.Iniciar()
     newTicket.Feed(1)
   
-    const respuesta = await newTicket.imprimirEn('POS-80-series')
+    const respuesta = await newTicket.imprimirEn('POS-80-Series')
     // const respuesta = await newTicket.imprimirEnImpresoraRemota('KONICA MINOLTA C652SeriesPCL',"http://192.168.0.5:8000/imprimir")
     if(respuesta === true) {
       console.log('impresioin correcta')
