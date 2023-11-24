@@ -34,14 +34,15 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
     if (Number(pro.amount) > 1) {
       newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}`)
       newTicket.Feed(0)
-      newTicket.EscribirTexto(`${Number(pro.amount).toFixed(2).toString().length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toFixed(2).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toFixed(2).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toFixed(2).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_11 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_10 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+      newTicket.EscribirTexto(`${Number(pro.amount).toString().length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_11 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_10 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+      // newTicket.EscribirTexto(`${Number(pro.amount).toString().length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_11 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_10 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
       newTicket.Feed(0)
     } else {
       newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_16 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_15 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_14 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_13 : ""}${Number(pro.price).toFixed(2)}`)
       newTicket.Feed(0)
     }
   })
-  newTicket.EscribirTexto(`OP. GRAVADA:    S/                       ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//22
+  newTicket.EscribirTexto(`OP. GRAVADA:                             ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//22
   newTicket.Feed(0)
   newTicket.EscribirTexto(`I.G.V.:         S/                       ${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//
   newTicket.Feed(0)
@@ -62,6 +63,7 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
   newTicket.Feed(2)
   newTicket.Corte(1)
   newTicket.Iniciar()
+
   // newTicket.Corte(1)
   // newTicket.Feed(1)
 
@@ -71,8 +73,7 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
       // console.log('pro.amount',pro.amount?.toString())
       // console.log(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}`)
       // newTicket.Feed(0)
-      console.log(
-        `${pro.amount?.toString.length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toFixed(2).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toFixed(2).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toFixed(2).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_15 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_14 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
+      console.log(`${Number(pro.amount).toString().length === 1 ? ESP_COD_13 : ""}${Number(pro.amount).toString().length === 2 ? ESP_COD_12 : ""}${Number(pro.amount).toString().length === 3 ? ESP_COD_11 : ""}${Number(pro.amount).toString().length === 4 ? ESP_COD_10 : ""}${pro.amount} X${Number(pro.price).toFixed(2).toString().length === 4 ? ESP_COD_8 : ""}${Number(pro.price).toFixed(2).toString().length === 5 ? ESP_COD_7 : ""}${Number(pro.price).toFixed(2).toString().length === 6 ? ESP_COD_6 : ""}${Number(pro.price).toFixed(2).toString().length === 7 ? ESP_COD_5 : ""}${Number(pro.price).toFixed(2)}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 4 ? ESP_COD_13 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 5 ? ESP_COD_12 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 6 ? ESP_COD_11 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2).toString().length === 7 ? ESP_COD_10 : ""}${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
       // newTicket.Feed(0)
     } else {
       // console.log('pro.price',pro.price?.toString())
