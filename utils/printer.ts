@@ -59,11 +59,11 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
   newTicket.EscribirTexto(`TIPO DE PAGO: ${paymentData.cash.amount > 0 ? "EFECTIVO" : ""}  ${paymentData.yape.amount > 0 ? "YAPE" : ""}`)
   newTicket.Feed(0)
   newTicket.EscribirTexto(`EFECTIVO: ${paymentData.cash.amount > 0 ? paymentData.cash.amount : 0}  YAPE: ${paymentData.yape.amount > 0 ? paymentData.yape.amount : 0} | N. OP.:${paymentData.yape.operationId}`)
-  newTicket.Feed(1)
+  newTicket.Feed(2)
   newTicket.Corte(1)
   newTicket.Iniciar()
-  newTicket.Corte(1)
-  newTicket.Feed(1)
+  // newTicket.Corte(1)
+  // newTicket.Feed(1)
 
 
   products?.map(pro => {
