@@ -6,6 +6,8 @@ const productosDeVenta = [
 ]
 // const URLPlugin = "http://localhost:8000"
 
+const ESP_COD_29 = "                             "
+const ESP_COD_28 = "                            "
 const ESP_COD_27 = "                           "
 const ESP_COD_26 = "                          "
 const ESP_COD_25 = "                         "
@@ -54,11 +56,11 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
       newTicket.Feed(0)
     }
   })
-  newTicket.EscribirTexto(`OP. GRAVADA:${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 4 ? ESP_COD_27 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 5 ? ESP_COD_26 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 6 ? ESP_COD_25 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 7 ? ESP_COD_24 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//25 de espacio
+  newTicket.EscribirTexto(`OP. GRAVADA:${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 4 ? ESP_COD_29 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 5 ? ESP_COD_28 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 6 ? ESP_COD_27 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2).toString().length === 7 ? ESP_COD_26 : ""}${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//25 de espacio
   newTicket.Feed(0)
-  newTicket.EscribirTexto(`I.G.V.:         S/${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 4 ? ESP_COD_24 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 5 ? ESP_COD_23 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 6 ? ESP_COD_22 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 7 ? ESP_COD_21 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//19 de espacio
+  newTicket.EscribirTexto(`I.G.V.:         S/${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 4 ? ESP_COD_23 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 5 ? ESP_COD_22 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 6 ? ESP_COD_21 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 7 ? ESP_COD_20 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//19 de espacio
   newTicket.Feed(0)
-  newTicket.EscribirTexto(`TOTAL A PAGAR:  S/${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 4 ? ESP_COD_24 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 5 ? ESP_COD_23 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 6 ? ESP_COD_22 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 7 ? ESP_COD_21 : ""}${Number(paymentData.totalAmountToCart).toFixed(2)}`) //1
+  newTicket.EscribirTexto(`TOTAL A PAGAR:  S/${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 4 ? ESP_COD_22 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 5 ? ESP_COD_21 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 6 ? ESP_COD_20 : ""}${Number(paymentData.totalAmountToCart * 0.18).toFixed(2).toString().length === 7 ? ESP_COD_19 : ""}${Number(paymentData.totalAmountToCart).toFixed(2)}`) //1
   newTicket.Feed(0)
   // newTicket.EscribirTexto(`${timestamp.getDate()} ${timestamp.getHours()}`)
   newTicket.Feed(1)
