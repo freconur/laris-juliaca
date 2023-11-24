@@ -419,10 +419,11 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
           ticket: increment(1)
         })
       })
-      .then(r => {
-        sendNewTicket(ticket.paymentData, ticket.product, ticket.timestamp, `${userData.identifier}${newValueTicket}`, userData)
-      })
-  }
+      // .then(r => {
+        // })
+      }
+      if(newValueTicket) sendNewTicket(ticket.paymentData, ticket.product, ticket.timestamp, `${userData.identifier}${newValueTicket}`, userData)
+      
 }
 
 export const addProductCartToProductSales = async (cart: ProductToCart[] | undefined) => {
