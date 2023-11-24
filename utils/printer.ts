@@ -26,15 +26,15 @@ export const sendNewTicket = async (paymentData: PaymentInfo, products: ProductT
       newTicket.EscribirTexto(`             ${pro.amount} X        ${Number(pro.price).toFixed(2)}            ${(Number(pro.amount) * Number(pro.price)).toFixed(2)}`)
       newTicket.Feed(0)
     } else {
-      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}                ${pro.price}`)
+      newTicket.EscribirTexto(`${pro.code}  ${(pro.description?.slice(0, 12).toUpperCase())}              ${pro.price}`)
       newTicket.Feed(0)
     }
   })
-  newTicket.EscribirTexto(`OP. GRAVADA:    S/                         ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//22
+  newTicket.EscribirTexto(`OP. GRAVADA:    S/                       ${Number(paymentData.totalAmountToCart * 0.82).toFixed(2)}`)//12//22
   newTicket.Feed(0)
-  newTicket.EscribirTexto(`I.G.V.:         S/                         ${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//
+  newTicket.EscribirTexto(`I.G.V.:         S/                       ${Number(paymentData.totalAmountToCart * 0.18).toFixed(2)}`)//
   newTicket.Feed(0)
-  newTicket.EscribirTexto(`TOTAL A PAGAR:  S/                         ${Number(paymentData.totalAmountToCart).toFixed(2)}`) //14
+  newTicket.EscribirTexto(`TOTAL A PAGAR:  S/                       ${Number(paymentData.totalAmountToCart).toFixed(2)}`) //14
   newTicket.Feed(0)
   // newTicket.EscribirTexto(`${timestamp.getDate()} ${timestamp.getHours()}`)
   newTicket.Feed(1)
