@@ -160,16 +160,16 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
                 <label className='text-slate-400 text-base capitalize'>yape</label>
                 <input onChange={handleChangeAmountPayment} value={amountPayment.yape} name="yape" className={` w-full rounded-md outline-none border-[1px] pl-3 border-blue-400`} type="number" placeholder='monto yape' />
                 {
-                  warningPayment.amount && <p className='text-sm font-montserrat mt-5 text-red-600'>*{warningPayment.amount}.</p>
+                  warningPayment.amount && <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.amount}.</p>
                 }
               </div>
-              <div className='mt-4'>
+              <div className='mt-1'>
                 <label className='text-slate-500  font-comfortaa text-base '> N. de operacion yape:</label>
                 <input onChange={handleChangeOperationId} value={operationIdYape.operationid} type="number" name="operationid" className='w-full text-slate-400 mt-2 outline-none pl-3 border-orange-400 border-[1px] rounded-md bg-slate-50' />
               </div>
               {/* {warningPayment?.yape && <p>*{warningPayment.yape}.</p>} */}
-              {warningPayment?.yape && <p className='text-sm font-montserrat mt-5 text-red-600'>*{warningPayment.yape}.</p>}
-              {warningPayment.opartionId && <p className='text-sm font-montserrat mt-5 text-red-600'>*{warningPayment.opartionId}.</p>}
+              {warningPayment?.yape && <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.yape}.</p>}
+              {warningPayment.opartionId && <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.opartionId}.</p>}
             </div>
             :
             paymentYape
@@ -179,15 +179,22 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
                   <label className='text-slate-500  font-comfortaa text-base '> N. de operacion yape:</label>
                   <input onChange={handleChangeOperationId} value={operationIdYape.operationid} type="number" name="operationid" className='w-full text-slate-400 mt-2 outline-none pl-3 border-orange-400 border-[1px] rounded-md bg-slate-50' />
                 </div>
-                {warningPayment?.yape && <p className='text-sm font-montserrat mt-5 text-red-600'>*{warningPayment.yape}.</p>}
+                {warningPayment?.yape && <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.yape}.</p>}
               </>
               :
               null
         }
       </div>
-      <button disabled={productToCart && productToCart?.length > 0 ? false : true} onClick={validateDataToActiveModalSold} className={`${productToCart && productToCart.length === 0 ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
-        generar venta
-      </button>
+      {
+        amountPayment.yape && amountPayment.cash && Number(amountPayment.yape) > totalAmountToCart
+          ?
+          null
+          :
+          <button disabled={productToCart && productToCart?.length > 0 ? false : true} onClick={validateDataToActiveModalSold} className={`${productToCart && productToCart.length === 0 ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
+            generar venta
+          </button>
+
+      }
     </div>
   )
 }
