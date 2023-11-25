@@ -37,6 +37,13 @@ export const functionDateToPrinter = (date: Date) => {
   // console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
   return(`Fecha: ${date.getDate()} de ${months[date.getMonth()]} del ${date.getFullYear()}  Hora: ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}` )
 }
+export const functionBirthdayDate = (date: Date) => {
+  const seconds = date.toString().slice(18,27)
+  const nanoseconds = date.toString().slice(42,49)
+  const rta =   (Number(seconds) + Number(nanoseconds)/1000000000)*1000
+  const birthdayUser = new Date(rta)
+  return `${birthdayUser.getDate()} de ${months[birthdayUser.getMonth()]} del ${birthdayUser.getFullYear()}`
+}
 export const dateConvertObject = (date:Date) => {
   return {
     date:date.getDate(),
