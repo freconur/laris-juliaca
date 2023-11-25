@@ -8,8 +8,13 @@ import Navbar from '../../components/Navbar/Navbar'
 
 const Ventas = () => {
   const dataUser = useUser()
-  const { getDataUser,getProductsSalesContext, LibraryData } = useGlobalContext()
+  const { getDataUser,getProductsSalesContext, LibraryData,getDataUserContext } = useGlobalContext()
   const { getProductsSales } = LibraryData
+  useEffect(() => {
+    if(dataUser.id) {
+      getDataUserContext(`${dataUser.id}`)
+    }
+  },[dataUser])
   useEffect(() => {
     getProductsSalesContext()
   }, [LibraryData.getProductsSales.length])

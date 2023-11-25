@@ -29,7 +29,13 @@ export const currentDate = () => {
   return `${date.getDate()}`
 }
 export const functionDateConvert = (date: Date) => {
+  // console.log(`${date.getDate()}/${monthNumber[date.getMonth()]}/${date.getFullYear().toString().slice(2, 4)}`)
   return `${date.getDate()}/${monthNumber[date.getMonth()]}/${date.getFullYear().toString().slice(2, 4)}`
+}
+export const functionDateToPrinter = (date: Date) => {
+  // console.log(`${date.getDate()} de ${months[date.getMonth()]} del ${date.getFullYear()}`)
+  // console.log(`${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
+  return(`Fecha: ${date.getDate()} de ${months[date.getMonth()]} del ${date.getFullYear()}  Hora: ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}` )
 }
 export const dateConvertObject = (date:Date) => {
   return {

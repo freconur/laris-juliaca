@@ -12,7 +12,7 @@ import LayoutDashboard from '../../layout/LayoutDashboard';
 import Navbar from '../../components/Navbar/Navbar';
 const AnulacionVenter = () => {
   const dataUser = useUser()
-  const { getTicketsContext, LibraryData, setModalCancellationOfSale, getDataUser } = useGlobalContext()
+  const { getTicketsContext, LibraryData, setModalCancellationOfSale, getDataUser, getDataUserContext } = useGlobalContext()
   const { getTickets, showCancellationOfsaleModal } = LibraryData
   const [startDate, setStartDate] = useState(dayjs());
   const [minDate, setMinDate] = useState(dayjs(new Date().setMonth(7)));
@@ -22,6 +22,11 @@ const AnulacionVenter = () => {
     month: numberToNameMonth(startDate.month()),
     year: startDate.year(),
   }
+  useEffect(() => {
+    if(dataUser.id) {
+      getDataUserContext(`${dataUser.id}`)
+    }
+  },[dataUser])
   useEffect(() => {
     //debere colocar la funcion para poder traerme todods los tickets disponibles
     getTicketsContext(dateData)

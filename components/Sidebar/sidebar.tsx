@@ -11,7 +11,7 @@ interface Props {
 }
 const Sidebar = ({ showSidebarProducts, sidebarProducts, setShowSidebar, closeSidebar, }: Props) => {
   const { showSidebarContext, LibraryData } = useGlobalContext()
-  const { showSidebar } = LibraryData
+  const { showSidebar,getUser } = LibraryData
   return (
     <div ref={closeSidebar} className={`z-[900] fixed duration-300 drop-shadow-xl -left-[300px] h-full w-[250px] bg-white  ${showSidebar && "left-0 duration-300"}`}>
       {/* <h1 className='pl-5 flex items-center bg-gos-1 text-3xl capitalize text-white font-sidebar h-[60px] font-semibold tracking-wider'>Libreria <span className='text-sm font-dmMono ml-2 flex items-center justify-center'>18</span></h1> */}

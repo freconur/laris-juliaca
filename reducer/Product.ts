@@ -296,7 +296,8 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
         await addProductFromCartToTicket(
           {
             //agregando los nuevos campos de pago cash y yape
-            timestamp: Timestamp.fromDate(new Date()),
+            // timestamp: Timestamp.fromDate(new Date()),
+            timestamp: new Date(),
             product: cart,
             paymentData,
           },

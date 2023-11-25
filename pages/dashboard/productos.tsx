@@ -21,7 +21,7 @@ const index =`${process.env.NEXT_PUBLIC_ALGOLIA_INDEX_ALGOLIA}`
 const Productos = () => {
   const dataUser = useUser()
   const [successfullCopy, setSuccessfullCopy] = useState(false)
-  const { getDataUser } = useGlobalContext()
+  const { getDataUser, getDataUserContext } = useGlobalContext()
 
   const successToastify = () => {
     console.log('estamos entrando')
@@ -37,11 +37,12 @@ const Productos = () => {
       theme: "colored",
     })
   }
-  // useEffect(() => {
-  //   if(dataUser.id){
-  //     getDataUser(dataUser.id)
-  //   }
-  // },[dataUser.id,dataUser])
+  useEffect(() => {
+    if(dataUser.id) {
+      getDataUserContext(`${dataUser.id}`)
+    }
+  },[dataUser])
+  
   const alertNotificacion = (alert: boolean) => {
     setSuccessfullCopy(alert)
   }
