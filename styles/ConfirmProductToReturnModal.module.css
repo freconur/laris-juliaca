@@ -1,0 +1,41 @@
+.containerModal {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.23);
+  z-index: 2000;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  place-content: center;
+}
+
+.containerSale {
+  /* width: 310px; */
+  width: 300px;
+  background-color: white;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding: 20px;
+  margin: 10px;
+}
+/* @media (min-width: 400px) {
+  .containerSale {
+    width: 390px;
+  }
+}
+@media (min-width: 500px) {
+  .containerSale {
+    width: 490px;
+  }
+}
+@media (min-width: 600px) {
+  .containerSale {
+    width: 590px;
+  }
+}
+@media (min-width: 768px) {
+  .containerSale {
+    width: 758px;
+  }
+} */

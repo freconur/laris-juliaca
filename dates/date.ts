@@ -44,6 +44,13 @@ export const functionBirthdayDate = (date: Date) => {
   const birthdayUser = new Date(rta)
   return `${birthdayUser.getDate()} de ${months[birthdayUser.getMonth()]} del ${birthdayUser.getFullYear()}`
 }
+export const hoursUnixDate = (date:Date) => {
+  const seconds = date.toString().slice(18,28)
+  const nanoseconds = date.toString().slice(42,49)
+  const rta =   (Number(seconds) + Number(nanoseconds)/1000000000)*1000
+  const hour = new Date(rta)
+  return `${hour.getHours()}:${hour.getMinutes()}:${hour.getSeconds()}`
+}
 export const dateConvertObject = (date:Date) => {
   return {
     date:date.getDate(),

@@ -112,6 +112,7 @@ module.exports = {
         'gridRows': 'auto 1fr auto',
         'gridRowsSales': '10% auto',
         'gridRowsSalesPay': '90% 10%',
+        'gridRowsSalesPayModal': '50% 10%',
         'layout': '200px minmax(900px, 1fr) 100px',
         'tableSales': '90px'
       },

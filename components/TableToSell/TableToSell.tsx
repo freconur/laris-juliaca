@@ -26,7 +26,7 @@ const TableToSell = ({ productToCart, totalAmountToCart, loaderToSell }: Props) 
   }, [valueInputAmount.amount])
 
   return (
-    <div className='rounded-sm overflow-y-scroll  max-cs:mr-0 overflow-hidden  md:block w-full'>
+    <div className='rounded-sm overflow-y-scroll  max-cs:mr-0 overflow-hidden mt-[20px] md:block w-full'>
       {
         productToCart &&
           productToCart.length > 0

@@ -3,13 +3,15 @@ import { createPortal } from 'react-dom';
 import styles from '../../styles/SaleModal.module.css'
 import { useGlobalContext } from '../../context/GlobalContext';
 import { RiLoader4Line } from "react-icons/ri";
+import { returnProductFromTicket } from '../../reducer/ventas';
 
 interface Props {
   generateSold: boolean
-  dataUser:any
+  dataUser:any,
+  findTicket?:Ticket
 }
 
-const SaleModal = ({ generateSold, dataUser }: Props) => {
+const SaleModal = ({ generateSold, dataUser,findTicket }: Props) => {
   const { soldProducts, LibraryData, showGenerateSale } = useGlobalContext()
   const { productToCart, showSaleModal, warningAmount, paymentData, getUser } = LibraryData
   let container;
@@ -18,7 +20,13 @@ const SaleModal = ({ generateSold, dataUser }: Props) => {
   }
   const handleSubmit = () => {
     // soldProducts(productToCart, paymentData,`${getUser.identifier}`)
+    console.log('findTicketfindTicket',findTicket)
     soldProducts(productToCart, paymentData, getUser)
+    if(Number(paymentData.balanceFromCustomer) > 0){
+      if(findTicket) {
+        returnProductFromTicket(findTicket)
+      }
+    }
   }
   return container
     ? createPortal(

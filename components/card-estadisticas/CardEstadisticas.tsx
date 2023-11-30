@@ -73,7 +73,7 @@ const CardEstadisticas = ({ paymentDataToStadistics,dataStatistics, dataSales, d
                 <div className="text-slate-600 font-bold text-xl capitalize ">tipo de pago</div>
                 <div className="text-slate-600 gap-3  font-bold">
                   <div className="flex items-center">
-                    <p className=' capitalize text-lg mr-3 text-green-500'>efectivo:</p>
+                    <p className=' capitalize text-lg mr-3 text-green-500'>efe.:</p>
                     {
                     paymentDataToStadistics 
                     ?
@@ -111,6 +111,7 @@ const CardEstadisticas = ({ paymentDataToStadistics,dataStatistics, dataSales, d
                 <div className="text-slate-600 flex gap-3  font-bold">
                   <div className="flex justify-center items-center">
                     <p className='text-3xl'># {Number(dataStatistics[dataStatistics.length - 1]?.tickets)}</p>
+                    {/* <p className='text-3xl'># {dailyTicket}</p> */}
                   </div>
                 </div>
 

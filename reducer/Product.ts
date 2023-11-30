@@ -247,7 +247,7 @@ export const dailyTicket = async (dispatch: (action: any) => void) => {
   let totalAmountDailySale: number = 0
   let dailyTicket: number = 0
   docSnap.docs.forEach(ticket => {
-    if (ticket.data().library18 === true) {
+    if (ticket.data().cancel === false) {
       dailyTicket = dailyTicket + 1
       const productsOfTicket = ticket.data().product
       productsOfTicket.map((item: ProductToCart) => {
@@ -309,7 +309,7 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
           dispatch({ type: "tostifyNotificationSales", payload: cero + 1 })
           dispatch({ type: "cleanCart" })
           // await updatedailySale(totalAmountOfCartLibrary)//esto se cambia provisionalmente
-          await updatedailySale(paymentData.totalAmountToCart)//probaremos con el total que obtenemos y no lo calcularemos nuevamente.
+          await updatedailySale(paymentData)//probaremos con el total que obtenemos y no lo calcularemos nuevamente.
           // await updateDailySaleWaliky(totalAmountOfCartWaliky)
           // await updateDailySaleWalikySublimados(totalAmountOfCartWalikySublimados)
         })
@@ -350,19 +350,20 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
 
     await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}`), { ticket: "ticket" })
       .then(async r => {
+        if (Number(ticket.paymentData.balanceFromCustomer) > 0) {
 
+        }
         if (ticket.paymentData.cash.cash && !ticket.paymentData.yape.yape) {
-          console.log('cash')
           await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${userData.identifier}${newValueTicket}`), {
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: { cash: ticket.paymentData.cash.cash, amount: ticket.paymentData.totalAmountToCart },
             yape: ticket.paymentData.yape.yape,
-            totalAmountCart: ticket.paymentData.totalAmountToCart
+            totalAmountCart: ticket.paymentData.totalAmountToCart,
+            cancel: false,
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
-            console.log('payment 4existe')
             await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { cash: increment(Number(ticket.paymentData.totalAmountToCart)) })
           } else {
             await setDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { cash: 0, yape: 0 })
@@ -372,18 +373,17 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
           }
         }
         if (ticket.paymentData.yape.yape && !ticket.paymentData.cash.cash) {
-          console.log('yape')
-
           await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${userData.identifier}${newValueTicket}`), {
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: ticket.paymentData.cash.cash,
             yape: { yape: ticket.paymentData.yape.yape, amount: ticket.paymentData.totalAmountToCart, operationId: ticket.paymentData.yape.operationId },
-            totalAmountCart: ticket.paymentData.totalAmountToCart
+            totalAmountCart: ticket.paymentData.totalAmountToCart,
+            cancel: false,
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
-            console.log('payment 4existe')
+            console.log('probando que no se necesita condicionales')
             await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { yape: increment(Number(ticket.paymentData.totalAmountToCart)) })
           } else {
             await setDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { cash: 0, yape: 0 })
@@ -394,19 +394,17 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
         }
 
         if (ticket.paymentData.cash.cash && ticket.paymentData.yape.yape) {
-          console.log('batimix')
-
           await setDoc(doc(db, `/db-ventas/${DB_VENTAS}/${currentMonth()}-${currentYear()}/${currentMonth()}-${currentYear()}/${currentDate()}`, `${userData.identifier}${newValueTicket}`), {
             product: ticket.product,
             timestamp: ticket.timestamp,
             cash: ticket.paymentData.cash,
             yape: ticket.paymentData.yape,
-            totalAmountCart: ticket.paymentData.totalAmountToCart
+            totalAmountCart: ticket.paymentData.totalAmountToCart,
+            cancel: false,
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
-            console.log('payment 4existe')
-            await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { yape: increment(Number(ticket.paymentData.yape.amount)), cash: increment(Number(ticket.paymentData.cash.amount)) })
+              await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { yape: increment(Number(ticket.paymentData.yape.amount)), cash: increment(Number(ticket.paymentData.cash.amount)) })
           } else {
             await setDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { cash: 0, yape: 0 })
               .then(async r => {
@@ -420,11 +418,11 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
           ticket: increment(1)
         })
       })
-      // .then(r => {
-        // })
-      }
-      if(newValueTicket) sendNewTicket(ticket.paymentData, ticket.product, ticket.timestamp, `${userData.identifier}${newValueTicket}`, userData)
-      
+    // .then(r => {
+    // })
+  }
+  // if (newValueTicket) sendNewTicket(ticket.paymentData, ticket.product, ticket.timestamp, `${userData.identifier}${newValueTicket}`, userData)
+
 }
 
 export const addProductCartToProductSales = async (cart: ProductToCart[] | undefined) => {
@@ -480,22 +478,6 @@ export const getProductsSales = async (dispatch: (action: any) => void) => {
   })
   dispatch({ type: "getProductsSales", payload: products })
 
-  // onSnapshot(producstSalesRef, querySnapshot => {
-  //   querySnapshot.forEach((doc) => {
-  //     products.push(doc.data())
-  //   })
-  //   dispatch({ type: "getProductsSales", payload: products })
-  // })
-  //lo de arriba es lo que estaba funcional
-
-  // onSnapshot(res, (snapshot) => {
-  //   const marcaSocio: MarcaSocio[] = []
-  //   snapshot.docs.forEach((doc) => {
-  //     marcaSocio.push({ ...doc.data(), id: doc.id })
-  //   })
-  //   dispatch({ type: "marcaSocio", payload: marcaSocio })
-
-
 }
 export const updateDailySaleFromStatistics = async (totalAmountCart: number) => {
   const dailysaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}`, `${currentDate()}`)
@@ -520,24 +502,21 @@ export const updateDailySaleFromStatistics = async (totalAmountCart: number) => 
     console.log('updateDailySaleFromStatistics: no hacemos nada')
   }
 }
-export const updatedailySale = async (totalAmountOfCart: number) => {
+export const updatedailySale = async (paymentInfo: PaymentInfo) => {
   const updatedailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}/${currentDate()}`);
   const docSnap = await getDoc(updatedailySaleRef)
   if (docSnap.exists()) {
-    // const currentlyDailySale = Number(docSnap.data().amount) + totalAmountOfCart
-    const currentlyDailySale = Number(totalAmountOfCart.toFixed(2))
+    const currentlyDailySale = Number((paymentInfo.totalAmountToCart).toFixed(2))
     await updateDoc(updatedailySaleRef, { amount: increment(currentlyDailySale) })
-    await updateDailySaleFromStatistics(totalAmountOfCart)
-
+    await updateDailySaleFromStatistics(currentlyDailySale)
   } else {
     await setDoc(doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}`, currentDate()), { amount: 0 });
     const updatedailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}/${currentDate()}`);
     const docSnap = await getDoc(updatedailySaleRef)
-    await updateDailySaleFromStatistics(totalAmountOfCart)
     if (docSnap.exists()) {
-      // const currentlyDailySale = Number(docSnap.data().amount) + totalAmountOfCart
-      const currentlyDailySale = Number(totalAmountOfCart.toFixed(2))
+      const currentlyDailySale = Number((paymentInfo.totalAmountToCart).toFixed(2))
       await updateDoc(updatedailySaleRef, { amount: increment(currentlyDailySale) })
+      await updateDailySaleFromStatistics(currentlyDailySale)
     }
   }
 }
@@ -731,7 +710,7 @@ export const validateUserPin = async (dispatch: (action: any) => void, idUser: s
   }
 }
 
-export const paymentDataToSale = (dispatch: (action: any) => void, paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape, totalAmountToCart: number) => {
+export const paymentDataToSale = (dispatch: (action: any) => void, paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape, totalAmountToCart: number, balanceFromCustomer?: number) => {
   const paymentData: PaymentInfo = {
     totalAmountToCart: Number(totalAmountToCart.toFixed(2)),
     yape: {
@@ -742,7 +721,8 @@ export const paymentDataToSale = (dispatch: (action: any) => void, paymentYape: 
     cash: {
       cash: paymentCash,
       amount: Number(amountPayment.cash)
-    }
+    },
+    balanceFromCustomer: balanceFromCustomer ? Number(balanceFromCustomer) : 0
 
   }
   console.log('paymentData', paymentData)

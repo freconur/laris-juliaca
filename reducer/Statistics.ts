@@ -34,6 +34,7 @@ export const dataToStatistics = async (dispatch: (action: any) => void) => {
     // console.log('dataFromStatistics',dataFromStatistics)
     queryStatistics.docs.forEach(monthData => {
       dataFromStatistics.push({ ...monthData.data(), date: Number(monthData.id) })
+      console.log('monthData.data()',monthData.data())
     })
     dataFromStatistics.sort((a, b) => {
       const fe = Number(a.date)

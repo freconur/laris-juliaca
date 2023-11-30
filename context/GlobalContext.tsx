@@ -3,7 +3,7 @@ import { addNewProduct, addStockToProduct, addStockToProductUpdate, dailySale, d
 import { Library, ProductsReducer } from "../reducer/Product.reducer";
 import { getProductByCodeToUpdateContext } from "../reducer/UpdateProducts";
 import { dataToStatistics, getPaymentTypeDaily } from "../reducer/Statistics";
-import { cancelTicket, getTickets } from "../reducer/ventas";
+import { cancelTicket, cancelTicketofSale, getTickets } from "../reducer/ventas";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 // import { authApp } from "../firebase/firebase.config";
 import { User, loginWithEmail, signin } from "../reducer/google";
@@ -66,8 +66,9 @@ type GlobalContextProps = {
   showSidebarContext: (state: boolean) => void,
   getDataUserContext: (id: string) => void,
   loginApisPeruContext: (userApisPeru: UserApisPeru) => void,
-  paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number) => void
-  getPaymentTypeDailyContext:() => void
+  paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => void
+  getPaymentTypeDailyContext:() => void,
+  canelTickerOfSaleContext : (ticket:Ticket) => void
 }
 
 
@@ -85,8 +86,12 @@ export function GlobalcontextProdiver({ children }: Props) {
   const getPaymentTypeDailyContext = () => {
     getPaymentTypeDaily(dispatch)
   }
-  const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number) => {
-    paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
+  const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => {
+    if(positiveBalance){
+      paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart,positiveBalance)
+    }else {
+      paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
+    }
   }
   const loginApisPeruContext = (userApisPeru: UserApisPeru) => {
     newCompany(userApisPeru)
@@ -121,6 +126,10 @@ export function GlobalcontextProdiver({ children }: Props) {
   }
   const cancelTicketContext = (ticket: Ticket) => {
     cancelTicket(ticket)
+  }
+  const canelTickerOfSaleContext = (ticket:Ticket) => {
+    console.log('entrando al context')
+    cancelTicketofSale(ticket)
   }
   const setModalCancellationOfSale = (value: boolean) => {
     dispatch({ type: "showCancellationOfsaleModal", payload: !value })
@@ -234,6 +243,7 @@ export function GlobalcontextProdiver({ children }: Props) {
 
   return (
     <GlobalContext.Provider value={{
+      canelTickerOfSaleContext,
       getPaymentTypeDailyContext,
       paymentTypeContext,
       loginApisPeruContext,

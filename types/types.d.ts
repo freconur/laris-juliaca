@@ -9,12 +9,13 @@ interface Yape {
 }
 interface Cash {
     cash: boolean,
-    amount: numberssss
+    amount: number
 }
 interface PaymentInfo {
   totalAmountToCart:number
   yape:Yape
   cash:Cash
+  balanceFromCustomer?:number
 }
 interface PaymentData {
   yape: boolean,
@@ -231,6 +232,9 @@ interface Ticket {
   product: ProductsFromTicket[] | undefined | ProductToCart[],
   paymentData: PaymentInfo,
   library18?: boolean
+  totalAmountCart?:number,
+  yape?:Yape,
+  cash?:Cash
 }
 interface ProductsFromTicket {
   code?: string,
