@@ -211,10 +211,10 @@ export const deleteProductToCart = (dispatch: (action: any) => void, cart: Produ
 
 
 
-export const dailySale = async (dispatch: (action: any) => void) => {
-  // const dailySaleRef = doc(db, "/dailysale", "${DAILY_SALE}")
-  // const dailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}/`, currentDate() as string)
-  const dailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}/`, `${currentDate()}`)
+export const dailySale = async (dispatch: (action: any) => void,dateData: DateData) => {
+ 
+  // const dailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}/`, `${currentDate()}`)
+  const dailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${dateData.month}-${dateData.year}/`, `${dateData.date}`)
 
   const docSnap = await getDoc(dailySaleRef);
 
@@ -240,9 +240,10 @@ export const dailySale = async (dispatch: (action: any) => void) => {
 
 
 
-export const dailyTicket = async (dispatch: (action: any) => void) => {
+export const dailyTicket = async (dispatch: (action: any) => void, dateData:DateData) => {
   // const q = query(collection(db, "cities")
   const res = query(collection(db, `/db-ventas/${DB_VENTAS}/${YEAR_MONTH}/${currentDate()}`));
+  // const res = query(collection(db, `/db-ventas/${DB_VENTAS}/${dateData.month}-${dateData.year}/${dateData.month}-${dateData.year}`, `${dateData.date}`));
   const docSnap = await getDocs(res)
   let totalAmountDailySale: number = 0
   let dailyTicket: number = 0
@@ -598,7 +599,7 @@ export const addStockToProductUpdate = async (dispatch: (action: any) => void, c
   }
 }
 export const getIncomePerDay = async (dispatch: (action: any) => void) => {
-
+  //esta funcion ya no se usara ya que la funcion dataToStatistics que se encuentra en Statistics sera la encargada de generar todos los datos que esta funcion ya hace
   const ref = collection(db, `/dailysale/${DAILY_SALE}/${yearMonth}`)
   // const res = query(collection(db, `/products`));
   const dailySales: DailySales[] = []

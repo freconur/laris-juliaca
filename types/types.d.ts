@@ -188,7 +188,8 @@ interface LibraryAllData {
   getUser: User,
   warningAmount: string,
   paymentData: PaymentInfo,
-  paymentDataToStadistics: PaymentDataToStatdistics
+  paymentDataToStadistics: PaymentDataToStatdistics,
+  dataOfTicketFromDay:BasicDataStatistics
 }
 interface DateData {
   date: number,
@@ -234,7 +235,8 @@ interface Ticket {
   library18?: boolean
   totalAmountCart?:number,
   yape?:Yape,
-  cash?:Cash
+  cash?:Cash,
+  cancel?:boolean
 }
 interface ProductsFromTicket {
   code?: string,
@@ -278,4 +280,8 @@ interface CodeProduct {
 interface UserApisPeru {
   username: string,
   password: string
+}
+interface BasicDataStatistics {
+  dailySales?:number,
+  tickets?:number
 }

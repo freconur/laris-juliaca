@@ -43,6 +43,7 @@ type LibraryData =
   | { type: "warningAmount", payload: string }
   | { type: "paymentData", payload: PaymentInfo }
   | { type:"paymentDataToStadistics", payload: PaymentDataToStatdistics}
+  | { type:"dataOfTicketFromDay", payload: BasicDataStatistics}
 
 export const Library = {
   paymentData: {} as PaymentInfo,
@@ -84,11 +85,18 @@ export const Library = {
   validatePin: false as boolean,
   showSidebar: false as boolean,
   getUser: {} as User,
-  paymentDataToStadistics: {} as PaymentDataToStatdistics
+  paymentDataToStadistics: {} as PaymentDataToStatdistics,
+  dataOfTicketFromDay:{} as BasicDataStatistics
 }
 
 export const ProductsReducer = (state: LibraryAllData, action: LibraryData) => {
   switch (action.type) {
+    case "dataOfTicketFromDay": {
+      return {
+        ...state,
+        dataOfTicketFromDay: action.payload
+      }
+    }
     case "paymentDataToStadistics":{
       return {
         ...state,

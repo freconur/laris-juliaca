@@ -1,7 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react'
 import { useGlobalContext } from '../../context/GlobalContext'
-
-
 interface Props {
   totalAmountToCart: number,
   productToCart: ProductToCart[] | undefined,
@@ -35,8 +33,6 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
   }, [paymentYape, paymentCash])
 
   useEffect(() => {
-    // setWarningPayment(initialWarningPayment)
-
     if (Number(amountPayment.yape) < totalAmountToCart) {
       setWarningPayment({ ...warningPayment, amount: "" })
       if (paymentYape && paymentCash) {
@@ -44,7 +40,7 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
       }
       if (paymentYape && paymentCash === false) {
         // console.log('entrando a solo pago con yape')
-        setAmountPayment({yape: `${totalAmountToCart.toFixed(2)}`, cash: "0" })
+        setAmountPayment({ yape: `${totalAmountToCart.toFixed(2)}`, cash: "0" })
         // setAmountPayment({ ...amountPayment, yape: `${totalAmountToCart.toFixed()}`, cash: "0" })
       }
       if (paymentYape === false && paymentCash) {
@@ -105,10 +101,9 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
       setWarningPayment(initialWarningPayment)
       setAmountPayment(initialValueAmountsPayment)
       setPaymentYape(false)
+      setPaymentCash(true)
     }
   }
-  console.log('amountPayment', amountPayment)
-  console.log('paymentYape', paymentYape)
   return (
     <div className={` grid grid-rows-gridRowsSalesPay rounded-md w-[350px] md:w-full shadow-md ml-2 p-3 z-[500] top-[60px] bottom-0 md:top-0 fixed md:relative md:right-0 duration-300 -right-[900px] bg-white  ${showTableSales && "right-[0px] duration-300"}`}>
       <div className='text-lg'>
@@ -127,13 +122,6 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
           <span className='text-red-500 font-bold font-nunito'>TOTAL</span>
           <span className='font-bold text-2xl'>S/{totalAmountToCart.toFixed(2)}</span>
         </div>
-        {/* <div className='w-full mt-3 '>
-          <select onChange={handleChangeProofPayment} name="typeProofPayment" className='w-full outline-none p-3  rounded-md shadow-md'>
-            <option value="">Tipo de comprobante</option>
-            <option value="03">Boleta</option>
-            <option value="01">Factura</option>
-          </select>
-        </div> */}
         <div className='w-full mt-5  text-slate-500 font-comfortaa flex items-center'>
           <p className='mr-3 text-base'>Tipo de pago: </p>
           <div className='flex flex-wrap'>
@@ -171,7 +159,6 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
                 <label className='text-slate-500  font-comfortaa text-base '> N. de operacion yape:</label>
                 <input onChange={handleChangeOperationId} value={operationIdYape.operationid} type="number" name="operationid" className='w-full text-slate-400 mt-2 outline-none pl-3 border-orange-400 border-[1px] rounded-md bg-slate-50' />
               </div>
-              {/* {warningPayment?.yape && <p>*{warningPayment.yape}.</p>} */}
               {warningPayment.yape ? <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.yape}.</p> : null}
               {warningPayment.opartionId && <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.opartionId}.</p>}
             </div>
@@ -183,32 +170,20 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
                   <label className='text-slate-500  font-comfortaa text-base '> N. de operacion yape:</label>
                   <input onChange={handleChangeOperationId} value={operationIdYape.operationid} type="number" name="operationid" className='w-full text-slate-400 mt-2 outline-none pl-3 border-orange-400 border-[1px] rounded-md bg-slate-50' />
                 </div>
-                {/* {warningPayment?.yape && <p className='text-sm font-montserrat mt-2 text-red-600'>*{warningPayment.yape}.</p>} */}
               </>
               :
               null
         }
         {
           paymentYape && !paymentCash &&
-        warningPayment.opartionId ? 
-          <span className='text-sm text-red-500'>*{warningPayment.opartionId}</span>        
-        : null 
+            warningPayment.opartionId ?
+            <span className='text-sm text-red-500'>*{warningPayment.opartionId}</span>
+            : null
         }
       </div>
-      {/* {
-        amountPayment.yape && amountPayment.cash && Number(amountPayment.yape) > totalAmountToCart
-          ?
-          null
-          :
-          <button disabled={productToCart && productToCart?.length > 0 ? false : true} onClick={validateDataToActiveModalSold} className={`${productToCart && productToCart.length === 0 ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
-            generar venta
-          </button>
-
-      } */}
-      
-      <button disabled={productToCart && productToCart?.length > 0 ? false : true} onClick={validateDataToActiveModalSold} className={`${productToCart && productToCart.length === 0 ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
-            generar venta
-          </button>
+      <button disabled={productToCart && productToCart?.length === 0 || paymentCash === false && paymentYape === false ? true : false} onClick={validateDataToActiveModalSold} className={`${productToCart && productToCart.length === 0 || paymentCash === false && paymentYape === false ? 'bg-gray-300' : 'bg-blue-400 duration-300 text-md   hover:hover:bg-blue-500'} capitalize font-semibold  rounded-md text-white duration-300 font-nunito shadow-lg w-full p-3 m-auto`}>
+        generar venta
+      </button>
     </div>
   )
 }

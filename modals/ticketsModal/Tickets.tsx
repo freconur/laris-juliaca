@@ -8,6 +8,8 @@ import { findProduct } from '../../reducer/Product';
 import AddProductToSale from '../../components/AddProductToSale/AddProductToSale';
 import ProductCartToSale from '../sale/productCartToSale';
 import CofirmProductToReturn from '../sale/CofirmProductToReturn';
+import ConfirmCancelTicket from '../sale/ConfirmCancelTicket';
+import ConfirmCancelProduct from '../sale/ConfirmCancelProduct';
 interface Props {
   findTicket: Ticket
 }
@@ -22,6 +24,8 @@ const Tickets = ({ findTicket }: Props) => {
   const [positiveBalance, setPositiveBalance] = useState<number>(0)
   const [showProducToCartModal, setShowProducToCartModal] = useState(false)
   const [confirmDevolucion, setConfirmDevolucion] = useState(false)
+  const [confirmCancelTicket, setConfirmCancelTicket] = useState(false)
+  const [showConfirmCancelProduct, setShowConfirmCancelProduct] = useState(false)
   const onChangeValueAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValueAmount({
       ...valueAmount,
@@ -45,7 +49,6 @@ const Tickets = ({ findTicket }: Props) => {
   }
 
   const calculatedBalance = () => {
-    console.log('findTicketfindTicket', findTicket)
     let balance: number = 0
     findTicket.product?.map(item => {
       if (item.cancelAmount) {
@@ -57,8 +60,14 @@ const Tickets = ({ findTicket }: Props) => {
   const handleConfirmDevolucion = () => {
     setConfirmDevolucion(!confirmDevolucion)
   }
+  const showConfirmCancelTicket = () => {
+    setConfirmCancelTicket(!confirmCancelTicket)
+  }
   const handleShowProductToCartModal = () => {
     setShowProducToCartModal(!showProducToCartModal)
+  }
+  const handleShowCancelProduct = () => {
+    setShowConfirmCancelProduct(!showConfirmCancelProduct)
   }
   const handleCancelTicket = () => {
     cancelTicketContext(findTicket)
@@ -86,6 +95,14 @@ const Tickets = ({ findTicket }: Props) => {
             confirmDevolucion &&
             <CofirmProductToReturn handleShowProductToCartModal={handleShowProductToCartModal} handleConfirmDevolucion={handleConfirmDevolucion} />
           }
+          {
+            showConfirmCancelProduct &&
+            <ConfirmCancelProduct handleShowCancelProduct={handleShowCancelProduct} handleCancelTickeOfSale={handleCancelTickeOfSale} />
+          }
+          {
+            confirmCancelTicket &&
+            <ConfirmCancelTicket handleCancelTicket={handleCancelTicket} showConfirmCancelTicket={showConfirmCancelTicket} />
+          }
           <>
             {showProducToCartModal &&
               <ProductCartToSale findTicket={findTicket} positiveBalance={positiveBalance} />
@@ -112,6 +129,7 @@ const Tickets = ({ findTicket }: Props) => {
               <div>efectivo: {findTicket.cash?.cash === true ? "si" : "no"}</div>
               <div>yape: {findTicket.yape?.yape === true ? "si" : "no"}</div>
             </div>
+            <div>Estado: { findTicket.cancel ? "cancelado" : "vigente"}</div>
             {
               positiveBalance ?
                 <div onClick={handleConfirmDevolucion} className='p-1 px-3 bg-blue-500 text-white rounded-sm shadow-sm cursor-pointer'>Cambio de producto</div>
@@ -159,35 +177,44 @@ const Tickets = ({ findTicket }: Props) => {
               })
             }
           </ul>
-          <p onClick={calculatedBalance} className={`font-dmMono mt-2 cursor-pointer duration-300 hover:text-blue-500 underline text-slate-700 font-semibold`}>Calculo de saldo</p>
-          <div className='flex justify-between w-full'>
-            {
-              positiveBalance ?
-                <div className='flex gap-3 items-center justify-between mt-3 w-full'>
-                  <div className='flex items-center gap-3'>
-                    <span className='capitalize text-slate-500 font-semibold'>saldo disponible:</span>
-                    <p className='text-blue-600 font-semibold'>S/ {positiveBalance.toFixed(2)}</p>
-                  </div>
-
+          {
+            findTicket.cancel === false ?
+              <>
+                <p onClick={calculatedBalance} className={`font-dmMono mt-2 cursor-pointer duration-300 hover:text-blue-500 underline text-slate-700 font-semibold`}>Calculo de saldo</p>
+                <div className='flex justify-between w-full'>
+                  {
+                    positiveBalance ?
+                      <div className='flex gap-3 items-center justify-between mt-3 w-full'>
+                        <div className='flex items-center gap-3'>
+                          <span className='capitalize text-slate-500 font-semibold'>saldo disponible:</span>
+                          <p className='text-blue-600 font-semibold'>S/ {positiveBalance.toFixed(2)}</p>
+                        </div>
+                      </div>
+                      :
+                      null
+                  }
                 </div>
-                :
-                null
-            }
-          </div>
-          {
-            findTicket.cash?.cash && findTicket.yape?.yape
-              ?
-              null
+                {
+                  findTicket.cash?.cash && findTicket.yape?.yape
+                    ?
+                    null
+                    :
+                    <div onClick={showConfirmCancelTicket} className='p-2 bg-pastel10 rounded-sm mt-3 text-center text-white font-nunito capitalize font-semibold hover:opacity-90 cursor-pointer duration-300'>anular ticket</div>
+                }
+                {
+                  findTicket.cash?.cash && findTicket.yape?.yape || findTicket.yape?.yape && !findTicket.cash?.cash
+                    ?
+                    null
+                    :
+                    <div onClick={handleShowCancelProduct} className='p-2 bg-green-400 rounded-sm mt-3 text-center text-white font-nunito capitalize font-semibold hover:opacity-90 cursor-pointer duration-300'>anular producto</div>
+                }
+              </>
               :
-              <div onClick={handleCancelTickeOfSale} className='p-2 bg-pastel10 rounded-sm mt-3 text-center text-white font-nunito capitalize font-semibold hover:opacity-90 cursor-pointer duration-300'>anular ticket</div>
-          }
-          {
-            findTicket.cash?.cash && findTicket.yape?.yape || findTicket.yape?.yape && !findTicket.cash?.cash
-              ?
               null
-              :
-              <div onClick={handleCancelTicket} className='p-2 bg-green-400 rounded-sm mt-3 text-center text-white font-nunito capitalize font-semibold hover:opacity-90 cursor-pointer duration-300'>anular producto</div>
           }
+
+
+
           <div>
             <p className='cursor-pointer text-slate-500 text-center mt-3 underline decoration-solid' onClick={() => setModalCancellationOfSale(showCancellationOfsaleModal)}>cerrar</p>
           </div>

@@ -13,6 +13,7 @@ class MyDocument extends Document {
           <Main />
           <div id="portal-modal"></div>
           <div id="pin-modal"></div>
+          <div id="confirm-modal"></div>
           <NextScript />
 
         </body>

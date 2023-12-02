@@ -3,8 +3,6 @@ import { useEffect, useState } from "react"
 import { useGlobalContext } from "../../context/GlobalContext"
 import { Line } from "react-chartjs-2"
 import { BsCashCoin } from "react-icons/bs";
-// import { Line } from 'react-chartjs-2'
-
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,6 +23,10 @@ import LayoutDashboard from "../../layout/LayoutDashboard";
 import Loader from "../../components/Loader/Loader";
 import TestNavbar from "../../components/Navbar/TestNavbar";
 import Navbar from "../../components/Navbar/Navbar";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import { numberToNameMonth } from "../../dates/date";
 
 ChartJS.register(
   CategoryScale,
@@ -40,27 +42,27 @@ const Estadisticas = () => {
   const dataUser = useUser()
   const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState,getPaymentTypeDailyContext,getDataUserContext } = useGlobalContext()
   const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader, paymentDataToStadistics } = LibraryData
+  const [startDate, setStartDate] = useState(dayjs());
+  const [minDate, setMinDate] = useState(dayjs(new Date().setMonth(7)));
+  const dateData: DateData = {
+    date: startDate.date(),
+    month: numberToNameMonth(startDate.month()),
+    year: startDate.year(),
+  }
   useEffect(() => {
     if(dataUser.id) {
       getDataUserContext(`${dataUser.id}`)
     }
   },[dataUser])
-  // useEffect(() => {
-  //   if (dataUser.id) {
-  //     // setTimeout(() => {
-  //     dataUser.id && getDataUser(dataUser.id)
-  //     // }, 2000)
-  //   }
-  // }, [dataUser.id, dataUser])
+  
   useEffect(() => {
-    dailySaleContext()
-    dailyTicketContext()
-    totalSalesPerYearContext()
-    incomePerDay()
-    getDataToStatistics()
-    getPaymentTypeDailyContext()
+    dailySaleContext(dateData)
+    // dailyTicketContext(dateData)
+    // totalSalesPerYearContext()
+    getDataToStatistics(dateData)
+    getPaymentTypeDailyContext(dateData)
     getDailySales()
-  }, [dailyTicket, dataStatistics.length])
+  }, [dailyTicket, dataStatistics.length,startDate])
 
   const sales = {
     labels: dataSalesLabel,
@@ -80,7 +82,6 @@ const Estadisticas = () => {
     }]
   }
   const options = {
-    // responsive: true,
     plugins: {
       legend: {
         position: 'center' as const,
@@ -91,7 +92,7 @@ const Estadisticas = () => {
       },
     },
   };
-
+  
   return (
     <LayoutDashboard>
       <>
@@ -101,31 +102,25 @@ const Estadisticas = () => {
         loader
           ?
           <div className="grid h-loader w-full place-content-center">
-
             <Loader />
           </div>
           :
           <>
-
             <div className="w-full p-4 relative">
-              {/* <Navbar /> */}
               <h1 className="text-3xl text-slate-700 font-nunito font-semibold p-2 my-5">Mis Estadísticas</h1>
+              <div className='flex justify-end items-center mb-3'>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker minDate={minDate} value={startDate} onChange={(newValue: any) => setStartDate(newValue)} />
+          </LocalizationProvider>
+        </div>
               <CardEstadisticas dataStatistics={dataStatistics} dataSales={dataSales} dailySale={dailySale} dailyTicket={dailyTicket} averageTicket={averageTicket} dataTotalSalesPerMonth={dataTotalSalesPerMonth} totalSalesYear={totalSalesYear} paymentDataToStadistics={paymentDataToStadistics}/>
-              {/* <div className="my-[50px] w-full cs:h-[300px] lg:h-[350px] xl:h-[400px]"> */}
             <TableStatidisticsPerMonth dataStatistics={dataStatistics} />
               <div className="my-[50px] w-full">
                 <h2 className="text-slate-600 font-nunito text-xl font-medium capitalize mb-5">graficos y ratios</h2>
-                {/* <div className="w-[99%]"> */}
                 <div className="grid p-2 grid-cols-1 gap-4 cs:grid-cols-2 w-full rounded-sm mb-[50px]">
                   <div className="w-full bg-white p-2 rounded-lg">
-                    {/* <h2 className="py-[10px]">Grafico lineal de ventas</h2> */}
                     <Line className="w-full h-full" options={options} data={sales} />
-
                   </div>
-                  {/* <Line className="w-full" options={options} data={sales} /> */}
-                  {/* <div className="w-full bg-white overflow-hidden"> */}
-                  {/* <TableStatidisticsPerMonth dataStatistics={dataStatistics} /> */}
-                  {/* </div> */}
                 </div>
               </div>
             </div>
@@ -134,9 +129,6 @@ const Estadisticas = () => {
     </LayoutDashboard>
   )
 }
-
 export default withUser({
-  // whenAuthed: AuthAction.RENDER
-  // whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
 })(Estadisticas)

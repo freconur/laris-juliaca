@@ -36,8 +36,8 @@ type GlobalContextProps = {
   stateLoader: (state: boolean) => void,
   stateGenerateSoldLoader: (state: boolean) => void,
   loaderRegisterProducts: (state: boolean) => void,
-  dailySaleContext: () => void,
-  dailyTicketContext: () => void,
+  dailySaleContext: (dateData:DateData) => void,
+  dailyTicketContext: (dateData:DateData) => void,
   addStockToProductContext: (codeProduct: string) => void,
   stateLoaderFromChargerStock: (state: boolean) => void,
   stateLoaderFromChargerStockAdd: (state: boolean) => void,
@@ -52,7 +52,7 @@ type GlobalContextProps = {
   incrementAmountToItemFromCart: (amount: number, code: string) => void,
   getProductsSalesContext: () => void,
   resetToastifyNotificationAddProduct: () => void,
-  getDataToStatistics: () => void,
+  getDataToStatistics: (dateData: DateData) => void,
   getTicketsContext: (dateData: DateData) => void,
   setModalCancellationOfSale: (value: boolean) => void,
   cancelTicketContext: (ticket: Ticket) => void,
@@ -67,7 +67,7 @@ type GlobalContextProps = {
   getDataUserContext: (id: string) => void,
   loginApisPeruContext: (userApisPeru: UserApisPeru) => void,
   paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => void
-  getPaymentTypeDailyContext:() => void,
+  getPaymentTypeDailyContext:(dateData:DateData) => void,
   canelTickerOfSaleContext : (ticket:Ticket) => void
 }
 
@@ -83,8 +83,8 @@ export function GlobalcontextProdiver({ children }: Props) {
   const [showModalUpdateBrands, setShowModalUpdateBrands] = useState<boolean>(false)
   const [showModalDeleteBrands, setShowModalDeleteBrands] = useState<boolean>(false)
   // const [showSidebar, setShowSidebar] = useState<boolean>(false)
-  const getPaymentTypeDailyContext = () => {
-    getPaymentTypeDaily(dispatch)
+  const getPaymentTypeDailyContext = (dateData:DateData) => {
+    getPaymentTypeDaily(dispatch,dateData)
   }
   const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => {
     if(positiveBalance){
@@ -137,8 +137,8 @@ export function GlobalcontextProdiver({ children }: Props) {
   const getTicketsContext = (dateData: DateData) => {
     getTickets(dispatch, dateData)
   }
-  const getDataToStatistics = () => {
-    dataToStatistics(dispatch)
+  const getDataToStatistics = (dateData: DateData) => {
+    dataToStatistics(dispatch, dateData)
 
   }
   const resetToastifyNotificationAddProduct = () => {
@@ -207,11 +207,11 @@ export function GlobalcontextProdiver({ children }: Props) {
   const loaderRegisterProducts = (state: boolean) => {
     dispatch({ type: "loaderRegisterProduct", payload: state })
   }
-  const dailySaleContext = () => {
-    dailySale(dispatch)
+  const dailySaleContext = (dateData: DateData) => {
+    dailySale(dispatch,dateData)
   }
-  const dailyTicketContext = () => {
-    dailyTicket(dispatch)
+  const dailyTicketContext = (dateData: DateData) => {
+    dailyTicket(dispatch,dateData)
   }
   const addStockToProductContext = (codeProduct: string) => {
     addStockToProduct(dispatch, codeProduct)
