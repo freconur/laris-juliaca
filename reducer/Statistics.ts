@@ -16,6 +16,14 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
   const docSnap = await getDoc(createNewDataRef);
   const dataFromDay = doc(db, `statistics/${dateData.month}-${dateData.year}/${dateData.month}-${dateData.year}/`, `${dateData.date}`)
   const getTicketFromDay = await getDoc(dataFromDay) 
+  if(getTicketFromDay.exists()){
+    dispatch({ type: "dataOfTicketFromDay", payload: getTicketFromDay.data() })
+  }else {
+    await setDoc(doc(db, `statistics/${dateData.month}-${dateData.year}/${dateData.month}-${dateData.year}/`, `${dateData.date}`), {dailySales: 0, tickets: 0 })
+    .then(r => {
+      dispatch({ type: "dataOfTicketFromDay", payload: {dailySales: 0, tickets: 0 } })
+    })
+  }
   if (docSnap.exists()) {
     console.log("Document data:", docSnap.data());
   } else {
@@ -32,7 +40,7 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
   } else {
     queryStatistics.docs.forEach(dailyDayData => {
       dataFromStatistics.push({ ...dailyDayData.data(), date: Number(dailyDayData.id) })
-      console.log('dailyDayData.data()', dailyDayData.data())
+      // console.log('dailyDayData.data()', dailyDayData.data())
     })
     dataFromStatistics.sort((a, b) => {
       const fe = Number(a.date)
@@ -46,10 +54,10 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
       return 0;
     })
     const rta = dataFromStatistics.map(dataPerday => {
-      if (dataPerday.dailySales) {
-        totalSalesPerMonth = totalSalesPerMonth + dataPerday.dailySales
-
-      }
+      // if (dataPerday.dailySales) {
+        
+      // }
+      totalSalesPerMonth = totalSalesPerMonth + Number(dataPerday.dailySales)
       dataSalesLabel.push(`${dataPerday.date}`)
       dataPerday.dailySales && dataSales.push(dataPerday.dailySales)
       const tickets = Number(dataPerday.tickets)
@@ -80,7 +88,7 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
       dispatch({ type: "dataSales", payload: dataSales })
       dispatch({ type: "dataSalesLabel", payload: dataSalesLabel })
       dispatch({ type: "dataTotalSalesPerMonth", payload: totalSalesPerMonth })
-      dispatch({ type: "dataOfTicketFromDay", payload: getTicketFromDay.data() })
+      
       
     }
   }

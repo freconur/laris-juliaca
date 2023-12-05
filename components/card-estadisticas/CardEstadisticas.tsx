@@ -30,9 +30,7 @@ const CardEstadisticas = ({ paymentDataToStadistics, dataStatistics, dataSales, 
   useEffect(() => {
     // getTest()
   }, [dailySale])
-  console.log('dailySale cards', dailySale)
-  console.log('dataOfTicketFromDay', dataOfTicketFromDay)
-  console.log('dataStatistics[dataStatistics.length - 1]', dataStatistics[dataStatistics.length - 1])
+  console.log('dataTotalSalesPerMonth',dataTotalSalesPerMonth)
   return (
     <>
       {
@@ -123,7 +121,7 @@ const CardEstadisticas = ({ paymentDataToStadistics, dataStatistics, dataSales, 
                 <div className="text-slate-600 flex gap-3  font-bold">
                   <div className="flex justify-center items-center">
                     {/* <p className='text-3xl'># {Number(dataStatistics[dataStatistics.length - 1]?.tickets)}</p> */}
-                    <p className='text-3xl'># {dataOfTicketFromDay.tickets}</p>
+                    <p className='text-3xl'># {dataOfTicketFromDay?.tickets}</p>
                     {/* <p className='text-3xl'># {dailyTicket}</p> */}
                   </div>
                 </div>
