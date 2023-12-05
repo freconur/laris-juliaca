@@ -63,7 +63,7 @@ const Estadisticas = () => {
     getPaymentTypeDailyContext(dateData)
     getDailySales()
   }, [dailyTicket, dataStatistics.length,startDate])
-
+  console.log('dataSales', dataSales)
   const sales = {
     labels: dataSalesLabel,
     datasets: [{
