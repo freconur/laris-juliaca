@@ -9,6 +9,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { User, loginWithEmail, signin } from "../reducer/google";
 import { getUser } from "../reducer/user";
 import { newCompany } from "../reducer/sunat";
+import { getProductsFilterByStock, nextProductsFilterByStock, previousProductsFilterByStock } from "../reducer/stock";
 
 interface Props {
   children: React.ReactNode
@@ -45,7 +46,7 @@ type GlobalContextProps = {
   marcaSocio: () => void,
   incomePerDay: () => void,
   totalSalesPerYearContext: () => void,
-  filterProductByStock: (paramsFilter: FilterProdyctBySTock) => void,
+  filterProductByStock: (paramsFilter: FilterProdyctBySTock, lastDocumentProductsByStock:any) => void,
   productByCodeToUpdateContext: (code: string) => void,
   showGenerateSale: (boolean: boolean) => void,
   resetValueToastify: () => void,
@@ -68,7 +69,9 @@ type GlobalContextProps = {
   loginApisPeruContext: (userApisPeru: UserApisPeru) => void,
   paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => void
   getPaymentTypeDailyContext:(dateData:DateData) => void,
-  canelTickerOfSaleContext : (ticket:Ticket) => void
+  canelTickerOfSaleContext : (ticket:Ticket) => void,
+  nextProductsFilterByStockContext : (lastDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
+  previousProductsFilterByStockContext: (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void
 }
 
 
@@ -234,15 +237,24 @@ export function GlobalcontextProdiver({ children }: Props) {
   const totalSalesPerYearContext = () => {
     getTotalSalesPerYear(dispatch)
   }
-  const filterProductByStock = (paramsFilter: FilterProdyctBySTock) => {
-    getFilterProductByStock(dispatch, paramsFilter)
+  const filterProductByStock = (paramsFilter: FilterProdyctBySTock, lastDocumentProductsByStock:any) => {
+    // getFilterProductByStock(dispatch, paramsFilter)
+    getProductsFilterByStock(dispatch,paramsFilter, lastDocumentProductsByStock)
   }
+  const nextProductsFilterByStockContext = (lastDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => {
+    nextProductsFilterByStock(dispatch,paramsFilter,lastDocumentProductsByStock)
+  } 
+  const previousProductsFilterByStockContext = (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => {
+    previousProductsFilterByStock(dispatch,paramsFilter,previousDocumentProductsByStock)
+  } 
   const productByCodeToUpdateContext = (code: string) => {
     getProductByCodeToUpdateContext(dispatch, code)
   }
 
   return (
     <GlobalContext.Provider value={{
+      previousProductsFilterByStockContext,
+      nextProductsFilterByStockContext,
       canelTickerOfSaleContext,
       getPaymentTypeDailyContext,
       paymentTypeContext,

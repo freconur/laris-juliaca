@@ -13,8 +13,8 @@ const params: FilterProdyctBySTock = {
 }
 const Stock = () => {
   const dataUser = useUser()
-  const { getDataUser,filterProductByStock, LibraryData, brands, marcaSocio } = useGlobalContext()
-  const { productsFromFilterByStock } = LibraryData
+  const { getDataUser,filterProductByStock, LibraryData, brands, nextProductsFilterByStockContext, previousProductsFilterByStockContext } = useGlobalContext()
+  const { productsFromFilterByStock, lastDocumentProductsByStock, previousDocumentProductsByStock } = LibraryData
   const [currentPage, setCurrentPage] = useState(0)
   const [activeButton, setActiveButton] = useState(false)
   const [paramsFilter, setParamsFilter] = useState<FilterProdyctBySTock>(params)
@@ -30,9 +30,7 @@ const Stock = () => {
   //   }
   // },[dataUser.id,dataUser])
   useEffect(() => {
-
-    marcaSocio()
-  }, [])
+  }, [paramsFilter.stock])
 
   const paginationProducts = () => {
 
@@ -43,15 +41,13 @@ const Stock = () => {
     setActiveButton(!activeButton)
   }
   const filterProductHandle = () => {
-    filterProductByStock(paramsFilter)
+    filterProductByStock(paramsFilter, lastDocumentProductsByStock)
   }
-  const nextPage = () => {
-    setCurrentPage(currentPage + 5)
+  const handleNextProductsList = () => {
+    nextProductsFilterByStockContext(lastDocumentProductsByStock,paramsFilter)
   }
-  const previewPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 5)
-    }
+  const handlePreviousProductsList = () => {
+    previousProductsFilterByStockContext(previousDocumentProductsByStock,paramsFilter)
   }
   return (
     <LayoutDashboard>
@@ -63,79 +59,27 @@ const Stock = () => {
             <h3 className='text-slate-600 font-dmMono'>Stock :</h3>
             <select className='w-full rounded-lg p-2 text-slate-500' onChange={onChangeValueAmountStock} value={paramsFilter.stock} name="stock">
               <option value="">filtrar por</option>
-              <option value={0 as number}> igual a 0 </option>
-              <option value={5 as number}>menores a 5 </option>
+              <option value={0}> igual a 0 </option>
+              <option value={10}>menores a 10 </option>
               {/* <option value={10 as number}>menores a 10 </option> */}
             </select>
           </div>
-          <div className="my-3">
-            <h3 className='text-slate-600 font-dmMono'>Marca socio :</h3>
-            <select className='w-full rounded-lg p-2 text-slate-500' onChange={onChangeValueAmountStock} value={paramsFilter.marcaSocio} name="marcaSocio">
-              <option value="">filtrar por</option>
-              {
-                LibraryData.marcaSocio?.map((marcasocio, index) => {
-                  return (
-                    <option key={index} value={marcasocio.name}>{marcasocio.name}</option>
-                  )
-                })
-              }
-            </select>
-          </div>
-          <div className="my-3">
-            <div className='flex'>
-              <h3 className='text-slate-600 font-dmMono'>Marca de producto : </h3>
-              <div onClick={getBrands} className={`${activeButton ? "bg-green-400 text-slate-600" : "bg-slate-300"} cursor-pointer w-[20px] h-[20px] flex justify-center items-center rounded-sm  font-semibold ml-3`}><RiCheckLine /></div>
-            </div>
-            <select className='w-full rounded-lg p-2 text-slate-500' onChange={onChangeValueAmountStock} value={paramsFilter.brand} name="brand">
-              {
-                paramsFilter?.marcaSocio === "waliky"
-                  ?
-                  <>
-                    <option value="">filtrar por</option>
-                    <option value="waliky" >waliky</option>
-                  </>
-                  :
-                  <>
-                    <option value="">filtrar por</option>
-                    {
-                      LibraryData.brands?.map((brand, index) => {
-                        return (
-                          <option key={index} value={brand.name} >{brand.name} </option>
-                        )
-                      })
-                    }
-                  </>
-              }
-            </select>
-          </div>
-          <button disabled={paramsFilter.marcaSocio.length <= 0 && true} className={`h-[40px] w-[200px] p-2 rounded-lg text-slate-800 font-semibold text-l shadow-md capitalize  ${paramsFilter.marcaSocio.length <= 0 ? "bg-gradient-to-l from-gray-400 to-gray-300" : "bg-gradient-to-l from-blue-500 to-blue-400 duration-300 hover:opacity-95"}`} onClick={filterProductHandle}>filtrar</button>
+          
+          {/* <button disabled={paramsFilter.marcaSocio.length <= 0 && true} className={`h-[40px] w-[200px] p-2 rounded-lg text-slate-800 font-semibold text-l shadow-md capitalize  ${paramsFilter.marcaSocio.length <= 0 ? "bg-gradient-to-l from-gray-400 to-gray-300" : "bg-gradient-to-l from-blue-500 to-blue-400 duration-300 hover:opacity-95"}`} onClick={filterProductHandle}>filtrar</button> */}
+          <button onClick={filterProductHandle} className='p-3 bg-blue-500 text-white font-semibold'>filtrar</button>
         </div>
         <div className='w-full p-2'>
           <h3 className='font-semibold text-slate-800 '>* se encontro {productsFromFilterByStock.length} productos para la busqueda.</h3>
           <TableStock paginationProducts={paginationProducts} />
         </div>
-        <div className='flex gap-5 mt-1 p-2'>
-          {
-            paginationProducts().length === 0
-              ?
-              null
-              :
-              <button onClick={previewPage} className='h-[40px] w-[160px] bg-red-300 text-slate-700 font-semibold rounded-lg shadow-md'>Anterior</button>
-          }
-          {
-            paginationProducts().length < 5
-              ?
-              null
-              :
-              <button onClick={nextPage} className='h-[40px] w-[160px] bg-red-300 text-slate-700 font-semibold rounded-lg shadow-md'>Siguiente</button>
-          }
+        <div className='w-full flex gap-3 justify-center'>
+          <div onClick={handlePreviousProductsList} className=' p-3 bg-yellow-400 text-white rounded-md shadow-sm font-semibold cursor-pointer'>anterior</div>
+          <div onClick={handleNextProductsList} className=' p-3 bg-yellow-400 text-white rounded-md shadow-sm font-semibold cursor-pointer'>siguiente</div>
         </div>
       </div>
     </LayoutDashboard>
   )
 }
 export default withUser({
-  // whenAuthed: AuthAction.RENDER
-  // whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
 })(Stock)
