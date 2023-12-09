@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from '../../styles/registtro-ventas.module.css'
 import { useGlobalContext } from '../../context/GlobalContext'
-import { RiLoader4Line } from "react-icons/ri";
 import UpdateProductModal from '../../modals/updateProduct/UpdateProductModal';
 import FormUpdate from '../../components/FormUPdate/FormUpdate';
 import { AuthAction, useUser, withUser } from 'next-firebase-auth';
 import LayoutDashboard from '../../layout/LayoutDashboard';
-import PinModal from '../../modals/updateProduct/PinModal';
 import Navbar from '../../components/Navbar/Navbar';
 const initialValueItem = {
   description: "",
@@ -18,15 +16,13 @@ const initialValueItem = {
 
 const UpdateProduct = () => {
   const dataUser = useUser()
-
   const userId = useUser().id
-  const { getDataUser,productByCodeToUpdateContext, stateLoaderFromChargerStock, brands, category, LibraryData } = useGlobalContext()
+  const { productByCodeToUpdateContext, stateLoaderFromChargerStock, brands, category, LibraryData, getDataUserContext} = useGlobalContext()
   const { loaderChargerStock, productToUpdate } = LibraryData
   const focusRef = useRef<HTMLInputElement>(null)
   const initialValue: CodeProduct = { code: "" }
   const [codeProduct, setCodeProduct] = useState(initialValue)
   const [brandActive, setBrandActive] = useState<boolean>(true)
-  const [pinModal, setPinModal] = useState<boolean>(true)
   const [categoryActive, setCategoryActive] = useState<boolean>(true)
   const [showUpdateProductModal, setShowUpdateProductModal] = useState<boolean>(false)
   const [item, setItem] = useState<ProductToCart>(initialValueItem)
@@ -44,18 +40,18 @@ const UpdateProduct = () => {
     })
   }
   const handleActiveBrands = () => {
-    setBrandActive(!categoryActive)
+    setBrandActive(!brandActive)
     brands()
   }
   const handleActiveCategory = () => {
     setCategoryActive(!categoryActive)
     category()
   }
-  // useEffect(() => {
-  //   if(dataUser.id){
-  //     getDataUser(dataUser.id)
-  //   }
-  // },[dataUser.id])
+  useEffect(() => {
+    if (dataUser.id) {
+      getDataUserContext(`${dataUser.id}`)
+    }
+  }, [dataUser])
   useEffect(() => {
     if (codeProduct.code.length === 13) {
       productByCodeToUpdateContext(codeProduct.code)
@@ -74,7 +70,6 @@ const UpdateProduct = () => {
       'key': 'Tab'
     })
   }
-  console.log('item', item)
   return (
     <LayoutDashboard>
       <Navbar dataUser={dataUser}/>
@@ -95,11 +90,12 @@ const UpdateProduct = () => {
             :
             null
         }
-        <div className='bg-white rounded-lg drop-shadow-md p-2'>
-          <label className='capitalize text-slate-600 font-dmMono'>ingresa codigo de producto</label>
-          <input onChange={onChangeCodeValue} ref={focusRef} onKeyDown={testEnter} className={styles.inputCode} type="text" name="code" value={codeProduct.code} placeholder='ingresa un codigo' />
+        <h2 className='text-slate-500 text-2xl font font-comfortaa mb-3'>Editar datos de productos</h2>
+        <div className='bg-white rounded-lg drop-shadow-md p-3'>
+          <label className='capitalize text-slate-600 font-comfortaa'>Codigo de producto</label>
+          <input onChange={onChangeCodeValue} ref={focusRef} onKeyDown={testEnter} className={styles.inputCode} type="text" name="code" value={codeProduct.code} placeholder='codigo de barra' />
         </div>
-        <FormUpdate handleActiveBrands={handleActiveBrands} handleActiveCategory={handleActiveCategory} loaderChargerStock={loaderChargerStock} codeProduct={codeProduct.code} item={item} brandActive={brandActive} brands={LibraryData.brands} category={LibraryData.category} setShowUpdateProductModal={setShowUpdateProductModal} showUpdateProductModal={showUpdateProductModal} onChangeItem={onChangeItem} categoryActive={categoryActive} />
+        <FormUpdate brandActive={brandActive} categoryActive={categoryActive} handleActiveBrands={handleActiveBrands} handleActiveCategory={handleActiveCategory} loaderChargerStock={loaderChargerStock} codeProduct={codeProduct.code} item={item}  brands={LibraryData.brands} category={LibraryData.category} setShowUpdateProductModal={setShowUpdateProductModal} showUpdateProductModal={showUpdateProductModal} onChangeItem={onChangeItem} />
         <div>
 
         </div>
@@ -108,7 +104,5 @@ const UpdateProduct = () => {
   )
 }
 export default withUser({
-  // whenAuthed: AuthAction.RENDER
-  // whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
   whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
 })(UpdateProduct)

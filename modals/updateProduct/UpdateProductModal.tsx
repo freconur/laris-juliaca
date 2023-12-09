@@ -16,7 +16,7 @@ interface Props {
   setCodeProduct: React.Dispatch<React.SetStateAction<CodeProduct>>
 }
 const UpdateProductModal = ({ userId, initialValue, setCodeProduct, initialValueItem, setItem, item, setShowUpdateProductModal, showUpdateProductModal }: Props) => {
-  const { validateUserPinContext, LibraryData, resetPin } = useGlobalContext()
+  const { validateUserPinContext, LibraryData, resetPin,updateProductContext } = useGlobalContext()
   const { validatePin } = LibraryData
   const [activePin, setActivePin] = useState(true)
   const [valuePin, setValuePin] = useState({ pin: "" })
@@ -38,7 +38,8 @@ const UpdateProductModal = ({ userId, initialValue, setCodeProduct, initialValue
     })
   }
   const update = () => {
-    updateProduct(item);
+    updateProductContext(item)
+    // updateProduct(item);
     setItem(initialValueItem);
     setShowUpdateProductModal(!showUpdateProductModal)
     setCodeProduct(initialValue)

@@ -1,8 +1,6 @@
-'client'
 import { useEffect, useState } from "react"
 import { useGlobalContext } from "../../context/GlobalContext"
 import { Line } from "react-chartjs-2"
-import { BsCashCoin } from "react-icons/bs";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,7 +25,8 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import { numberToNameMonth } from "../../dates/date";
-
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { getAuth } from "firebase/auth";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -40,10 +39,13 @@ ChartJS.register(
 
 const Estadisticas = () => {
   const dataUser = useUser()
+  const auth = getAuth();
   const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState,getPaymentTypeDailyContext,getDataUserContext } = useGlobalContext()
   const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader, paymentDataToStadistics } = LibraryData
   const [startDate, setStartDate] = useState(dayjs());
   const [minDate, setMinDate] = useState(dayjs(new Date().setMonth(7)));
+  const [user, loading, error] = useAuthState(auth);
+
   const dateData: DateData = {
     date: startDate.date(),
     month: numberToNameMonth(startDate.month()),
@@ -54,16 +56,18 @@ const Estadisticas = () => {
       getDataUserContext(`${dataUser.id}`)
     }
   },[dataUser])
+  // useEffect(() => {
+  //   if(user) {
+  //     getDataUserContext(`${user.uid}`)
+  //   }
+  // },[user])
   
   useEffect(() => {
     dailySaleContext(dateData)
-    // dailyTicketContext(dateData)
-    // totalSalesPerYearContext()
     getDataToStatistics(dateData)
     getPaymentTypeDailyContext(dateData)
     getDailySales()
   }, [dailyTicket, dataStatistics.length,startDate])
-  console.log('dataSales', dataSales)
   const sales = {
     labels: dataSalesLabel,
     datasets: [{
@@ -97,6 +101,7 @@ const Estadisticas = () => {
     <LayoutDashboard>
       <>
         <Navbar dataUser={dataUser} />
+        {/* <Navbar /> */}
       </>
       {
         loader

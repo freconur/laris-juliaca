@@ -1,13 +1,17 @@
 
 .inputCode {
-  border: 1px solid #6c9bd1;
+  border: 1px solid #3369fd;
   outline: none;
   width: 100%;
   border-radius: 7px;
   height: 35px;
   padding-left: 5px;
-  color:#525669;
+  color:#6c6f7e;
   font-family:"Nunito"
+}
+.inputCode:hover {
+  background-color:#f6fbff;
+
 }
 .inputCode:hover {
   cursor: pointer;
@@ -20,7 +24,7 @@
 }
 
 .labelForm {
-  color:slategray;
+  color:rgb(82, 102, 121);
   font-size:15px;
   font-weight: 500;
   font-family: 'Nunito';

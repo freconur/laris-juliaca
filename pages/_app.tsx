@@ -5,8 +5,8 @@ import LayoutDashboard from '../layout/LayoutDashboard'
 import { withUser } from 'next-firebase-auth'
 import initAuth from '../initAuth'
 
-initAuth()
 function MyApp({ Component, pageProps }: AppProps) {
+  initAuth()
 
   return (
     <GlobalcontextProdiver>

@@ -17,7 +17,7 @@ const initAuth = () => {
     // firebaseAuthEmulatorHost: 'localhost:3000',
     firebaseAdminInitConfig: {
       credential: {
-        projectId: 'libreria-carmenlarys-df83c',
+        projectId: 'larys-df83c',
         clientEmail: 'firebase-adminsdk-rhbrk@larys-df83c.iam.gserviceaccount.com',
         privateKey: process.env.FIREBASE_PRIVATE_KEY as string
       },
@@ -29,7 +29,7 @@ const initAuth = () => {
       projectId: 'larys-df83c',
     },
     cookies: {
-      name: 'larys-df83c', // required
+      name: 'myapp', // required
       // Keys are required unless you set `signed` to `false`.
       // The keys cannot be accessible on the client side.
       keys: [
@@ -37,7 +37,7 @@ const initAuth = () => {
         process.env.COOKIE_SECRET_PREVIOUS,
       ],
       httpOnly: true,
-      maxAge: 1 * 60 * 60 * 24 * 1000, // twelve days
+      maxAge: 12 * 60 * 60 * 24 * 1000, // twelve days
       overwrite: true,
       path: '/',
       sameSite: 'strict',

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '../../context/GlobalContext'
 import { ConectorPluginV3 } from '../../plugin-printer'
+import { AuthAction, withUser } from 'next-firebase-auth'
 const initialValueFormUser = { username: "", password: "" }
 const productosDeVenta = [
   { name: "producto1", price: "30" }, { name: "producto2", price: "50" }
@@ -102,4 +103,6 @@ const Sunat = () => {
   )
 }
 
-export default Sunat
+export default withUser({
+  whenUnauthedAfterInit: AuthAction.REDIRECT_TO_LOGIN
+})(Sunat)

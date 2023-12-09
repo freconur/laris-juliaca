@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, useState } from "react";
 import { addNewProduct, addStockToProduct, addStockToProductUpdate, dailySale, dailyTicket, deleteProductToCart, findToAddProductCart, generateSold, getBrands, getCategory, getFilterProductByStock, getIncomePerDay, getMarcaSocio, getProductsSales, getTotalSalesPerYear, paymentDataToSale, validateUserPin } from "../reducer/Product";
 import { Library, ProductsReducer } from "../reducer/Product.reducer";
-import { getProductByCodeToUpdateContext } from "../reducer/UpdateProducts";
+import { getProductByCodeToUpdateContext, updateProduct } from "../reducer/UpdateProducts";
 import { dataToStatistics, getPaymentTypeDaily } from "../reducer/Statistics";
 import { cancelTicket, cancelTicketofSale, getTickets } from "../reducer/ventas";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -71,7 +71,8 @@ type GlobalContextProps = {
   getPaymentTypeDailyContext:(dateData:DateData) => void,
   canelTickerOfSaleContext : (ticket:Ticket) => void,
   nextProductsFilterByStockContext : (lastDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
-  previousProductsFilterByStockContext: (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void
+  previousProductsFilterByStockContext: (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
+  updateProductContext: (item:ProductToCart) => void
 }
 
 
@@ -100,7 +101,6 @@ export function GlobalcontextProdiver({ children }: Props) {
     newCompany(userApisPeru)
   }
   const getDataUserContext = (id: string) => {
-    console.log('global user id', id)
     getUser(dispatch, id as string) 
   }
   const showSidebarContext = (state: boolean) => {
@@ -128,11 +128,11 @@ export function GlobalcontextProdiver({ children }: Props) {
     signin(userDate)
   }
   const cancelTicketContext = (ticket: Ticket) => {
-    cancelTicket(ticket)
+    cancelTicketofSale(ticket)
   }
   const canelTickerOfSaleContext = (ticket:Ticket) => {
-    console.log('entrando al context')
-    cancelTicketofSale(ticket)
+    // console.log('entrando al context')
+    cancelTicket(ticket)
   }
   const setModalCancellationOfSale = (value: boolean) => {
     dispatch({ type: "showCancellationOfsaleModal", payload: !value })
@@ -250,9 +250,13 @@ export function GlobalcontextProdiver({ children }: Props) {
   const productByCodeToUpdateContext = (code: string) => {
     getProductByCodeToUpdateContext(dispatch, code)
   }
+  const updateProductContext = (item:ProductToCart) => {
+    updateProduct(dispatch, item)
+  }
 
   return (
     <GlobalContext.Provider value={{
+      updateProductContext,
       previousProductsFilterByStockContext,
       nextProductsFilterByStockContext,
       canelTickerOfSaleContext,

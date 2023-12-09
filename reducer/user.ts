@@ -7,11 +7,8 @@ const YEAR_MONTH = `${currentMonth()}-${currentYear()}/${currentMonth()}-${curre
 const yearMonth = `${currentMonth()}-${currentYear()}`
 
 export const getUser = async(dispatch: (action: any) => void, id: string) => {
-  console.log('id',id)
-
   const refUser = doc(db, 'users', id as string)
   const user = await getDoc(refUser)
-  console.log('user',user.data())
   if(user.exists()) {
     dispatch({type:"getUser", payload:{
       lastname:user.data().lastname, 
@@ -23,5 +20,7 @@ export const getUser = async(dispatch: (action: any) => void, id: string) => {
       dni:user.data().dni,
       identifier:user.data().identifier
     }})
+  }else {
+    console.log('no esxiste')
   }
 }

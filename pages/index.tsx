@@ -4,10 +4,10 @@ import Head from 'next/head'
 import { authApp } from '../firebase/firebase.config'
 
 const Home = () => {
-  const auth = getAuth(authApp)
-  const handleLogout = () => {
-    signOut(auth)
-  }
+  // const auth = getAuth(authApp)
+  // const handleLogout = () => {
+  //   signOut(auth)
+  // }
   return (
     <div>
       <Head>
@@ -15,7 +15,7 @@ const Home = () => {
         <meta name="description" content="custom cup description" />
       </Head>
       <div>la pagina de inicio sera el login</div>
-      <button onClick={handleLogout}>cerrar sesion</button>
+      {/* <button onClick={handleLogout}>cerrar sesion</button> */}
     </div>
   )
 }

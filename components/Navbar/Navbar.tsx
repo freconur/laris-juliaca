@@ -1,4 +1,4 @@
-"use client"
+
 import { getAuth, signOut } from 'firebase/auth'
 import React, { useEffect, useRef, useState } from 'react'
 import { authApp } from '../../firebase/firebase.config'
@@ -14,6 +14,7 @@ interface Props {
   dataUser: any
 }
 const Navbar = ({ dataUser }: Props) => {
+  // const Navbar = () => {
   const [showOptionsUser, setShowOptionsUser] = useState(false)
   const cerrarSesion = getAuth(authApp)
   const handleLogout = () => {

@@ -30,7 +30,6 @@ body {
 *::-webkit-scrollbar {
   width: 10px;
   display:none
-  /* margin-left: 5px; */
 }
 
 *::-webkit-scrollbar-track {

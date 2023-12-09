@@ -8,13 +8,13 @@ import Navbar from '../../components/Navbar/Navbar'
 
 const Ventas = () => {
   const dataUser = useUser()
-  const { getDataUser,getProductsSalesContext, LibraryData,getDataUserContext } = useGlobalContext()
+  const { getDataUser, getProductsSalesContext, LibraryData, getDataUserContext } = useGlobalContext()
   const { getProductsSales } = LibraryData
   useEffect(() => {
-    if(dataUser.id) {
+    if (dataUser.id) {
       getDataUserContext(`${dataUser.id}`)
     }
-  },[dataUser])
+  }, [dataUser])
   useEffect(() => {
     getProductsSalesContext()
   }, [LibraryData.getProductsSales.length])
@@ -25,7 +25,7 @@ const Ventas = () => {
   // },[dataUser.id,dataUser])
   return (
     <LayoutDashboard>
-<Navbar dataUser={dataUser}/>
+      <Navbar dataUser={dataUser} />
       <div className='w-full p-2'>
         <div className='w-full flex justify-end text-slate-500 font-dmMono my-5'>{todayDate()}</div>
         <h1 className='font-dmMono text-slate-600 capitalize text-2xl mb-4'>Mis productos vendidos</h1>

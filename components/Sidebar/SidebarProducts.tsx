@@ -67,12 +67,12 @@ const SidebarProducts = ({ sidebar, sidebarProducts, showSidebarProducts }: Prop
                 </li>
               }
 
-              {/* <li className="rounded-xl text-slate-600 pl-2 text-sm flex items-center gap-x-4 cursor-pointer   mt-2 capitalize   hover:bg-sidebarHover hover:text-white duration-300  whitespace-nowrap my-3 drop-shadow-lg">
-          <Link onClick={sidebar} href="/dashboard/stock" className="my-1 w-56 p-2">
-            <RiArchiveDrawerFill className="text-xl block float-left mr-3" />
-            <span className={`text-base flex-1 ml-2 text-md`}>productos por stock</span>
-          </Link>
-        </li> */}
+              <li className="rounded-xl text-slate-600 pl-2 text-sm flex items-center gap-x-4 cursor-pointer   mt-2 capitalize   hover:bg-sidebarHover hover:text-white duration-300  whitespace-nowrap my-3 drop-shadow-lg">
+                <Link onClick={sidebar} href="/dashboard/stock" className="my-1 w-56 p-2">
+                  <RiArchiveDrawerFill className="text-xl block float-left mr-3" />
+                  <span className={`text-base flex-1 ml-2 text-md`}>consulta por stock</span>
+                </Link>
+              </li>
             </ul>
             :
             <div className="flex w-full mt-5 items-center m-auto justify-center">
