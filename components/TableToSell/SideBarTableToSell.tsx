@@ -11,8 +11,8 @@ const initialValueOperationId = { operationid: "" }
 const initialValueAmountsPayment = { yape: "0", cash: "0" }
 const initialWarningPayment = { yape: "", opartionId: "", amount: "" }
 const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, closeSidebarSale }: Props) => {
-  const { LibraryData, showGenerateSale, paymentTypeContext } = useGlobalContext()
-  const { showSaleModal } = LibraryData
+  const { LibraryData, showGenerateSale, paymentTypeContext, showSidebarSaleContext } = useGlobalContext()
+  const { showSaleModal,showSidebarSale } = LibraryData
   //boleta para sunat
   const [typeProofPayment, setTypeProofPayment] = useState(initialValueComprobante)
   const [operationIdYape, setOperationIdYape] = useState(initialValueOperationId)
@@ -105,10 +105,10 @@ const SideBarTableToSell = ({ totalAmountToCart, productToCart, showTableSales, 
     }
   }
   return (
-    <div className={` grid grid-rows-gridRowsSalesPay rounded-md w-[350px] md:w-full shadow-md ml-2 p-3 z-[500] top-[60px] bottom-0 md:top-0 fixed md:relative md:right-0 duration-300 -right-[900px] bg-white  ${showTableSales && "right-[0px] duration-300"}`}>
+    <div className={` grid grid-rows-gridRowsSalesPay rounded-md w-[350px] md:w-full shadow-md ml-2 p-3 z-[500] top-[60px] bottom-0 md:top-0 fixed md:relative md:right-0 duration-300 -right-[900px] bg-white  ${showSidebarSale && "right-[0px] duration-300"}`}>
       <div className='text-lg'>
         <div className='flex justify-end px-1 text-slate-200 '>
-          <p onClick={closeSidebarSale} className='flex md:hidden justify-center items-center cursor-pointer hover:rounded-full hover:bg-slate-100 h-[30px] w-[30px] duration-300'>X</p>
+          <p onClick={() => showSidebarSaleContext(!showSidebarSale)} className='flex md:hidden justify-center items-center cursor-pointer hover:rounded-full hover:bg-slate-100 h-[30px] w-[30px] duration-300'>X</p>
         </div>
         <div className='flex justify-between p-1 py-[15px] border-b-[1px] border-slate-300 text-slate-600 font-jp'>
           <span className='font-nunito'>Subtotal</span>

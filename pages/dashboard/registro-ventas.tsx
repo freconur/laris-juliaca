@@ -19,9 +19,9 @@ const RegistroVentas = () => {
   const dataUser = useUser()
   const focusRef = useRef<HTMLInputElement>(null)
   const initialValue = { code: "" }
-  const { addProductRegisterToSell, LibraryData, showGenerateSale, stateLoader, resetValueToastify, getDataUser, getDataUserContext } = useGlobalContext()
+  const { addProductRegisterToSell, LibraryData, showGenerateSale, stateLoader, resetValueToastify, getDataUser, getDataUserContext,showSidebarSaleContext } = useGlobalContext()
   const [codeBar, setCodeBar] = useState(initialValue)
-  const { productToCart, totalAmountToCart, loaderToSell, showSaleModal, productNotFound, tostifyNotificationSales, generateSold } = LibraryData
+  const { productToCart, totalAmountToCart, loaderToSell, showSaleModal, productNotFound, tostifyNotificationSales, generateSold,showSidebarSale } = LibraryData
   const [showTableSales, setShowTableSales] = useState(false)
 
   const closeSidebarSale = () => {
@@ -91,8 +91,9 @@ const RegistroVentas = () => {
         }
         <div className='relative  w-full px-1'>
     
-          <div onClick={() => setShowTableSales(!showTableSales)} className='fixed text-xl border-[2px] md:hidden border-white text-white cursor-pointer bottom-[30px] right-[30px] rounded-full h-[51px] w-[51px] bg-green-400 shadow-md flex z-[400] justify-center items-center'>
-            <p onClick={() => setShowTableSales(!showTableSales)}>$</p>
+          <div onClick={() => showSidebarSaleContext(!showSidebarSale)} className='fixed text-xl border-[2px] md:hidden border-white text-white cursor-pointer bottom-[30px] right-[30px] rounded-full h-[51px] w-[51px] bg-green-400 shadow-md flex z-[400] justify-center items-center'>
+            <p onClick={() => showSidebarSaleContext(!showSidebarSale)}>$</p>
+            {/* <p onClick={() => showSidebarSaleContext(!showSidebarSale)}>$</p> */}
           </div>
           <div className='flex items-center justify-end py-1 px-3 font-comfortaa text-xs'>
             <h3 className='text-lg  text-slate-500'>{todayDate()}</h3>

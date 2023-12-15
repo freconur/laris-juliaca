@@ -211,8 +211,8 @@ export const deleteProductToCart = (dispatch: (action: any) => void, cart: Produ
 
 
 
-export const dailySale = async (dispatch: (action: any) => void,dateData: DateData) => {
- 
+export const dailySale = async (dispatch: (action: any) => void, dateData: DateData) => {
+
   // const dailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${yearMonth}/`, `${currentDate()}`)
   const dailySaleRef = doc(db, `/dailysale/${DAILY_SALE}/${dateData.month}-${dateData.year}/`, `${dateData.date}`)
 
@@ -240,7 +240,7 @@ export const dailySale = async (dispatch: (action: any) => void,dateData: DateDa
 
 
 
-export const dailyTicket = async (dispatch: (action: any) => void, dateData:DateData) => {
+export const dailyTicket = async (dispatch: (action: any) => void, dateData: DateData) => {
   // const q = query(collection(db, "cities")
   const res = query(collection(db, `/db-ventas/${DB_VENTAS}/${YEAR_MONTH}/${currentDate()}`));
   // const res = query(collection(db, `/db-ventas/${DB_VENTAS}/${dateData.month}-${dateData.year}/${dateData.month}-${dateData.year}`, `${dateData.date}`));
@@ -268,6 +268,7 @@ export const dailyTicket = async (dispatch: (action: any) => void, dateData:Date
 }
 export const generateSold = async (dispatch: (action: any) => void, cart: ProductToCart[] | undefined, cero: number, paymentData: PaymentInfo, userData: User) => {
   dispatch({ type: "generateSold", payload: true })
+  dispatch({ type: "showSidebarSale", payload: false })
 
   // let totalAmountOfCartLibrary: number = 0
   const findProductAmountCero = cart?.find(p => p.amount === 0)
@@ -319,9 +320,9 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
         await addTicketDataToStatistics()
         await addProductCartToProductSales(cart)
       })
-    // debo verificar de donde obtengo la data de estadisticas antes de agregar o quitar esta data del endpoint
-    //aqui tengo que crear la funcionalidad de que sume el daily sale correspondiente para cada marca
-  }
+      // debo verificar de donde obtengo la data de estadisticas antes de agregar o quitar esta data del endpoint
+      //aqui tengo que crear la funcionalidad de que sume el daily sale correspondiente para cada marca
+    }
 }
 
 const addTicketDataToStatistics = async () => {
@@ -405,7 +406,7 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
-              await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { yape: increment(Number(ticket.paymentData.yape.amount)), cash: increment(Number(ticket.paymentData.cash.amount)) })
+            await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { yape: increment(Number(ticket.paymentData.yape.amount)), cash: increment(Number(ticket.paymentData.cash.amount)) })
           } else {
             await setDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { cash: 0, yape: 0 })
               .then(async r => {

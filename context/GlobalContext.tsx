@@ -72,7 +72,8 @@ type GlobalContextProps = {
   canelTickerOfSaleContext : (ticket:Ticket) => void,
   nextProductsFilterByStockContext : (lastDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
   previousProductsFilterByStockContext: (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
-  updateProductContext: (item:ProductToCart) => void
+  updateProductContext: (item:ProductToCart) => void,
+  showSidebarSaleContext: (state:boolean) => void
 }
 
 
@@ -87,6 +88,10 @@ export function GlobalcontextProdiver({ children }: Props) {
   const [showModalUpdateBrands, setShowModalUpdateBrands] = useState<boolean>(false)
   const [showModalDeleteBrands, setShowModalDeleteBrands] = useState<boolean>(false)
   // const [showSidebar, setShowSidebar] = useState<boolean>(false)
+
+  const showSidebarSaleContext = (state:boolean) => {
+    dispatch({type:"showSidebarSale", payload:state})
+  }
   const getPaymentTypeDailyContext = (dateData:DateData) => {
     getPaymentTypeDaily(dispatch,dateData)
   }
@@ -257,6 +262,7 @@ export function GlobalcontextProdiver({ children }: Props) {
   return (
     <GlobalContext.Provider value={{
       updateProductContext,
+      showSidebarSaleContext,
       previousProductsFilterByStockContext,
       nextProductsFilterByStockContext,
       canelTickerOfSaleContext,

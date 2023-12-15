@@ -191,7 +191,8 @@ interface LibraryAllData {
   paymentDataToStadistics: PaymentDataToStatdistics,
   dataOfTicketFromDay:BasicDataStatistics,
   lastDocumentProductsByStock: any,
-  previousDocumentProductsByStock: any
+  previousDocumentProductsByStock: any,
+  showSidebarSale:boolean
 }
 interface DateData {
   date: number,
