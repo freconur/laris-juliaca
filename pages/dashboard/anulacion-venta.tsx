@@ -15,7 +15,7 @@ const AnulacionVenter = () => {
   const { getTicketsContext, LibraryData, setModalCancellationOfSale, getDataUser, getDataUserContext } = useGlobalContext()
   const { getTickets, showCancellationOfsaleModal } = LibraryData
   const [startDate, setStartDate] = useState(dayjs());
-  const [minDate, setMinDate] = useState(dayjs(new Date().setMonth(7)));
+  const [minDate, setMinDate] = useState(dayjs(new Date().setFullYear(2023)));
   const [findTicket, setFindTicket] = useState<Ticket>()
   const dateData: DateData = {
     date: startDate.date(),

@@ -43,7 +43,7 @@ const Estadisticas = () => {
   const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState,getPaymentTypeDailyContext,getDataUserContext } = useGlobalContext()
   const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader, paymentDataToStadistics } = LibraryData
   const [startDate, setStartDate] = useState(dayjs());
-  const [minDate, setMinDate] = useState(dayjs(new Date().setMonth(7)));
+  const [minDate, setMinDate] = useState(dayjs(new Date().setFullYear(2023)));
   const [user, loading, error] = useAuthState(auth);
 
   const dateData: DateData = {
