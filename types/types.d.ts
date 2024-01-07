@@ -138,7 +138,7 @@ interface FormProductValues {
   brand?: string,
   stock?: number,
   marcaSocio?: string
-
+  cost?:string
 }
 interface StatisticsData {
   averageTickets?: number,

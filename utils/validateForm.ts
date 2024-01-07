@@ -22,10 +22,10 @@ export const onValidate = (form:FormProductValues) => {
     errors.price = 'el campo precio es necesario';
     isError = true
   }
-  // if(!form.marcaSocio?.trim()){
-  //   errors.marcaSocio = 'el campo marca socio es necesario';
-  //   isError = true
-  // }
+  if(!form.cost?.trim()){
+    errors.cost = 'el campo costo es necesario';
+    isError = true
+  }
   // if(!form.stock?.trim()){
   //   errors.stock = 'el campo stock es necesario';
   //   isError = true

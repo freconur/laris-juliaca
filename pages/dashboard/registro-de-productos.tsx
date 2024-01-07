@@ -17,6 +17,7 @@ const initialStateValues: FormProductValues = {
   category: "",
   brand: "",
   stock: 0,
+  cost:""
   // marcaSocio: ""
 }
 const RegistroDeProductos = () => {
@@ -39,11 +40,11 @@ const RegistroDeProductos = () => {
     }
 
     // if (form.code && form.description && form.price && form.marcaSocio) {
-      if (form.code && form.description && form.price) {
+      if (form.code && form.description && form.price && form.cost) {
       brands()
     }
     // if (form.code && form.description && form.price && form.marcaSocio && form.brand) {
-      if (form.code && form.description && form.price && form.brand) {
+      if (form.code && form.description && form.price && form.cost && form.brand) {
       category()
     }
     marcaSocio()
@@ -88,6 +89,15 @@ const RegistroDeProductos = () => {
               }
             </div>
             <div>
+              <label className={styles.labelForm}>Costo de producto</label>
+              <input onChange={handleProductValues} value={form.cost} name="cost" className={styles.inputCode} type="text" />
+              {error?.cost &&
+                <div className='text-red-500'>
+                  *{error?.cost}
+                </div>
+              }
+            </div>
+            <div>
               <label className={styles.labelForm}>Precio de producto</label>
               <input onChange={handleProductValues} value={form.price} name="price" className={styles.inputCode} type="text" />
               {error?.price &&
@@ -96,36 +106,6 @@ const RegistroDeProductos = () => {
                 </div>
               }
             </div>
-            {/* <div className=''>
-              <div>
-                <label className={styles.labelForm}>Marca de socio</label>
-                <div className='flex'>
-                  <select onChange={handleProductValues} value={form.marcaSocio} name='marcaSocio' className='w-full rounded-lg p-2 text-slate-500'>
-                    <option value="">marca de socio</option>
-                    {
-                      LibraryData.marcaSocio?.map((marcasocio) => {
-                        return (
-                          <option key={marcasocio.id} value={marcasocio.name}>{marcasocio.name}</option>
-                        )
-                      })}
-                  </select>
-                  <div className='text-slate-600 flex '>
-                    <div onClick={showBrands} className='p-1 cursor-pointer hover:opacity-90 duration-300'><RiAddCircleFill className='h-[25px] w-[25px]' /></div>
-                    <div onClick={showUpdateBrands} className='p-1 cursor-pointer hover:opacity-90 duration-300'><RiEditBoxFill className='h-[25px] w-[25px]' /></div>
-                    <div onClick={showDeleteBrands} className='p-1 cursor-pointer hover:opacity-90 duration-300'><RiDeleteBin5Fill className='h-[25px] w-[25px]' /></div>
-                  </div>
-
-                </div>
-                <div>
-
-                  {error?.marcaSocio &&
-                    <div className='text-red-500'>
-                      *{error?.marcaSocio}
-                    </div>
-                  }
-                </div>
-              </div>
-            </div> */}
             <div className=''>
               <div>
                 <label className={styles.labelForm}>Marca de producto</label>
