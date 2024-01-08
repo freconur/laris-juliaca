@@ -281,6 +281,19 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
   } else {
     dispatch({ type: "warningAmount", payload: "" })
 
+    ///////////////////////////FUNCIONALIDAD PERSONALIZADA VENTAS DE LA CATEGORIA PRODUCTOS DE NAVIDAD
+    //aqui crearemos la funcionalidad personalizada de hacer get a todos los productos de la categoria de navidad con su valor de venta del dia
+    const findProdustFromProductoDeNavidad = cart?.filter(p => p.category === "navidad")
+    console.log('findProdustFromProductoDeNavidad', findProdustFromProductoDeNavidad)
+    if (findProdustFromProductoDeNavidad) {
+      await setDoc(doc(db, `/productos-navidad/${currentMonth()}-${currentYear()}/${currentDate()}`, `${currentDate()}`), {amount:0, price:0})
+      findProdustFromProductoDeNavidad.map(async (item) => {
+          await addDoc(collection(db, `productos-navidad/${currentMonth()}-${currentYear()}/${currentDate()}/`), item);
+      })
+    }
+    ///////////////////////////FUNCIONALIDAD PERSONALIZADA VENTAS DE LA CATEGORIA PRODUCTOS DE NAVIDAD
+
+
     await setDoc(doc(db, `/salesPerMonth/${SALES_PER_MONTH}/mi-negocio/${currentYear()}/month-${currentYear()}/${currentMonth()}`), { month: `${currentMonth()}`, totalSales: 0 })
       .then(r => {
         cart?.map(async (item) => {
@@ -320,9 +333,9 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
         await addTicketDataToStatistics()
         await addProductCartToProductSales(cart)
       })
-      // debo verificar de donde obtengo la data de estadisticas antes de agregar o quitar esta data del endpoint
-      //aqui tengo que crear la funcionalidad de que sume el daily sale correspondiente para cada marca
-    }
+    // debo verificar de donde obtengo la data de estadisticas antes de agregar o quitar esta data del endpoint
+    //aqui tengo que crear la funcionalidad de que sume el daily sale correspondiente para cada marca
+  }
 }
 
 const addTicketDataToStatistics = async () => {

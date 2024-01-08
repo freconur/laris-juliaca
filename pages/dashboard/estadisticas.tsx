@@ -40,8 +40,8 @@ ChartJS.register(
 const Estadisticas = () => {
   const dataUser = useUser()
   const auth = getAuth();
-  const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState,getPaymentTypeDailyContext,getDataUserContext } = useGlobalContext()
-  const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader, paymentDataToStadistics } = LibraryData
+  const { getDataUser, dailySaleContext, LibraryData, dailyTicketContext, incomePerDay, totalSalesPerYearContext, getDataToStatistics, loaderState,getPaymentTypeDailyContext,getDataUserContext,getTotalProductsFromNavidad } = useGlobalContext()
+  const { dailySale, dailyTicket, averageTicket, dataSales, dataSalesLabel, dataTotalSalesPerMonth, totalSalesYear, dataStatistics, loader, paymentDataToStadistics, totalSalesFromProductsFromNavidad } = LibraryData
   const [startDate, setStartDate] = useState(dayjs());
   const [minDate, setMinDate] = useState(dayjs(new Date().setFullYear(2023)));
   const [user, loading, error] = useAuthState(auth);
@@ -67,6 +67,7 @@ const Estadisticas = () => {
     getDataToStatistics(dateData)
     getPaymentTypeDailyContext(dateData)
     getDailySales()
+    getTotalProductsFromNavidad()
   }, [dailyTicket, dataStatistics.length,startDate])
   const sales = {
     labels: dataSalesLabel,
@@ -118,7 +119,7 @@ const Estadisticas = () => {
             <DatePicker minDate={minDate} value={startDate} onChange={(newValue: any) => setStartDate(newValue)} />
           </LocalizationProvider>
         </div>
-              <CardEstadisticas dataStatistics={dataStatistics} dataSales={dataSales} dailySale={dailySale} dailyTicket={dailyTicket} averageTicket={averageTicket} dataTotalSalesPerMonth={dataTotalSalesPerMonth} totalSalesYear={totalSalesYear} paymentDataToStadistics={paymentDataToStadistics}/>
+              <CardEstadisticas totalSalesFromProductsFromNavidad={totalSalesFromProductsFromNavidad} dataStatistics={dataStatistics} dataSales={dataSales} dailySale={dailySale} dailyTicket={dailyTicket} averageTicket={averageTicket} dataTotalSalesPerMonth={dataTotalSalesPerMonth} totalSalesYear={totalSalesYear} paymentDataToStadistics={paymentDataToStadistics}/>
             <TableStatidisticsPerMonth dataStatistics={dataStatistics} />
               <div className="my-[50px] w-full">
                 <h2 className="text-slate-600 font-nunito text-xl font-medium capitalize mb-5">graficos y ratios</h2>

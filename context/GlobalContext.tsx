@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer, useState } from "react";
 import { addNewProduct, addStockToProduct, addStockToProductUpdate, dailySale, dailyTicket, deleteProductToCart, findToAddProductCart, generateSold, getBrands, getCategory, getFilterProductByStock, getIncomePerDay, getMarcaSocio, getProductsSales, getTotalSalesPerYear, paymentDataToSale, validateUserPin } from "../reducer/Product";
 import { Library, ProductsReducer } from "../reducer/Product.reducer";
 import { getProductByCodeToUpdateContext, updateProduct } from "../reducer/UpdateProducts";
-import { dataToStatistics, getPaymentTypeDaily } from "../reducer/Statistics";
+import { dataFromSalesProductosDeNavidad, dataToStatistics, getPaymentTypeDaily } from "../reducer/Statistics";
 import { cancelTicket, cancelTicketofSale, getTickets } from "../reducer/ventas";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 // import { authApp } from "../firebase/firebase.config";
@@ -10,6 +10,7 @@ import { User, loginWithEmail, signin } from "../reducer/google";
 import { getUser } from "../reducer/user";
 import { newCompany } from "../reducer/sunat";
 import { getProductsFilterByStock, nextProductsFilterByStock, previousProductsFilterByStock } from "../reducer/stock";
+import { getAllProductsToRoe } from "../reducer/roe";
 
 interface Props {
   children: React.ReactNode
@@ -33,12 +34,12 @@ type GlobalContextProps = {
   brands: () => void,
   addProductRegisterToSell: (id: string, cart: ProductToCart[] | undefined) => void,
   deleteProductCart: (cart: ProductToCart[], codeFromProduct: string | undefined) => void,
-  soldProducts: (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, userData:User) => void,
+  soldProducts: (cart: ProductToCart[] | undefined, paymentData: PaymentInfo, userData: User) => void,
   stateLoader: (state: boolean) => void,
   stateGenerateSoldLoader: (state: boolean) => void,
   loaderRegisterProducts: (state: boolean) => void,
-  dailySaleContext: (dateData:DateData) => void,
-  dailyTicketContext: (dateData:DateData) => void,
+  dailySaleContext: (dateData: DateData) => void,
+  dailyTicketContext: (dateData: DateData) => void,
   addStockToProductContext: (codeProduct: string) => void,
   stateLoaderFromChargerStock: (state: boolean) => void,
   stateLoaderFromChargerStockAdd: (state: boolean) => void,
@@ -46,7 +47,7 @@ type GlobalContextProps = {
   marcaSocio: () => void,
   incomePerDay: () => void,
   totalSalesPerYearContext: () => void,
-  filterProductByStock: (paramsFilter: FilterProdyctBySTock, lastDocumentProductsByStock:any) => void,
+  filterProductByStock: (paramsFilter: FilterProdyctBySTock, lastDocumentProductsByStock: any) => void,
   productByCodeToUpdateContext: (code: string) => void,
   showGenerateSale: (boolean: boolean) => void,
   resetValueToastify: () => void,
@@ -67,13 +68,15 @@ type GlobalContextProps = {
   showSidebarContext: (state: boolean) => void,
   getDataUserContext: (id: string) => void,
   loginApisPeruContext: (userApisPeru: UserApisPeru) => void,
-  paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => void
-  getPaymentTypeDailyContext:(dateData:DateData) => void,
-  canelTickerOfSaleContext : (ticket:Ticket) => void,
-  nextProductsFilterByStockContext : (lastDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
-  previousProductsFilterByStockContext: (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => void,
-  updateProductContext: (item:ProductToCart) => void,
-  showSidebarSaleContext: (state:boolean) => void
+  paymentTypeContext: (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape, totalAmountToCart: number, positiveBalance?: number) => void
+  getPaymentTypeDailyContext: (dateData: DateData) => void,
+  canelTickerOfSaleContext: (ticket: Ticket) => void,
+  nextProductsFilterByStockContext: (lastDocumentProductsByStock: any, paramsFilter: FilterProdyctBySTock) => void,
+  previousProductsFilterByStockContext: (previousDocumentProductsByStock: any, paramsFilter: FilterProdyctBySTock) => void,
+  updateProductContext: (item: ProductToCart) => void,
+  showSidebarSaleContext: (state: boolean) => void,
+  getAllProductToRoeContext: () => void,
+  getTotalProductsFromNavidad:() => void,
 }
 
 
@@ -89,16 +92,22 @@ export function GlobalcontextProdiver({ children }: Props) {
   const [showModalDeleteBrands, setShowModalDeleteBrands] = useState<boolean>(false)
   // const [showSidebar, setShowSidebar] = useState<boolean>(false)
 
-  const showSidebarSaleContext = (state:boolean) => {
-    dispatch({type:"showSidebarSale", payload:state})
+  const getTotalProductsFromNavidad = () => {
+    dataFromSalesProductosDeNavidad(dispatch)
   }
-  const getPaymentTypeDailyContext = (dateData:DateData) => {
-    getPaymentTypeDaily(dispatch,dateData)
+  const getAllProductToRoeContext = () => {
+    getAllProductsToRoe(dispatch)
   }
-  const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape,totalAmountToCart:number,positiveBalance?:number) => {
-    if(positiveBalance){
-      paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart,positiveBalance)
-    }else {
+  const showSidebarSaleContext = (state: boolean) => {
+    dispatch({ type: "showSidebarSale", payload: state })
+  }
+  const getPaymentTypeDailyContext = (dateData: DateData) => {
+    getPaymentTypeDaily(dispatch, dateData)
+  }
+  const paymentTypeContext = (paymentYape: boolean, paymentCash: boolean, amountPayment: AmountPayment, operationIdYape: OperationIdYape, totalAmountToCart: number, positiveBalance?: number) => {
+    if (positiveBalance) {
+      paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart, positiveBalance)
+    } else {
       paymentDataToSale(dispatch, paymentYape, paymentCash, amountPayment, operationIdYape, totalAmountToCart)
     }
   }
@@ -106,7 +115,7 @@ export function GlobalcontextProdiver({ children }: Props) {
     newCompany(userApisPeru)
   }
   const getDataUserContext = (id: string) => {
-    getUser(dispatch, id as string) 
+    getUser(dispatch, id as string)
   }
   const showSidebarContext = (state: boolean) => {
     dispatch({ type: "showSidebar", payload: state })
@@ -135,7 +144,7 @@ export function GlobalcontextProdiver({ children }: Props) {
   const cancelTicketContext = (ticket: Ticket) => {
     cancelTicketofSale(ticket)
   }
-  const canelTickerOfSaleContext = (ticket:Ticket) => {
+  const canelTickerOfSaleContext = (ticket: Ticket) => {
     // console.log('entrando al context')
     cancelTicket(ticket)
   }
@@ -203,8 +212,8 @@ export function GlobalcontextProdiver({ children }: Props) {
     deleteProductToCart(dispatch, cart, codeFromProduct)
   }
   // const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentData) => {
-    const soldProducts = (cart: ProductToCart[] | undefined, paymentData:PaymentInfo, userData:User) => {
-    generateSold(dispatch, cart, 0, paymentData,userData)
+  const soldProducts = (cart: ProductToCart[] | undefined, paymentData: PaymentInfo, userData: User) => {
+    generateSold(dispatch, cart, 0, paymentData, userData)
   }
   const stateLoader = (state: boolean) => {
     dispatch({ type: "loaderToSell", payload: state })
@@ -216,10 +225,10 @@ export function GlobalcontextProdiver({ children }: Props) {
     dispatch({ type: "loaderRegisterProduct", payload: state })
   }
   const dailySaleContext = (dateData: DateData) => {
-    dailySale(dispatch,dateData)
+    dailySale(dispatch, dateData)
   }
   const dailyTicketContext = (dateData: DateData) => {
-    dailyTicket(dispatch,dateData)
+    dailyTicket(dispatch, dateData)
   }
   const addStockToProductContext = (codeProduct: string) => {
     addStockToProduct(dispatch, codeProduct)
@@ -242,25 +251,27 @@ export function GlobalcontextProdiver({ children }: Props) {
   const totalSalesPerYearContext = () => {
     getTotalSalesPerYear(dispatch)
   }
-  const filterProductByStock = (paramsFilter: FilterProdyctBySTock, lastDocumentProductsByStock:any) => {
+  const filterProductByStock = (paramsFilter: FilterProdyctBySTock, lastDocumentProductsByStock: any) => {
     // getFilterProductByStock(dispatch, paramsFilter)
-    getProductsFilterByStock(dispatch,paramsFilter, lastDocumentProductsByStock)
+    getProductsFilterByStock(dispatch, paramsFilter, lastDocumentProductsByStock)
   }
-  const nextProductsFilterByStockContext = (lastDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => {
-    nextProductsFilterByStock(dispatch,paramsFilter,lastDocumentProductsByStock)
-  } 
-  const previousProductsFilterByStockContext = (previousDocumentProductsByStock:any,paramsFilter: FilterProdyctBySTock) => {
-    previousProductsFilterByStock(dispatch,paramsFilter,previousDocumentProductsByStock)
-  } 
+  const nextProductsFilterByStockContext = (lastDocumentProductsByStock: any, paramsFilter: FilterProdyctBySTock) => {
+    nextProductsFilterByStock(dispatch, paramsFilter, lastDocumentProductsByStock)
+  }
+  const previousProductsFilterByStockContext = (previousDocumentProductsByStock: any, paramsFilter: FilterProdyctBySTock) => {
+    previousProductsFilterByStock(dispatch, paramsFilter, previousDocumentProductsByStock)
+  }
   const productByCodeToUpdateContext = (code: string) => {
     getProductByCodeToUpdateContext(dispatch, code)
   }
-  const updateProductContext = (item:ProductToCart) => {
+  const updateProductContext = (item: ProductToCart) => {
     updateProduct(dispatch, item)
   }
 
   return (
     <GlobalContext.Provider value={{
+      getTotalProductsFromNavidad,
+      getAllProductToRoeContext,
       updateProductContext,
       showSidebarSaleContext,
       previousProductsFilterByStockContext,

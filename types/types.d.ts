@@ -1,21 +1,34 @@
 interface PaymentDataToStatdistics {
-  yape:number,
-  cash:number
+  yape: number,
+  cash: number
+}
+interface TablaInventarios {
+  cod:string,
+  description:string,
+  costoUnitario: number
+  precioUnitario: number
+  gananciaUnitariaUtilidad: number
+  gananciaUnitariaPorcentual: number
+  cantidadDeProducto: number
+  costoTotalDeProducto: number
+  VentaTotalDeProducto: number,
+  brand:string,
+  category:string
 }
 interface Yape {
-    yape: boolean,
-    amount: number
-    operationId: number
+  yape: boolean,
+  amount: number
+  operationId: number
 }
 interface Cash {
-    cash: boolean,
-    amount: number
+  cash: boolean,
+  amount: number
 }
 interface PaymentInfo {
-  totalAmountToCart:number
-  yape:Yape
-  cash:Cash
-  balanceFromCustomer?:number
+  totalAmountToCart: number
+  yape: Yape
+  cash: Cash
+  balanceFromCustomer?: number
 }
 interface PaymentData {
   yape: boolean,
@@ -119,7 +132,7 @@ interface User {
   pin?: number,
   rol?: string,
   picture?: string,
-  identifier?:number
+  identifier?: number
 }
 interface GeneralStatisticsPerDay {
   date?: number,
@@ -138,7 +151,7 @@ interface FormProductValues {
   brand?: string,
   stock?: number,
   marcaSocio?: string
-  cost?:string
+  cost?: string
 }
 interface StatisticsData {
   averageTickets?: number,
@@ -189,10 +202,13 @@ interface LibraryAllData {
   warningAmount: string,
   paymentData: PaymentInfo,
   paymentDataToStadistics: PaymentDataToStatdistics,
-  dataOfTicketFromDay:BasicDataStatistics,
+  dataOfTicketFromDay: BasicDataStatistics,
   lastDocumentProductsByStock: any,
   previousDocumentProductsByStock: any,
-  showSidebarSale:boolean
+  showSidebarSale: boolean,
+  allProductToRoe: TablaInventarios[],
+  loaderRoe:booelan,
+  totalSalesFromProductsFromNavidad:number
 }
 interface DateData {
   date: number,
@@ -218,6 +234,7 @@ interface ProductToCart {
   category?: string,
   brand?: string,
   stock?: string,
+  cost?: string,
   amount?: number,
   warning?: string,
   active?: boolean,
@@ -227,7 +244,7 @@ interface ProductToCart {
   warningAmount?: boolean,
   cancelAmount?: number,
   dateLastModified?: Date | toDate,
-  key?:string
+  key?: string
 }
 interface Ticket {
   id?: string,
@@ -236,10 +253,10 @@ interface Ticket {
   product: ProductsFromTicket[] | undefined | ProductToCart[],
   paymentData: PaymentInfo,
   library18?: boolean
-  totalAmountCart?:number,
-  yape?:Yape,
-  cash?:Cash,
-  cancel?:boolean
+  totalAmountCart?: number,
+  yape?: Yape,
+  cash?: Cash,
+  cancel?: boolean
 }
 interface ProductsFromTicket {
   code?: string,
@@ -285,6 +302,6 @@ interface UserApisPeru {
   password: string
 }
 interface BasicDataStatistics {
-  dailySales?:number,
-  tickets?:number
+  dailySales?: number,
+  tickets?: number
 }

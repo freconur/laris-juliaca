@@ -12,9 +12,10 @@ interface Props {
   totalSalesYear: number,
   dataSales: number[],
   dataStatistics: GeneralStatisticsPerDay[],
-  paymentDataToStadistics: PaymentDataToStatdistics
+  paymentDataToStadistics: PaymentDataToStatdistics,
+  totalSalesFromProductsFromNavidad:number
 }
-const CardEstadisticas = ({ paymentDataToStadistics, dataStatistics, dataSales, dailySale, dailyTicket, averageTicket, dataTotalSalesPerMonth, totalSalesYear }: Props) => {
+const CardEstadisticas = ({paymentDataToStadistics,totalSalesFromProductsFromNavidad, dataStatistics, dataSales, dailySale, dailyTicket, averageTicket, dataTotalSalesPerMonth, totalSalesYear }: Props) => {
 
   const { LibraryData } = useGlobalContext()
   const { dataOfTicketFromDay } = LibraryData
@@ -30,7 +31,7 @@ const CardEstadisticas = ({ paymentDataToStadistics, dataStatistics, dataSales, 
   useEffect(() => {
     // getTest()
   }, [dailySale])
-  console.log('dataTotalSalesPerMonth',dataTotalSalesPerMonth)
+  console.log('dataTotalSalesPerMonth', dataTotalSalesPerMonth)
   return (
     <>
       {
@@ -222,19 +223,15 @@ const CardEstadisticas = ({ paymentDataToStadistics, dataStatistics, dataSales, 
                 <BsCashCoin className="w-full h-full" />
               </div>
             </div>
-            {/* <div className="text-slate-400 p-3">
-              <span className="bg-cardTransparent rounded-sm p-1">25 %</span> menos que ayer
-            </div> */}
           </div>
 
-          {/* ingresos anual */}
-          {/* <div className="w-full h-[150px] rounded-xl p-3 shadow-md bg-white">
+          <div className="w-full h-[150px] rounded-xl p-3 shadow-md bg-white">
             <div className="grid w-full grid-cols-gridCardStat">
               <div className="w-full p-3">
-                <div className="text-slate-600 font-bold text-xl capitalize">{currentYear()}</div>
+                <div className="text-slate-600 font-bold text-xl capitalize">Productos de navidad</div>
                 <div className="text-slate-600 flex gap-3  font-bold">
                   <div className="flex justify-center items-center">
-                    <p className='text-3xl'>$ {totalSalesYear && totalSalesYear.toFixed(2)}</p>
+                    <p className='text-3xl'>$ {totalSalesFromProductsFromNavidad && totalSalesFromProductsFromNavidad.toFixed(2)}</p>
                   </div>
                 </div>
 
@@ -243,11 +240,8 @@ const CardEstadisticas = ({ paymentDataToStadistics, dataStatistics, dataSales, 
                 <BsCashCoin className="w-full h-full" />
               </div>
             </div>
-            <div className="text-slate-400 p-3">
-              <span className="bg-cardTransparent rounded-sm p-1">25 %</span> menos que ayer
-            </div>
-          </div> */}
-
+          </div>
+          
         </div>
       }
     </>

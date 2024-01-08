@@ -25,7 +25,7 @@ const SidebarProducts = ({ sidebar, sidebarProducts, showSidebarProducts }: Prop
           <h2 className='p-1 h-[50px] flex justify-center items-center text-white text-2xl font-comfortaa'>Productos</h2>
         </div>
         {
-          getUser.rol ?
+          getUser?.rol ?
             <ul className='capitalize p-1 font-comfortaa h-full px-2'>
               <li className="rounded-xl text-slate-600 pl-2 text-sm flex items-center gap-x-4 cursor-pointer   mt-2 capitalize   hover:bg-sidebarHover hover:text-white duration-300  whitespace-nowrap my-3 drop-shadow-lg">
                 <Link onClick={sidebar} href="/dashboard/productos" className="my-1 w-56 p-2">

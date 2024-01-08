@@ -27,29 +27,35 @@ type LibraryData =
   | { type: "productToUpdate"; payload: ProductToCart }
   | { type: "showSaleModal"; payload: boolean }
   | { type: "tostifyNotificationSales"; payload: number }
-  | { type: "incrementAmountToItemFromCart", payload: number, payload2: string, payload3: ProductToCart[] | undefined }
+  | { type: "incrementAmountToItemFromCart"; payload: number, payload2: string, payload3: ProductToCart[] | undefined }
   | { type: "getProductsSales"; payload: ProductToCart[] }
   | { type: "resetToastifyNotificationAddProduct" }
   | { type: "toastifyNotificationAddProduct" }
-  | { type: "dataStatistics", payload: GeneralStatisticsPerDay[] }
-  | { type: "getTickets", payload: Ticket[] }
-  | { type: "showCancellationOfsaleModal", payload: boolean }
-  | { type: "saveDataUser", payload: SaveUserData }
-  | { type: "getDataUser", payload: User }
-  | { type: "validatePin", payload: boolean }
-  | { type: "loader", payload: boolean }
-  | { type: "showSidebar", payload: boolean }
-  | { type: "getUser", payload: User }
-  | { type: "warningAmount", payload: string }
-  | { type: "paymentData", payload: PaymentInfo }
-  | { type:"paymentDataToStadistics", payload: PaymentDataToStatdistics}
-  | { type:"dataOfTicketFromDay", payload: BasicDataStatistics}
-  | { type:"lastDocumentProductsByStock", payload: any}
-  | { type:"previousDocumentProductsByStock", payload: any}
-  | { type:"showSidebarSale", payload: boolean}
-  
+  | { type: "dataStatistics"; payload: GeneralStatisticsPerDay[] }
+  | { type: "getTickets"; payload: Ticket[] }
+  | { type: "showCancellationOfsaleModal"; payload: boolean }
+  | { type: "saveDataUser"; payload: SaveUserData }
+  | { type: "getDataUser"; payload: User }
+  | { type: "validatePin"; payload: boolean }
+  | { type: "loader"; payload: boolean }
+  | { type: "showSidebar"; payload: boolean }
+  | { type: "getUser"; payload: User }
+  | { type: "warningAmount"; payload: string }
+  | { type: "paymentData"; payload: PaymentInfo }
+  | { type: "paymentDataToStadistics"; payload: PaymentDataToStatdistics }
+  | { type: "dataOfTicketFromDay"; payload: BasicDataStatistics }
+  | { type: "lastDocumentProductsByStock"; payload: any }
+  | { type: "previousDocumentProductsByStock"; payload: any }
+  | { type: "showSidebarSale"; payload: boolean }
+  | { type: "allProductToRoe"; payload: TablaInventarios[] }
+  | { type: "loaderRoe"; payload: boolean }
+  | { type: "totalSalesFromProductsFromNavidad"; payload: number }
+
 
 export const Library = {
+  totalSalesFromProductsFromNavidad: 0 as number,
+  allProductToRoe: [] as TablaInventarios[],
+  loaderRoe: false as boolean,
   showSidebarSale: false as boolean,
   lastDocumentProductsByStock: {} as any,
   previousDocumentProductsByStock: {} as any,
@@ -93,27 +99,42 @@ export const Library = {
   showSidebar: false as boolean,
   getUser: {} as User,
   paymentDataToStadistics: {} as PaymentDataToStatdistics,
-  dataOfTicketFromDay:{} as BasicDataStatistics
+  dataOfTicketFromDay: {} as BasicDataStatistics
 }
 
 export const ProductsReducer = (state: LibraryAllData, action: LibraryData) => {
   switch (action.type) {
-    case "showSidebarSale" : {
+    case "totalSalesFromProductsFromNavidad":
+      return{
+        ...state,
+        totalSalesFromProductsFromNavidad:action.payload
+      }
+    case "loaderRoe":
       return {
         ...state,
-        showSidebarSale:action.payload
+        loaderRoe: action.payload
+      }
+    case "allProductToRoe":
+      return {
+        ...state,
+        allProductToRoe: action.payload
+      }
+    case "showSidebarSale": {
+      return {
+        ...state,
+        showSidebarSale: action.payload
       }
     }
-    case "previousDocumentProductsByStock" : {
+    case "previousDocumentProductsByStock": {
       return {
         ...state,
-        previousDocumentProductsByStock:action.payload
+        previousDocumentProductsByStock: action.payload
       }
     }
-    case "lastDocumentProductsByStock" : {
+    case "lastDocumentProductsByStock": {
       return {
         ...state,
-        lastDocumentProductsByStock:action.payload
+        lastDocumentProductsByStock: action.payload
       }
     }
     case "dataOfTicketFromDay": {
@@ -122,63 +143,63 @@ export const ProductsReducer = (state: LibraryAllData, action: LibraryData) => {
         dataOfTicketFromDay: action.payload
       }
     }
-    case "paymentDataToStadistics":{
+    case "paymentDataToStadistics": {
       return {
         ...state,
-        paymentDataToStadistics:action.payload
+        paymentDataToStadistics: action.payload
       }
     }
     case "paymentData": {
       return {
-      ...state,
-      paymentData:action.payload
+        ...state,
+        paymentData: action.payload
       }
     }
-    case "warningAmount" : {
+    case "warningAmount": {
       return {
         ...state,
-        warningAmount:action.payload
+        warningAmount: action.payload
       }
     }
-    case "getUser":{
+    case "getUser": {
       return {
         ...state,
-        getUser:action.payload
+        getUser: action.payload
       }
     }
-    case "showSidebar":{
+    case "showSidebar": {
       return {
         ...state,
-        showSidebar:action.payload
+        showSidebar: action.payload
       }
     }
     case "loader": {
       return {
-        ...state, loader:action.payload
+        ...state, loader: action.payload
       }
     }
     case "validatePin": {
       return {
         ...state,
-        validatePin:action.payload
+        validatePin: action.payload
       }
     }
     case "getDataUser": {
       return {
         ...state,
-        getDataUser:action.payload
+        getDataUser: action.payload
       }
     }
-    case "saveDataUser" : {
+    case "saveDataUser": {
       return {
-        ...state, 
+        ...state,
         saveDataUser: action.payload
       }
     }
     case "showCancellationOfsaleModal": {
       return {
         ...state,
-        showCancellationOfsaleModal:action.payload
+        showCancellationOfsaleModal: action.payload
       }
     }
     case "getTickets": {

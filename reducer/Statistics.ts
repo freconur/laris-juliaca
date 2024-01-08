@@ -9,8 +9,18 @@ const FECHA = `${currentDate()}`
 const MES = `${currentMonth()}`
 const PAYMENT_TYPE = "XXnuJEsytqLDBQ4PvSgc"
 
+export const dataFromSalesProductosDeNavidad = async (dispatch: (action: any) => void) => {
+  /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
+  //calculo de la ventas de productos navidenos//
+
+  
+  // console.log('arryaProducts0',arryaProducts[0])
+  // console.log('arryaProducts1',arryaProducts[1])
+  /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
+}
+
 export const dataToStatistics = async (dispatch: (action: any) => void, dateData: DateData) => {
-  console.log()
+
   const pathToCreateNewData = `/statistics/${YEAR_MONTH}`
   const createNewDataRef = doc(db, `/statistics/${YEAR_MONTH}/`, `${FECHA}`)
   const docSnap = await getDoc(createNewDataRef);
@@ -81,12 +91,12 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
             dataPerday.growthSales = 0
             dataPerday.growthTicket = 0
             dataPerday.growthAverageTicket = 0
-          } 
-          if(Number(dataFromStatistics[index - 1].dailySales) === 0) {
+          }
+          if (Number(dataFromStatistics[index - 1].dailySales) === 0) {
             dataPerday.growthSales = 0
             dataPerday.growthTicket = 0
             dataPerday.growthAverageTicket = 0
-          }else {
+          } else {
             const growthTicket = (((Number(dataPerday.tickets) / Number(dataFromStatistics[index - 1].tickets)) - 1) * 100).toFixed(2)
             const growthSales = (((Number(dataPerday.dailySales) / Number(dataFromStatistics[index - 1].dailySales)) - 1) * 100).toFixed(2)
             const growthAverageTicket = Number((((Number(dataPerday.averageTicket) / Number(dataFromStatistics[index - 1].averageTicket)) - 1) * 100).toFixed(2))
@@ -97,16 +107,36 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
           }
         }
       })
-      dispatch({ type: "dataStatistics", payload: dataFromStatistics })
-      dispatch({ type: "loader", payload: false })
-      dispatch({ type: "dataSales", payload: dataSales })
-      dispatch({ type: "dataSalesLabel", payload: dataSalesLabel })
-      dispatch({ type: "dataTotalSalesPerMonth", payload: totalSalesPerMonth })
-
 
     }
+
+
+    dispatch({ type: "dataStatistics", payload: dataFromStatistics })
+    dispatch({ type: "loader", payload: false })
+    dispatch({ type: "dataSales", payload: dataSales })
+    dispatch({ type: "dataSalesLabel", payload: dataSalesLabel })
+    dispatch({ type: "dataTotalSalesPerMonth", payload: totalSalesPerMonth })
+
+
   }
+  /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
+  //calculo de la ventas de productos navidenos//
+
+  let total = 0
+  const getProductosDeNavidad = await getDocs(collection(db, `/productos-navidad/${dateData.month}-${dateData.year}/${dateData.date}`));
+  const arryaProducts: ProductToCart[] = []
+  getProductosDeNavidad.forEach((doc) => {
+    arryaProducts.push(doc.data())
+    console.log(doc.data().amount)
+    console.log(doc.data().price)
+    total = total + Number(doc.data().amount) * Number(doc.data().price)
+    console.log('totalSalesFromProductsFromNavidad', total)
+    dispatch({ type: "totalSalesFromProductsFromNavidad", payload: total })
+  });
+  
+  /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
 }
+
 
 export const getPaymentTypeDaily = async (dispatch: (action: any) => void, dateData: DateData) => {
   const paymentRef = doc(db, `/payment-type/${PAYMENT_TYPE}/${dateData.month}-${dateData.year}/`, `${dateData.date}`)

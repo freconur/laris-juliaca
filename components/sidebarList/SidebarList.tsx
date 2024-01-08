@@ -6,6 +6,7 @@ import { BsFillBoxFill } from "react-icons/bs";
 import { BiArchiveOut } from "react-icons/bi";
 import { useGlobalContext } from '../../context/GlobalContext';
 import { TiTicket } from "react-icons/ti";
+import { RiChatPollLine } from "react-icons/ri";
 import styles from '../../components/sidebarList/SidebarList.module.css'
 interface Props {
   showSidebar: boolean,
@@ -55,6 +56,12 @@ const SidebarList = ({ sidebarProducts }: Props) => {
         <Link onClick={() => showSidebarContext(!showSidebar)} href="/dashboard/ventas" className="my-1 w-56 p-2">
           <BiArchiveOut className="text-xl block float-left mr-3" />
           <span className={`text-base flex-1 ml-2 text-md`}>ventas</span>
+        </Link>
+      </li>
+      <li className="rounded-xl text-slate-600 pl-2 text-sm flex items-center gap-x-4 cursor-pointer   mt-2 capitalize   hover:bg-sidebarHover hover:text-white duration-300  whitespace-nowrap my-3 drop-shadow-lg">
+        <Link onClick={() => showSidebarContext(!showSidebar)} href="/dashboard/rentabilidad" className="my-1 w-56 p-2">
+          <RiChatPollLine className="text-xl block float-left mr-3" />
+          <span className={`text-base flex-1 ml-2 text-md`}>roe</span>
         </Link>
       </li>
     </ul>
