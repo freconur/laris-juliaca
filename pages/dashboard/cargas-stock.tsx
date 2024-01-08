@@ -54,7 +54,6 @@ const CargasStock = () => {
     })
   }
   const testEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // console.log('key', e.key)
     if (e.key === 'Enter') {
       e.preventDefault()
     }
@@ -67,7 +66,6 @@ const CargasStock = () => {
     setCodeProduct(initialValue)
     setStockProductToCharger(initialValueStockCharger)
   }
-  console.log('stockProductToCharger',stockProductToCharger)
   return (
     <LayoutDashboard>
       <Navbar dataUser={dataUser} />

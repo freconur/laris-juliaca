@@ -24,7 +24,6 @@ const Productos = () => {
   const { getDataUser, getDataUserContext } = useGlobalContext()
 
   const successToastify = () => {
-    console.log('estamos entrando')
     setSuccessfullCopy(true)
     toast.success('codigo copiado!', {
       position: "top-center",

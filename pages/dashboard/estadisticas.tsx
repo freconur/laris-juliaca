@@ -97,7 +97,6 @@ const Estadisticas = () => {
       },
     },
   };
-  console.log('dataStatistics',dataStatistics)
   return (
     <LayoutDashboard>
       <>

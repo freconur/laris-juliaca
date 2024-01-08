@@ -38,7 +38,6 @@ const AnulacionVenter = () => {
     const findTicket: Ticket | undefined = getTickets.find(t => Number(t.id) === ticket)
     setFindTicket(findTicket)
   }
-  console.log('getTickets',getTickets)
   return (
     <LayoutDashboard>
       <><Navbar dataUser={dataUser}/></>

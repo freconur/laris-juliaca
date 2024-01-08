@@ -10,13 +10,6 @@ const MES = `${currentMonth()}`
 const PAYMENT_TYPE = "XXnuJEsytqLDBQ4PvSgc"
 
 export const dataFromSalesProductosDeNavidad = async (dispatch: (action: any) => void) => {
-  /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
-  //calculo de la ventas de productos navidenos//
-
-  
-  // console.log('arryaProducts0',arryaProducts[0])
-  // console.log('arryaProducts1',arryaProducts[1])
-  /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
 }
 
 export const dataToStatistics = async (dispatch: (action: any) => void, dateData: DateData) => {
@@ -35,7 +28,6 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
       })
   }
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
   } else {
     await setDoc(doc(db, pathToCreateNewData, `${FECHA}`), { dailySales: 0, tickets: 0 });
   }
@@ -46,11 +38,9 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
   const dataSales: number[] = []
   let totalSalesPerMonth: number = 0
   if (queryStatistics.size === 0) {
-    console.log(`no hay datos para el mes de ${MES}`)
   } else {
     queryStatistics.docs.forEach(dailyDayData => {
       dataFromStatistics.push({ ...dailyDayData.data(), date: Number(dailyDayData.id) })
-      // console.log('dailyDayData.data()', dailyDayData.data())
     })
     dataFromStatistics.sort((a, b) => {
       const fe = Number(a.date)
@@ -71,23 +61,17 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
       const tickets = Number(dataPerday.tickets)
       const sales = Number(dataPerday.dailySales)
       if (Number(dataPerday.tickets) === 0 && Number(dataPerday.dailySales) === 0) {
-        console.log('estoy en otras')
         const averageTicket = 0
         dataPerday.averageTicket = averageTicket
       } else {
         const averageTicket: number = Number((sales / tickets).toFixed(2))
-        console.log('sales',sales)
-        console.log('tickets',tickets)
-        console.log('averageTicket',averageTicket)
         dataPerday.averageTicket = averageTicket
       }
     })
 
     if (rta) {
-      console.log('dataFromStatistics', dataFromStatistics)
       dataFromStatistics.map((dataPerday, index) => {
         if (index === 0) {
-          console.log('esta data no tendra crecimiento')
         } else {
 
           if (dataPerday.dailySales === 0 && dataPerday.tickets === 0) {

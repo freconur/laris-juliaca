@@ -113,17 +113,13 @@ export const previousProductsFilterByStock = async (dispatch: (action: any) => v
   
 }
 export const getFilterProductByStock = async (dispatch: (action: any) => void, paramsFilter: FilterProdyctBySTock) => {
-  console.log('paramsFilter', paramsFilter)
   // const order = paramsFilter.orderBy as OrderByDirection
   const productRef = collection(db, '/products')
   const productsFilterByStock: ProductToCart[] = []
   if (paramsFilter.brand.length === 0) {
-    console.log('busqueda sin brand')
     if (paramsFilter.stock === 0) {
-      console.log('sin brand y en 0')
       const q = query(productRef, where("stock", "==", Number(paramsFilter.stock)), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
 
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
@@ -132,7 +128,6 @@ export const getFilterProductByStock = async (dispatch: (action: any) => void, p
     } else {
       const q = query(productRef, where("stock", "<=", Number(paramsFilter.stock)), where("stock", ">=", 1), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
 
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
@@ -140,11 +135,9 @@ export const getFilterProductByStock = async (dispatch: (action: any) => void, p
       dispatch({ type: "productsFromFilterByStock", payload: productsFilterByStock })
     }
   } else {
-    console.log('entramos con marca')
     if (paramsFilter.stock === 0) {
       const q = query(productRef, where("stock", "==", Number(paramsFilter.stock)), where("brand", "==", `${paramsFilter.brand}`), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
       })
@@ -152,7 +145,6 @@ export const getFilterProductByStock = async (dispatch: (action: any) => void, p
     } else {
       const q = query(productRef, where("stock", "<=", Number(paramsFilter.stock)), where("brand", "==", `${paramsFilter.brand}`), where("stock", ">=", 1), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
       })

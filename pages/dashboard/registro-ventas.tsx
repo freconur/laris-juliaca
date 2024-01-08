@@ -35,7 +35,6 @@ const RegistroVentas = () => {
     })
   };
   const successToastify = () => {
-    console.log('estamos entrando')
     toast.success('venta exitosa!', {
       position: "top-center",
       autoClose: 2000,
@@ -52,7 +51,6 @@ const RegistroVentas = () => {
       getDataUserContext(`${dataUser.id}`)
     }
   },[dataUser])
-  // console.log('data-registro',dataUser)
   useEffect(() => {
 
     resetValueToastify()
@@ -78,8 +76,6 @@ const RegistroVentas = () => {
       'key': 'Tab'
     })
   }
-  // console.log('BOLETA_SUNAT',BOLETA_SUNAT.client.numDoc)
-  // console.log('dataUser',dataUser)
   return (
     <LayoutDashboard>
       <Navbar dataUser={dataUser} />

@@ -58,7 +58,6 @@ const RegistroDeProductos = () => {
       'key': 'Tab'
     })
   }
-  console.log('form', form)
   return (
     <LayoutDashboard>
 

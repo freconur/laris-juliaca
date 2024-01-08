@@ -19,19 +19,10 @@ const CardEstadisticas = ({paymentDataToStadistics,totalSalesFromProductsFromNav
 
   const { LibraryData } = useGlobalContext()
   const { dataOfTicketFromDay } = LibraryData
-  console.log("test", dataSales.length)
-  // const getTest = () => {
-  //   if (dataSales) {
-  //     const rta = ((dataSales[dataSales.length - 1] / dataSales[dataSales.length - 2]) - 1) * 100
-  //     // console.log('dataSales[dataSales.length - 1]', dataSales[dataSales.length - 1])
-  //     // console.log('dataSales[dataSales.length - 2]', dataSales[dataSales.length - 2])
-  //     // console.log('rta', rta.toFixed(2))
-  //   }
-  // }
+  
   useEffect(() => {
     // getTest()
   }, [dailySale])
-  console.log('dataTotalSalesPerMonth', dataTotalSalesPerMonth)
   return (
     <>
       {

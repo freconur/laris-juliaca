@@ -17,11 +17,7 @@ const PAYMENT_TYPE = "XXnuJEsytqLDBQ4PvSgc"
 
 export const addNewProduct = async (dispatch: (action: any) => void, productData: FormProductValues) => {
   const docRef = doc(db, "products", productData.code as string); // busco en la base de datos
-  // const docSnap = await getDoc(docRef);
-  // const prod = docSnap?.data()
-  // if(prod) {
-  //   console.log('ya existe el producto')
-  // }
+
   await setDoc(doc(db, "products", `${productData.code}`), productData)
     .then(r => {
       dispatch({ type: "newProduct", payload: productData })
@@ -33,7 +29,6 @@ export const getDailySales = async () => {
   const ref = doc(db, `/dailysale/${DAILY_SALE}/${currentMonth()}-${currentYear()}`, "15")
   // const ref = collection(db, `/dailysale/${DAILY_SALE}/${currentMonth()}-${currentYear()}/${currentDate()}`)
   const snap = await getDoc(ref)
-  console.log('snap.docs', snap.data())
   return snap.data()
 }
 export const getBrands = (dispatch: (action: any) => void) => {
@@ -126,64 +121,21 @@ export const findToAddProductCart = async (dispatch: (action: any) => void, code
     const prod = docSnap?.data()
 
     if (docSnap.exists()) {
-      console.log('existe')
       dispatch({ type: "productNotFound" })
       dispatch({ type: "loaderToSell", payload: true })
       //compruebo si se encuentra en el array cart
       const productCartRepeat = cart?.find(prod => prod.code === codeProduct)
       if (productCartRepeat) {
-        // console.log('no hacemos nada')
-        //       dispatch({ type: "loaderToSell", payload: false })
-
         cart?.map(prod => {
           if (prod.code === productCartRepeat.code) {
             productCartRepeat.amount = productCartRepeat?.amount as number + 1
-            console.log('estoy en producto repetido')
             dispatch({ type: "productToCart", payload: cart })
             dispatch({ type: "loaderToSell", payload: false })
             dispatch({ type: "toastifyNotificationAddProduct" })
-            //cart: 3                              nuevo prod.: 1
-            // if (Number(productCartRepeat.amount) < Number(prod.stock)) {
-            // console.log('estoy en producto option1')
-
-            //   dispatch({ type: "productToCart", payload: cart })
-            //   dispatch({ type: "loaderToSell", payload: false })
-            //   dispatch({ type: "toastifyNotificationAddProduct" })
-            // }
-            // if (Number(productCartRepeat.amount) === Number(prod.stock)) {
-            // console.log('estoy en producto option 2')
-
-            //   dispatch({ type: "productToCart", payload: cart })
-            //   dispatch({ type: "loaderToSell", payload: false })
-            //   dispatch({ type: "toastifyNotificationAddProduct" })
-
-            // }
-            // if (Number(productCartRepeat.amount) > Number(prod.stock)) {
-            //   console.log('se pasaron')
-            //   productCartRepeat.amount = productCartRepeat?.amount as number - 1
-            //   // productCartRepeat.warning = "no puedes cargar mas productos"
-            //   dispatch({ type: "productToCart", payload: cart })
-            //   dispatch({ type: "loaderToSell", payload: false })
-            //   dispatch({ type: "toastifyNotificationAddProduct" })
-
-            // }
           }
         })
       } else {
-        // if (prod?.stock === 0) {
-        //   const amount = { amount: prod?.stock }
-        //   rta = { ...prod, ...amount }
-        //   cart?.unshift(rta)
-        //   dispatch({ type: "productToCart", payload: cart })
-        //   dispatch({ type: "loaderToSell", payload: false })
-        //   dispatch({ type: "toastifyNotificationAddProduct" })
-
-        // }
-        // if (prod?.stock > 0) {
-        console.log('hay stock')
-        //-----modificando la aplicacion del atributo warning-----//
-        //---esta vez no tendra limite de de merca, aun cuando no se tenga stock se podra vender el producto, haciendo negativo el stock.
-        // const amount = { amount: 1, warning: "" }
+        
         const amount = { amount: 1 }
         rta = { ...prod, ...amount }
         cart?.unshift(rta)
@@ -201,10 +153,7 @@ export const findToAddProductCart = async (dispatch: (action: any) => void, code
 }
 
 export const deleteProductToCart = (dispatch: (action: any) => void, cart: ProductToCart[], codeFromProduct: string | undefined) => {
-  console.log('cart', cart)
-  console.log('codeFromProduct', codeFromProduct)
   const cartAfterToDelete = cart.filter(prod => prod.code !== codeFromProduct)
-  console.log('cartAfterToDelete', cartAfterToDelete)
   return dispatch({ type: "productToCart", payload: cartAfterToDelete })
 
 }
@@ -219,7 +168,6 @@ export const dailySale = async (dispatch: (action: any) => void, dateData: DateD
   const docSnap = await getDoc(dailySaleRef);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
     onSnapshot(dailySaleRef, (doc) => {
       // const data:number = doc.data()?.amount
       dispatch({ type: "dailySale", payload: doc.data()?.amount })
@@ -229,11 +177,9 @@ export const dailySale = async (dispatch: (action: any) => void, dateData: DateD
 
   } else {
     // docSnap.data() will be undefined in this case
-    console.log("No such document!");
   }
 
   // onSnapshot(dailySaleRef, (snapshot) => {
-  //   console.log("amount", snapshot.data()?.amount)
   //   dispatch({ type: "dailySale", payload: snapshot.data()?.amount })
   // })
 }
@@ -256,15 +202,11 @@ export const dailyTicket = async (dispatch: (action: any) => void, dateData: Dat
       })
     }
   })
-  // console.log('totalAmountDailySale', totalAmountDailySale)
-  // console.log('dailyTicket', docSnap)
   const averageTicket = totalAmountDailySale / dailyTicket
   dispatch({ type: "dailyTicket", payload: dailyTicket })
   dispatch({ type: "averageTicket", payload: averageTicket })
   // const dailySaleRef = doc(db, `/db-ventas/${DB_VENTAS}/${YEAR_MONTH}/${currentDate()}`)
   // const docSnap = await getDoc(dailySaleRef)
-  // console.log('dailySaleRef', dailySaleRef)
-  // console.log('docSnap', docSnap)
 }
 export const generateSold = async (dispatch: (action: any) => void, cart: ProductToCart[] | undefined, cero: number, paymentData: PaymentInfo, userData: User) => {
   dispatch({ type: "generateSold", payload: true })
@@ -284,7 +226,6 @@ export const generateSold = async (dispatch: (action: any) => void, cart: Produc
     ///////////////////////////FUNCIONALIDAD PERSONALIZADA VENTAS DE LA CATEGORIA PRODUCTOS DE NAVIDAD
     //aqui crearemos la funcionalidad personalizada de hacer get a todos los productos de la categoria de navidad con su valor de venta del dia
     const findProdustFromProductoDeNavidad = cart?.filter(p => p.category === "navidad")
-    console.log('findProdustFromProductoDeNavidad', findProdustFromProductoDeNavidad)
     if (findProdustFromProductoDeNavidad) {
       await setDoc(doc(db, `/productos-navidad/${currentMonth()}-${currentYear()}/${currentDate()}`, `${currentDate()}`), {amount:0, price:0})
       findProdustFromProductoDeNavidad.map(async (item) => {
@@ -344,7 +285,6 @@ const addTicketDataToStatistics = async () => {
   const snapTicket = await getDocs(ticketRef)
 
   if (snapTicket.size === 0) {
-    console.log('addTicketDataToStatistics: no hacemos nada')
   } else {
     const dataStatistics = await getDoc(statisticsRef)
     if (dataStatistics.exists()) {
@@ -398,7 +338,6 @@ export const addProductFromCartToTicket = async (ticket: Ticket, userData: User)
           })
           const getPaymentType = await getDoc(paymentTypeRef)
           if (getPaymentType.exists()) {
-            console.log('probando que no se necesita condicionales')
             await updateDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { yape: increment(Number(ticket.paymentData.totalAmountToCart)) })
           } else {
             await setDoc(doc(db, `/payment-type/${PAYMENT_TYPE}/${yearMonth}/${currentDate()}`), { cash: 0, yape: 0 })
@@ -461,11 +400,8 @@ export const addProductCartToProductSales = async (cart: ProductToCart[] | undef
 
       cart?.map(async (item) => {//recorro el array para comprobar si existe dentro de productsFromCart
         const findItem = productsFromCart?.find(i => i.code === item.code)
-        console.log('findItem', findItem)
         if (findItem) {
-          console.log('si existe el producto en la lista de productos vendidos')
           // const totalAmountSaleItem: number = Number(findItem?.totalAmountSale) + Number(item?.amount)
-          // console.log('Number(item?.amount)',Number(item?.amount))
           const refItemUpdate = doc(db, pathProductsSales, `${findItem.code}`)
           await updateDoc(refItemUpdate, {
             // totalAmountSale: totalAmountSaleItem
@@ -483,7 +419,6 @@ export const addProductCartToProductSales = async (cart: ProductToCart[] | undef
 export const getProductsSales = async (dispatch: (action: any) => void) => {
   // const pathProductsSales = `/products-sales-library18/${currentYear()}/${currentMonth()}/${currentMonth()}/${currentDate()}`
   const pathProductsSales = `/products-sales/${currentYear()}/${currentMonth()}/${currentMonth()}/${currentDate()}`
-  console.log('test', pathProductsSales)
   const producstSalesRef = collection(db, pathProductsSales)
   const products: ProductToCart[] = []
   const getProductSale = await getDocs(producstSalesRef)
@@ -514,7 +449,6 @@ export const updateDailySaleFromStatistics = async (totalAmountCart: number) => 
       await updateDoc(updateDailySaleFromStatistics, { dailySales: Number(totalAmountCart.toFixed(2)) })
     }
   } else {
-    console.log('updateDailySaleFromStatistics: no hacemos nada')
   }
 }
 export const updatedailySale = async (paymentInfo: PaymentInfo) => {
@@ -589,7 +523,6 @@ export const addStockToProduct = async (dispatch: (action: any) => void, codePro
 }
 
 export const searchProductByDescription = async () => {
-  console.log('seach', "estamos buscando")
   const res = query(collection(db, `/products`));
   const docSnap = await getDocs(res)
   const allProducts: ProductToCart[] = []
@@ -597,8 +530,6 @@ export const searchProductByDescription = async () => {
     allProducts.push({ ...doc.data() });
   })
 
-  // console.log('total de productos',docSnap.size)
-  // console.log('total de productos',docSnap)
 }
 
 export const addStockToProductUpdate = async (dispatch: (action: any) => void, codeProduct: ProductToCart, stock: StockProductCharger) => {
@@ -659,23 +590,18 @@ export const getTotalSalesPerYear = async (dispatch: (action: any) => void) => {
     docSnap.docs.forEach(month => {
       totalSalesYear = totalSalesYear + month.data().totalSales
     })
-    // console.log('totalSalesYear', totalSalesYear)
     dispatch({ type: "totalSalesYear", payload: totalSalesYear })
   }
 }
 
 export const getFilterProductByStock = async (dispatch: (action: any) => void, paramsFilter: FilterProdyctBySTock) => {
-  console.log('paramsFilter', paramsFilter)
   // const order = paramsFilter.orderBy as OrderByDirection
   const productRef = collection(db, '/products')
   const productsFilterByStock: ProductToCart[] = []
   if (paramsFilter.brand.length === 0) {
-    console.log('busqueda sin brand')
     if (paramsFilter.stock === 0) {
-      console.log('sin brand y en 0')
       const q = query(productRef, where("stock", "==", Number(paramsFilter.stock)), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
 
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
@@ -684,7 +610,6 @@ export const getFilterProductByStock = async (dispatch: (action: any) => void, p
     } else {
       const q = query(productRef, where("stock", "<=", Number(paramsFilter.stock)), where("stock", ">=", 1), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
 
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
@@ -692,11 +617,9 @@ export const getFilterProductByStock = async (dispatch: (action: any) => void, p
       dispatch({ type: "productsFromFilterByStock", payload: productsFilterByStock })
     }
   } else {
-    console.log('entramos con marca')
     if (paramsFilter.stock === 0) {
       const q = query(productRef, where("stock", "==", Number(paramsFilter.stock)), where("brand", "==", `${paramsFilter.brand}`), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
       })
@@ -704,7 +627,6 @@ export const getFilterProductByStock = async (dispatch: (action: any) => void, p
     } else {
       const q = query(productRef, where("stock", "<=", Number(paramsFilter.stock)), where("brand", "==", `${paramsFilter.brand}`), where("stock", ">=", 1), where("marcaSocio", "==", `${paramsFilter.marcaSocio}`), orderBy("stock"));
       const data = await getDocs(q)
-      console.log('datasize', data.size)
       data.docs.forEach(item => {
         productsFilterByStock.push(item.data())
       })
@@ -740,6 +662,5 @@ export const paymentDataToSale = (dispatch: (action: any) => void, paymentYape: 
     balanceFromCustomer: balanceFromCustomer ? Number(balanceFromCustomer) : 0
 
   }
-  console.log('paymentData', paymentData)
   dispatch({ type: "paymentData", payload: paymentData })
 }
