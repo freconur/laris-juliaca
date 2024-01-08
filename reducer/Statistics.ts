@@ -71,10 +71,14 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
       const tickets = Number(dataPerday.tickets)
       const sales = Number(dataPerday.dailySales)
       if (Number(dataPerday.tickets) === 0 && Number(dataPerday.dailySales) === 0) {
+        console.log('estoy en otras')
         const averageTicket = 0
         dataPerday.averageTicket = averageTicket
       } else {
         const averageTicket: number = Number((sales / tickets).toFixed(2))
+        console.log('sales',sales)
+        console.log('tickets',tickets)
+        console.log('averageTicket',averageTicket)
         dataPerday.averageTicket = averageTicket
       }
     })
@@ -91,12 +95,12 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
             dataPerday.growthSales = 0
             dataPerday.growthTicket = 0
             dataPerday.growthAverageTicket = 0
-          }
-          if (Number(dataFromStatistics[index - 1].dailySales) === 0) {
+          } 
+          if(Number(dataFromStatistics[index - 1].dailySales) === 0) {
             dataPerday.growthSales = 0
             dataPerday.growthTicket = 0
             dataPerday.growthAverageTicket = 0
-          } else {
+          }else {
             const growthTicket = (((Number(dataPerday.tickets) / Number(dataFromStatistics[index - 1].tickets)) - 1) * 100).toFixed(2)
             const growthSales = (((Number(dataPerday.dailySales) / Number(dataFromStatistics[index - 1].dailySales)) - 1) * 100).toFixed(2)
             const growthAverageTicket = Number((((Number(dataPerday.averageTicket) / Number(dataFromStatistics[index - 1].averageTicket)) - 1) * 100).toFixed(2))
@@ -107,17 +111,14 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
           }
         }
       })
+      dispatch({ type: "dataStatistics", payload: dataFromStatistics })
+      dispatch({ type: "loader", payload: false })
+      dispatch({ type: "dataSales", payload: dataSales })
+      dispatch({ type: "dataSalesLabel", payload: dataSalesLabel })
+      dispatch({ type: "dataTotalSalesPerMonth", payload: totalSalesPerMonth })
+
 
     }
-
-
-    dispatch({ type: "dataStatistics", payload: dataFromStatistics })
-    dispatch({ type: "loader", payload: false })
-    dispatch({ type: "dataSales", payload: dataSales })
-    dispatch({ type: "dataSalesLabel", payload: dataSalesLabel })
-    dispatch({ type: "dataTotalSalesPerMonth", payload: totalSalesPerMonth })
-
-
   }
   /////////////////////////FUNCIONALIDAD PERSONALIZADA DE PRODUCTOS NAVIDAD////////////////////
   //calculo de la ventas de productos navidenos//
@@ -127,10 +128,7 @@ export const dataToStatistics = async (dispatch: (action: any) => void, dateData
   const arryaProducts: ProductToCart[] = []
   getProductosDeNavidad.forEach((doc) => {
     arryaProducts.push(doc.data())
-    console.log(doc.data().amount)
-    console.log(doc.data().price)
     total = total + Number(doc.data().amount) * Number(doc.data().price)
-    console.log('totalSalesFromProductsFromNavidad', total)
     dispatch({ type: "totalSalesFromProductsFromNavidad", payload: total })
   });
   

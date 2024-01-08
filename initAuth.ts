@@ -9,10 +9,10 @@ const initAuth = () => {
     loginAPIEndpoint: '/api/login',
     logoutAPIEndpoint: '/api/logout',
     onLoginRequestError: (err) => {
-      console.error(err)
+      // console.error(err)
     },
     onLogoutRequestError: (err) => {
-      console.error(err)
+      // console.error(err)
     },
     // firebaseAuthEmulatorHost: 'localhost:3000',
     firebaseAdminInitConfig: {
